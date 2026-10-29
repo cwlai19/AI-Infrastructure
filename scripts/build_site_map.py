@@ -145,7 +145,7 @@ asia = {"entities": sum(apac.values()),
         "breakdown": ", ".join(f"{k} {v}" for k, v in sorted(apac.items(), key=lambda kv: -kv[1])),
         "grade": "A", "source": store.sources["src_ex21"]["title"]}
 
-geo_dir = Path(sys.argv[1])
+geo_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "vendor" / "geo"   # world-atlas 2.0.2 + us-atlas 3.0.1
 data = {"as_of": "2026-10-29",
         "group": group, "asia": asia, "sites": sites, "corporate": corporate,
         "customers": customers, "upstream": upstream, "group_lease": group_lease,
