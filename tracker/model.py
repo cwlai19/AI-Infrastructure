@@ -156,6 +156,9 @@ def _grade(store, st, _seen=None):
     grade = store.vocab["source_types"].get(src["type"], {}).get("grade", "C")
     if src.get("access") == "excerpt":
         grade = max(grade, "B", key=GRADE_ORDER.index)
+    if st.method == "estimated":
+        # Our own estimate is grade C whatever document it was inferred from.
+        grade = "C"
     if st.method == "derived":
         # A derived number is only as good as its weakest input.
         _seen = (_seen or set()) | {st.id}

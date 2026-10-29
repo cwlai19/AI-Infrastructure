@@ -1,0 +1,61 @@
+# Presentation overlay for the site map. Facts live in statements.csv; this file holds only
+# (1) approximate town-level coordinates, (2) which facilities are tied to which site where the
+# statements don't say so directly, and (3) analyst construction-risk ratings, which are
+# judgements, not facts. Each rating lists its drivers and the statements/sources behind them.
+#
+# Risk scale (construction / delivery risk, not credit quality of the customer):
+#   low       powered and delivering, no adverse reports
+#   medium    built or powered, but a dated condition or regulatory step is outstanding
+#   high      live delays, incidents or a regulatory notice on a site under construction
+#   critical  no power yet, permits contested, timeline slipping, and a large contract depends on it
+#   terminated  customer contract ended
+rated_by: "claude (pending analyst review)"
+rated_date: "2026-10-29"
+sites:
+  site_ward_county:   {lat: 31.60, lon: -103.10, region: us, label: "Ward County, TX", risk: medium,
+                       facilities: [fac_ward_county, fac_dell_vendor],
+                       drivers: ["Powered leased site (Ionic, 234 MW); existing capacity not affected so far",
+                                 "Texas governor's audit of ERCOT's large-load queue gates Ionic's 466 MW expansion and Nscale's +89 MW option",
+                                 "Loan can only be drawn on commissioning, power and hedges; Dell bridge (~$2.54B, shared with NC) must be refinanced from it"]}
+  site_north_carolina: {lat: 35.83, lon: -82.55, region: us, label: "NC-1, Madison County, NC", risk: low,
+                       facilities: [fac_north_carolina, fac_dell_vendor],
+                       drivers: ["Switchgear delay at NC-1 reported resolved by WhiteFiber; 40 MW run-rate billing targeted end-Aug 2026 (not confirmed)",
+                                 "Colocation: WhiteFiber depends on Nscale as sole tenant"]}
+  site_monarch:       {lat: 38.85, lon: -82.13, region: us, label: "Monarch, Mason County, WV", risk: critical,
+                       facilities: [],
+                       drivers: ["No grid power: depends on an on-site 2,160 MW gas plant whose air permits were refiled",
+                                 "DEP stormwater enforcement order (July 2026); contested hearings, tax-break debate and a preservation dispute (Oct 2026)",
+                                 "Phase one now 'early 2028' vs an earlier January 2027",
+                                 "Anthropic ($44.6B signed, ~$45B more in talks) pays only on delivery and can terminate late tranches; financing not secured"]}
+  site_glomfjord:     {lat: 66.81, lon: 13.95, region: eu, label: "Glomfjord, Norway", risk: high,
+                       facilities: [fac_macquarie_glomfjord],
+                       drivers: ["~6 months late: 6.4 of 30 MW running (Bloomberg, 15 Oct 2026)",
+                                 "Repeated liquid-cooling leaks; transformer fire Dec 2025 with 10 safety violations (closed Sept 2026)",
+                                 "Delay penalties reportedly owed; customer Spring (SG) is a ByteDance subsidiary (regulatory/reputational risk)"]}
+  site_kvandal_south: {lat: 68.38, lon: 17.15, region: eu, label: "Kvandal South, Narvik", risk: high,
+                       facilities: [fac_norway_term_loan, fac_norway_vat_rcf],
+                       drivers: ["Under construction; NVE threatens a coercive fine unless a waste-heat analysis is filed by 15 Nov 2026",
+                                 "Reported local opposition in Narvik",
+                                 "Project loan assumes completion by 5 Apr 2027 (VAT facility long-stop 30 Jun 2027)"]}
+  site_borealis:      {lat: 65.66, lon: -20.28, region: eu, label: "Borealis, Blönduós, Iceland", risk: medium,
+                       facilities: [fac_macquarie_iceland],
+                       drivers: ["Third-party colocation; no adverse reports found",
+                                 "Service must commence by 27 Jan 2027 or the Macquarie loan defaults (per CCIR)"]}
+  site_sin01:         {lat: 37.96, lon: -8.86, region: eu, label: "Sines SIN01, Portugal", risk: low, label_dy: 16,
+                       facilities: [],
+                       drivers: ["Active: 12,600+ GB300 GPUs deployed for Microsoft; Portugal was 52% of H1 2026 revenue",
+                                 "Colocation at Start Campus; no adverse reports found"]}
+  site_sin02:         {lat: 37.92, lon: -8.80, region: eu, label: "Sines SIN02, Portugal", risk: medium, label_dy: -10,
+                       facilities: [],
+                       drivers: ["Development site: 66,000+ Vera Rubin GPUs for Microsoft from late 2027",
+                                 "€377.8M of purchase price still owed to the seller, mostly H2 2026",
+                                 "No adverse reports found (Oct 2026 digital-twin pilot with Schneider/NVIDIA)"]}
+  site_loughton:      {lat: 51.65, lon: 0.07, region: eu, label: "Loughton, UK", risk: terminated,
+                       facilities: [],
+                       drivers: ["Microsoft terminated (Oct 2026): grid power not available until the early-to-mid 2030s",
+                                 "Nscale says it is exploring alternative power; site value to Nscale unclear"]}
+corporate_facilities:
+  fac_uk_gpu_ddtl: "Secured on GPUs across European clusters (Glomfjord named; Icelandic and Portuguese security referenced), not one site"
+  fac_parent_rcf: "Group revolver"
+  fac_convertible_2026: "Group-level unsecured convertible"
+  fac_committed_2_35b: "Bank commitments subject to documentation; use not disclosed"

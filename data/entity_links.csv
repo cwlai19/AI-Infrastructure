@@ -12,3 +12,5 @@ le_ocic,part_of,le_blue_owl_bdc,claude (pending analyst review),2026-10-29,As ab
 le_otf,part_of,le_blue_owl_bdc,claude (pending analyst review),2026-10-29,As above.
 le_enovum_nc1,part_of,le_whitefiber,claude (pending analyst review),2026-10-29,Wholly owned subsidiary per WhiteFiber 10-Q.
 ctr_msft_loughton,part_of,ctr_msft_sows,claude (pending analyst review),2026-10-29,"Loughton was announced in Sept 2025 as one of four sites under the Microsoft agreements (with Texas, Portugal, Norway), so it sits inside the S-1's 'up to $43.8B'. Its value is not disclosed."
+ctr_msft_sin01,part_of,ctr_msft_sows,claude (pending analyst review),2026-10-29,Microsoft deployment inside the aggregate SOWs.
+ctr_msft_sin02,part_of,ctr_msft_sows,claude (pending analyst review),2026-10-29,Signed April 2026; inside the Sept 2025 - Apr 2026 SOWs.

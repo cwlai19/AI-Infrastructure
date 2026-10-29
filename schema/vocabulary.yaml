@@ -52,6 +52,7 @@ entity_types:
       sites_contracted: {kind: number, unit: sites}
       largest_customer_revenue_share: {kind: percent, key: true}
       subsidiary_count: {kind: number, unit: entities}
+      revenue_share_by_country_6m: {kind: text, multi: true}
 
   legal_entity:
     description: A registered company, SPV, lender or customer. Named as the source names it.
@@ -86,6 +87,8 @@ entity_types:
       location: {kind: text}
       acquisition_cost: {kind: money}
       deferred_consideration_outstanding: {kind: money}
+      gpus_deployed: {kind: number, unit: GPUs}
+      construction_status: {kind: text, multi: true}
 
   facility:
     description: One debt instrument (loan, revolver, bond, project finance, vendor financing).

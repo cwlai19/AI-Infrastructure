@@ -257,3 +257,8 @@ hold_pimco_pdi_loan,holding,PIMCO PDI: 'Nscale AS' floating-rate loan,
 site_loughton,site,"Loughton, Essex (UK)",
 ctr_msft_loughton,contract,Microsoft: Loughton (UK) GPU contract,
 ctr_anthropic_2,contract,"Anthropic: proposed second Monarch building (~$45B, in talks)",
+site_sin01,site,"SINES Data Campus, first building (Portugal)",Colocation at Start Campus.
+ctr_spring_glomfjord,contract,Spring (SG): Glomfjord cloud services,
+ctr_msft_sin01,contract,"Microsoft: Sines first building (12,600 GB300)",
+ctr_msft_sin02,contract,"Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027)",
+ctr_iceland_customer,contract,Iceland GPU contract (customer redacted),

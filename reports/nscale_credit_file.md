@@ -34,6 +34,7 @@ _Generated from statements. Every value shows its grade (A/B/C) and the statemen
 - **sites_contracted**: 12 sites (A: st1021)
 - **largest_customer_revenue_share**: 52% (A: st1024)
 - **subsidiary_count**: 138 entities (A: st1028)
+- **revenue_share_by_country_6m**: Portugal 52%; Norway 45% (six months to 30 June 2026) (A: st3900)
 
 ## Debt ledger
 
@@ -42,17 +43,17 @@ _Generated from statements. Every value shows its grade (A/B/C) and the statemen
 | Norway (Narvik) project financing ($790M) | 790M USD (B: st0122) | project_finance (B: st0121) | — | — | undisclosed [st0127] | undisclosed [st0126] | site (B: st0124) | — | — | — | — | — |
 | Committed bank delayed-draw financings (~$2.35B, undocumented) | 2.35B USD (A: st1251) | delayed_draw_term_loan (A: st1250) | — | — | — | — | — | — | undisclosed [st1253] | committed_undocumented (A: st1252) | — | — |
 | Convertible Loan Notes, Sept 2026 (min $3.1B incl. NVIDIA) | 3.1B USD (A: st1244) | other (A: st1243) | — | 2026-09-15 (A: st1245) | 2028-06-15 (A: st2171) | — | other (A: st1246) | — | NVIDIA Corporation (A: st1247) | — | — | — |
-| DFS Framework Agreements | 2.54B USD (A: st1235) | vendor_financing (A: st1234) | Nscale Ward County Borrower SPV, LLC (A: st1232) | 2026-04 (A: st1236) | 2026-12-31 (B: st2213) | — | gpus (A: st1238) | — | DFS (Dell Financial Services) (A: st1239) | fully_drawn (A: st1241) | — | — |
+| DFS Framework Agreements | 2.54B USD (A: st1235) | vendor_financing (A: st1234) | Nscale Ward County Borrower SPV, LLC (A: st1232) | 2026-04 (A: st1236) | 2026-12-31 (C: st2213) | — | gpus (A: st1238) | — | DFS (Dell Financial Services) (A: st1239) | fully_drawn (C: st1241) | — | — |
 | Macquarie Senior Facility | 105M USD (A: st1219) | term_loan (A: st1218) | Nscale Drift II Holdings Ltd (A: st1217) | 2025-06-12 (A: st1220) | 2029-06-12 (A: st2172) | 750 bps (A: st1222) | gpus (B: st2203) | Spring (SG) Pte. Ltd. (A: st2175) | Macquarie Bank Limited (London Branch) (A: st1228) | fully_drawn (A: st1226) | — | 89.2M USD (A: st1225) |
-| Macquarie Iceland Facility | 331.9M USD (A: st1201) | delayed_draw_term_loan (A: st1200) | Nscale Services Iceland III ehf (A: st1199) | 2026-07-29 (A: st1202) | undisclosed [st1205] | 550 bps (A: st1204) | gpus (A: st1207) | undisclosed [st2202] | Macquarie Bank Limited (London Branch) (A: st1208) | — | — | — |
-| North Carolina GPU Facility | 1.2B USD (A: st1128, st0072) | delayed_draw_term_loan (A: st1127) | Nscale NC Borrower SPV, LLC (A: st1126) | 2026-08-27 (A: st1129) | 2031-12-27 (A: st1131) | 237.5 bps (A: st1130) | all_assets (A: st1133); shares (A: st1134) | undisclosed [st1135] | Goldman Sachs Bank USA (A: st1136); JPMorgan Chase Bank, N.A. (A: st1137) | signed_undrawn (A: st1144) | — | — |
+| Macquarie Iceland Facility | 331.9M USD (A: st1201) | delayed_draw_term_loan (A: st1200) | Nscale Services Iceland III ehf (A: st1199) | 2026-07-29 (A: st1202) | undisclosed [st1205] | 550 bps (A: st1204) | gpus (C: st1207) | undisclosed [st2202] | Macquarie Bank Limited (London Branch) (A: st1208) | — | — | — |
+| North Carolina GPU Facility | 1.2B USD (A: st1128, st0072) | delayed_draw_term_loan (A: st1127) | Nscale NC Borrower SPV, LLC (A: st1126) | 2026-08-27 (A: st1129) | 2031-12-27 (A: st1131) | 237.5 bps (A: st1130) | all_assets (A: st1133); shares (A: st1134) | undisclosed [st1135] | Goldman Sachs Bank USA (A: st1136); JPMorgan Chase Bank, N.A. (A: st1137) | signed_undrawn (C: st1144) | — | — |
 | Kvandal South DC Term Loan Facility | 725M USD (A: st1169, st0102) | term_loan (B: st0101) | Nscale Norway DC DA (A: st1168) | 2026-07-07 (A: st1170, st0103) | 2033-04-05 (A: st1173) | 300 bps (A: st1172) | site (A: st1176) | undisclosed [st1185, st2199] | ABN AMRO Bank N.V. (A: st1177); DNB Bank ASA (A: st1178); Nordea Bank Abp NUF (A: st1179); Export Finance Norway (Eksportfinansiering Norge) (A: st1180); Skandinaviska Enskilda Banken AB (A: st1181) | partly_drawn (A: st2168) | 88.1M USD (A: st2167) | — |
 | Kvandal South DC VAT Facility | 65M USD (B: st0112) | revolver (B: st0111) | Nscale Norway DC DA (A: st1187) | 2026-07-07 (A: st1188) | 2027-06-30 (A: st1190) | 200 bps (A: st1189) | — | — | ABN AMRO Bank N.V. (A: st1191); DNB Bank ASA (A: st1192); Nordea Bank Abp NUF (A: st1193); Export Finance Norway (Eksportfinansiering Norge) (A: st1194); Skandinaviska Enskilda Banken AB (A: st1195) | partly_drawn (A: st2170) | 19.1M USD (A: st2169) | — |
 | Revolving Credit Facility | 900M USD (A: st1149, st0084, st0085) | revolver (B: st0082) | NSCALE PLC (A: st1147, st0091) | 2026-05-08 (A: st1150) | 2029-05 (B: st2209) | 175 bps (A: st1152) | all_assets (A: st1154) | — | KeyBank National Association (A: st1155); Mizuho Bank, Ltd. (A: st1156); MUFG Bank, Ltd. (A: st1157); Royal Bank of Canada (A: st1158); SMBC Bank International plc (A: st1159); The Toronto-Dominion Bank, New York Branch (A: st1160); Crédit Agricole Corporate and Investment Bank (A: st1161); Morgan Stanley MUFG Loan Partners, LLC (A: st2212); Bank of America (B: st2210); Deutsche Bank AG, New York Branch (B: st2211); J.P. Morgan (B: st0087); Goldman Sachs (B: st0088); Morgan Stanley (B: st0089) | partly_drawn (A: st2164) | 830M USD (A: st2163) | 0 USD (A: st1165) |
 | Sandton term loans ($76.6M) | 76.6M USD (A: st1256) | term_loan (A: st1255) | — | — | — | — | — | — | Sandton Capital Solutions Master Fund V, L.P. (A: st1258) | repaid (A: st1259) | — | — |
 | Series A Convertible Notes ($160M) | 160M USD (A: st1262) | other (A: st1261) | — | — | — | — | — | — | — | converted (A: st1264) | — | — |
-| GPU Financing Facility | 1.422B USD (A: st2173) | delayed_draw_term_loan (B: st0032) | Nscale Services UK Ltd (A: st1078, st0036) | 2026-02-11 (A: st1080, st0035) | 2032-09-30 (A: st1083) ⚠ | 500 bps (A: st1082, st0038) | all_assets (A: st1085); gpus (B: st0039) | undisclosed [st1094] | PIMCO-managed funds (A: st2177); Blue Owl BDC vehicle(s) (fund not yet identified) (A: st2178); Blue Owl Capital Corp (OBDC) (A: st3012); Blue Owl Credit Income Corp. (OCIC) (A: st3026); Blue Owl Technology Finance Corp. (OTF) (A: st3040); Stonepeak Infrastructure Credit Fund I (B: st2208) | partly_drawn (A: st1092) | 387.9M USD (C: st2185) | 48.2M USD (A: st1089) |
-| Ward County GPU Facility | 1.85B USD (A: st1097, st0052, st2186, st0053) | delayed_draw_term_loan (B: st0056) | Nscale Ward County Borrower SPV, LLC (A: st1096, st0057) | 2026-08-27 (A: st1098, st0055) | 2033-02-27 (A: st1101) | 237.5 bps (A: st1100) | all_assets (A: st1103); shares (A: st1104); gpus (B: st0061) | Microsoft Corporation (A: st1105) | JPMorgan Chase Bank, N.A. (A: st1106); Goldman Sachs Bank USA (A: st1107) | signed_undrawn (A: st1124) | — | — |
+| GPU Financing Facility | 1.422B USD (A: st2173) | delayed_draw_term_loan (B: st0032) | Nscale Services UK Ltd (A: st1078, st0036) | 2026-02-11 (A: st1080, st0035) | 2032-09-30 (C: st1083) ⚠ | 500 bps (A: st1082, st0038) | all_assets (A: st1085); gpus (B: st0039) | undisclosed [st1094] | PIMCO-managed funds (A: st2177); Blue Owl BDC vehicle(s) (fund not yet identified) (A: st2178); Blue Owl Capital Corp (OBDC) (A: st3012); Blue Owl Credit Income Corp. (OCIC) (A: st3026); Blue Owl Technology Finance Corp. (OTF) (A: st3040); Stonepeak Infrastructure Credit Fund I (B: st2208) | partly_drawn (A: st1092) | 387.9M USD (C: st2185) | 48.2M USD (A: st1089) |
+| Ward County GPU Facility | 1.85B USD (A: st1097, st0052, st2186, st0053) | delayed_draw_term_loan (B: st0056) | Nscale Ward County Borrower SPV, LLC (A: st1096, st0057) | 2026-08-27 (A: st1098, st0055) | 2033-02-27 (A: st1101) | 237.5 bps (A: st1100) | all_assets (A: st1103); shares (A: st1104); gpus (B: st0061) | Microsoft Corporation (A: st1105) | JPMorgan Chase Bank, N.A. (A: st1106); Goldman Sachs Bank USA (A: st1107) | signed_undrawn (C: st1124) | — | — |
 
 **Entity-link judgements** (reversible; see `data/entity_links.csv`):
 
@@ -62,6 +63,8 @@ _Generated from statements. Every value shows its grade (A/B/C) and the statemen
 - Microsoft – Nscale/Aker Narvik compute contract **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: CCIR's $6.2B Narvik deal should be one of the Microsoft SOWs (Sept 2025 - Apr 2026); the S-1 gives only the aggregate.
 - Microsoft Partner SOW #1 (Ward County) **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Named as the Customer Contract in the Ward County credit agreement.
 - Microsoft: Loughton (UK) GPU contract **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Loughton was announced in Sept 2025 as one of four sites under the Microsoft agreements (with Texas, Portugal, Norway), so it sits inside the S-1's 'up to $43.8B'. Its value is not disclosed.
+- Microsoft: Sines first building (12,600 GB300) **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Microsoft deployment inside the aggregate SOWs.
+- Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027) **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Signed April 2026; inside the Sept 2025 - Apr 2026 SOWs.
 
 ## Offtake contracts
 
@@ -70,16 +73,20 @@ _Generated from statements. Every value shows its grade (A/B/C) and the statemen
 | Anthropic Services Agreements (4 agreements, up to $44.6B) | Anthropic PBC (A: st1318) | 44.6B USD (A: st1321, st3700) | — | — | NVIDIA Vera Rubin NVL72 (A: st1323) | Monarch Compute Campus (A: st1320) | false (A: st3702) | — |
 | Anthropic: proposed second Monarch building (~$45B, in talks) | Anthropic PBC (C: st3818) | 45B USD (C: st3823) | — | — | NVIDIA Vera Rubin (C: st3822) | Monarch Compute Campus (C: st3820) | — | — |
 | Figure Services Agreement | Figure (Figure AI) (A: st1328) | undisclosed [st1331] | — | 100,000 GPUs (A: st1330) | — | — | — | — |
+| Iceland GPU contract (customer redacted) | undisclosed [st3973] | — | — | — | — | Borealis Data Centre, Blönduós, Iceland (A: st3974) | — | — |
 | Microsoft: Loughton (UK) GPU contract | Microsoft Corporation (C: st3807) | undisclosed [st3815] | — | 23,040 GPUs (C: st3810) | GB300 (C: st3811) | Loughton, Essex (UK) (C: st3809) | — | — |
 | Microsoft – Nscale/Aker Narvik compute contract | Microsoft Corporation (B: st0162) | 6.2B USD (B: st0164) | 60 months (B: st0165) | 52,000 GPUs (B: st0166) | GB300 (B: st0167) | Kvandal South (B: st0163) | — | 2.72 USD/GPU-hr (B: st0169, st0168) |
+| Microsoft: Sines first building (12,600 GB300) | Microsoft Corporation (A: st3960) | undisclosed [st3965] | — | 12,600 GPUs (A: st3962) | NVIDIA GB300 (A: st3963) | SINES Data Campus, first building (A: st3961) | — | — |
+| Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027) | Microsoft Corporation (A: st3966) | undisclosed [st3972] | — | 66,000 GPUs (A: st3968) | NVIDIA Vera Rubin NVL72 (A: st3969) | SIN02 (SINES Data Campus) (A: st3967) | — | — |
 | Microsoft Partner SOW #1 (Ward County) | Microsoft Corporation (A: st1310) | — | — | — | — | Ward County, Texas (A: st1312) | — | — |
-| Microsoft statements of work (aggregate, up to $43.8B) | Microsoft Corporation (A: st1300) | 43.8B USD (A: st1302) | 60 months (A: st1308) | — | — | — | true (A: st1305) | — |
+| Microsoft statements of work (aggregate, up to $43.8B) | Microsoft Corporation (A: st1300) | 43.8B USD (A: st1302) | 60 months (A: st1308) | — | — | — | true (C: st1305) | — |
 | North Carolina Cloud Services Agreement (customer redacted) | undisclosed [st1314] | — | — | — | — | NC-1 campus (WhiteFiber) (A: st1316) | — | — |
 | NVIDIA master cloud services agreement ($1.2B) | NVIDIA Corporation (A: st1333) | 1.2B USD (A: st1334) | — | — | — | — | — | — |
+| Spring (SG): Glomfjord cloud services | Spring (SG) Pte. Ltd. (A: st3954) | undisclosed [st3957] | — | 2,304 GPUs (B: st3958) | NVIDIA B200 (B: st3959) | Glomfjord, Norway (A: st3955) | — | — |
 
 ## Conflicts (sources disagree)
 
-- **GPU Financing Facility · maturity_date**: showing 2032-09-30 from src_s1_full (A, st1083).
+- **GPU Financing Facility · maturity_date**: showing 2032-09-30 from src_s1_full (C, st1083).
   - disagrees: 2031-02 from src_obdc_10q (A, st3013) — Holder-reported maturity.
   - disagrees: 2031-02 from src_ocic_10q (A, st3027) — Holder-reported maturity.
   - disagrees: 2031-02 from src_otf_10q (A, st3041) — Holder-reported maturity.
@@ -116,8 +123,12 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 **Undisclosed** (a source was checked and does not state it):
 
 - Figure Services Agreement · value_total (checked: src_s1_full)
+- Iceland GPU contract (customer redacted) · customer (checked: src_ex10_22)
 - Microsoft: Loughton (UK) GPU contract · value_total (checked: src_news_techtarget_1019)
+- Microsoft: Sines first building (12,600 GB300) · value_total (checked: src_s1_full)
+- Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027) · value_total (checked: src_s1_full)
 - North Carolina Cloud Services Agreement (customer redacted) · customer (checked: src_ex10_24)
+- Spring (SG): Glomfjord cloud services · value_total (checked: src_ex10_12)
 - Norway (Narvik) project financing ($790M) · margin_bps (checked: src_ccir_nscale)
 - Norway (Narvik) project financing ($790M) · maturity_date (checked: src_ccir_nscale)
 - Committed bank delayed-draw financings (~$2.35B, undocumented) · lender (checked: src_s1_full)
@@ -133,11 +144,15 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 - Anthropic Services Agreements (4 agreements, up to $44.6B): term_months
 - Anthropic: proposed second Monarch building (~$45B, in talks): term_months, take_or_pay
 - Figure Services Agreement: provider, term_months, take_or_pay
+- Iceland GPU contract (customer redacted): provider, value_total, term_months, take_or_pay
 - Microsoft: Loughton (UK) GPU contract: term_months, take_or_pay
 - Microsoft – Nscale/Aker Narvik compute contract: take_or_pay
+- Microsoft: Sines first building (12,600 GB300): provider, term_months, take_or_pay
+- Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027): provider, term_months, take_or_pay
 - Microsoft Partner SOW #1 (Ward County): value_total, term_months, take_or_pay
 - North Carolina Cloud Services Agreement (customer redacted): value_total, term_months, take_or_pay
 - NVIDIA master cloud services agreement ($1.2B): provider, term_months, take_or_pay
+- Spring (SG): Glomfjord cloud services: provider, term_months, take_or_pay
 - Norway (Narvik) project financing ($790M): name, borrower, signing_date, named_customer, lender, status
 - Committed bank delayed-draw financings (~$2.35B, undocumented): name, borrower, margin_bps, signing_date, maturity_date, collateral, named_customer
 - Convertible Loan Notes, Sept 2026 (min $3.1B incl. NVIDIA): name, borrower, margin_bps, named_customer, status
@@ -155,11 +170,11 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 - OTIC: Nscale Limited Series B preferred shares: par_funded
 - Nscale GPU MCC B1.1 LLC: jurisdiction, registry_id
 - Borealis Data Centre, Blönduós, Iceland: name, operator, landlord, mw_contracted, mw_energized
-- Glomfjord, Norway: name, operator, landlord, mw_contracted, mw_energized
+- Glomfjord, Norway: name, operator, landlord
 - Kvandal South: landlord, mw_energized
 - Loughton, Essex (UK): name, operator, landlord, mw_energized
-- Monarch Compute Campus: operator, landlord, mw_contracted
-- NC-1 campus (WhiteFiber): mw_energized
+- Monarch Compute Campus: operator, landlord
+- SINES Data Campus, first building: operator, landlord, mw_contracted, mw_energized
 - SIN02 (SINES Data Campus): operator, landlord, mw_energized
 - Ward County, Texas: operator, mw_energized
 - 107 legal entities are missing only their registry number (to be filled from Companies House / Brønnøysund etc.).
@@ -184,6 +199,13 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 - st3123 NC-1 colocation services agreement (WhiteFiber) · guarantor = Nscale Global Holdings Limited: Named as a party with Nscale Services US; guarantee role not confirmed.
 - st3805 Loughton, Essex (UK) · grid_connection_date = 2033: UK Power Networks told Nscale capacity would not be available until the early-to-mid 2030s (Guardian/Telegraph via TechTarget, Tech Times).
 - st3825 Anthropic: proposed second Monarch building (~$45B, in talks) · financing_status = not_secured: No financing reported; financing for the first Anthropic agreement was itself not secured at the S-1 date.
+- st3904 SINES Data Campus, first building · ownership = colocation: SIN02 is described as owned; the first building is Start Campus's, so Nscale's deployment there is assumed to be colocation.
+- st3908 SIN02 (SINES Data Campus) · gpus_deployed = 0 GPUs: Deployment starts late 2027.
+- st3912 Glomfjord, Norway · ownership = owned: 'our data center in Glomfjord'.
+- st3956 Spring (SG): Glomfjord cloud services · status = active: Largest 2025 customer (73% of revenue) per S-1; identified as Spring/ByteDance by the FT.
+- st3964 Microsoft: Sines first building (12,600 GB300) · status = active: Deployed; Portugal was 52% of H1 2026 revenue.
+- st3971 Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027) · start_date = 2027-10: 'starting in late 2027'.
+- st3975 Iceland GPU contract (customer redacted) · status = signed: Material project contract under the facility; service must start by 27 Jan 2027.
 
 ## Sources
 
@@ -239,10 +261,17 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 | src_internal | internal | full_document | C | Our own calculations and working assumptions |
 | src_ionic_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026](https://www.sec.gov/Archives/edgar/data/2007691/000200769126000012/ioni-20260630.htm) |
 | src_mrkt30 | news | excerpt | C | [The 10 Biggest Neocloud Companies Ranked by Power Actually Live](https://mrkt30.com/biggest-neocloud-companies/) |
+| src_news_certifiedstrategic | news | excerpt | C | [Anthropic in talks for a second US$45bn Nscale deal](https://certifiedstrategic.com/insights/anthropic-second-45bn-nscale-deal-microsoft-loughton) |
+| src_news_echelon_monarch | news | excerpt | C | [Monarch Compute Campus: phase-one contractors and job routes](https://echelonreports.com/monarch-compute-campus-phase-one-contractors-jobs/) |
 | src_news_fool_1020 | news | full_document | C | [Anthropic Is in Talks for Another $45 Billion AI Deal](https://www.fool.com/investing/2026/10/20/anthropic-is-in-talks-for-another-45-billion-ai-deal-nvidia-could-be-a-big-winner/) |
+| src_news_kaiku_glomfjord | news | excerpt | C | [Nscale's AI data center in Glomfjord, Norway, is six months late](https://kaiku.news/en/tech/nscale-glomfjord-data-center-delay) |
+| src_news_powermag_texas | news | excerpt | C | [Abbott orders full audit of Texas data center interconnection queue](https://powermag.com/abbott-orders-full-audit-of-texas-data-center-interconnection-queue-threatens-to-deny-grid-access/) |
 | src_news_siliconangle_1018 | news | full_document | C | [Nscale's IPO plans could be at risk after Microsoft cancels UK data center project](https://siliconangle.com/2026/10/18/neocloud-operator-nscales-ipo-plans-could-be-at-risk-after-microsoft-pulls-the-plug-on-u-k-data-center-project/) |
 | src_news_techtarget_1019 | news | full_document | C | [Microsoft's Nscale exit exposes $103B AI contract pipeline risk](https://www.techtarget.com/it-infrastructure/news/366652477/Microsofts-Nscale-exit-exposes-103B-AI-contract-pipeline-risk) |
 | src_news_techtimes_1019 | news | full_document | C | [Microsoft Exits Nscale's UK Flagship as Grid Can't Supply Power Until 2030s](https://www.techtimes.com/articles/329207/20261019/microsoft-exits-nscales-uk-flagship-grid-cant-supply-power-until-2030s-ipo-risk.htm) |
+| src_news_tu_nve | news | excerpt | C | [NVE gir Nscale varsel om tvangsmulkt](https://www.tu.no/energi/nve-gir-nscale-varsel-om-tvangsmulkt/7141373) |
+| src_news_wchs_dep | news | excerpt | C | [DEP issues enforcement order for Mason County data center site over stormwater violations](https://wchstv.com/news/local/dep-issues-enforcement-order-for-mason-county-data-center-site-for-stormwater-violations) |
+| src_news_whitefiber_q2call | news | excerpt | C | [WhiteFiber Q2 earnings call highlights](https://www.nasdaq.com/articles/whitefiber-q2-earnings-call-highlights) |
 | src_nscale_pr_ipo | company_release | excerpt | B | [Nscale Files Registration Statement for Proposed Initial Public Offering](https://www.nscale.com/press-releases/nscale-files-initial-public-offering) |
 | src_obdc2_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026: schedule of investments](https://www.sec.gov/Archives/edgar/data/1655887/000165588726000016/obdc-20260630.htm) |
 | src_obdc_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026: schedule of investments](https://www.sec.gov/Archives/edgar/data/1655888/000165588826000056/obdc-20260630.htm) |

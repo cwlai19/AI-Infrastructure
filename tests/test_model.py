@@ -115,6 +115,10 @@ class Resolution(unittest.TestCase):
         grades = {s.id: s.grade for s in store.statements}
         self.assertEqual(grades, {"full": "A", "ex": "B"})
 
+    def test_estimate_is_grade_c_even_from_a_filing(self):
+        store = make_store([st("e", "amount_max", "1B", method="estimated")])
+        self.assertEqual(store.statements[0].grade, "C")
+
     def test_derived_grade_is_weakest_input(self):
         store = make_store([st("in1", "amount_max", "1B"), st("in2", "margin_bps", "500", source="news"),
                             st("out", "dscr_covenant", "1.3", unit="x", source="internal", method="derived",

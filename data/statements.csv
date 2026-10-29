@@ -1291,3 +1291,51 @@ st3823,ctr_anthropic_2,value_total,45B,USD,src_news_fool_1020,Article text,2026-
 st3824,ctr_anthropic_2,status,in_negotiation,,src_news_fool_1020,Article text,2026-10-20,2026-10-29,reported,,manual:claude-news,
 st3825,ctr_anthropic_2,financing_status,not_secured,,src_news_fool_1020,Article text,,2026-10-29,estimated,,manual:claude-news,No financing reported; financing for the first Anthropic agreement was itself not secured at the S-1 date.
 st3826,ctr_anthropic,status,signed,,src_anthropic_s1,Article text,2026-08,2026-10-29,disclosed,,manual:claude-news,
+st3900,group_nscale,revenue_share_by_country_6m,Portugal 52%; Norway 45% (six months to 30 June 2026),,src_s1_full,Risk factors: international operations,2026-06-30,2026-10-29,disclosed,,manual:claude-site-facts,
+st3901,site_sin01,group,group_nscale,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3902,site_sin01,name,"SINES Data Campus, first building",,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3903,site_sin01,country,Portugal,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3904,site_sin01,ownership,colocation,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,estimated,,manual:claude-site-facts,"SIN02 is described as owned; the first building is Start Campus's, so Nscale's deployment there is assumed to be colocation."
+st3905,site_sin01,gpus_deployed,12600,GPUs,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,"'deployment of over 12,600 NVIDIA Grace Blackwell Ultra GPUs at the first building of the SINES Data Campus for Microsoft'."
+st3906,site_sin01,construction_status,Active: GPUs deployed for Microsoft; Portugal was 52% of H1 2026 revenue,,src_s1_full,Business; risk factors,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3907,site_sin02,construction_status,"Development: Microsoft deployment of 66,000+ Vera Rubin NVL72 GPUs starting late 2027",,src_s1_full,Business: acquisitions,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3908,site_sin02,gpus_deployed,0,GPUs,src_s1_full,Business: acquisitions,,2026-10-29,estimated,,manual:claude-site-facts,Deployment starts late 2027.
+st3909,site_glomfjord,mw_contracted,30,MW,src_news_kaiku_glomfjord,Article text,2026-10-15,2026-10-29,reported,,manual:claude-site-facts,
+st3910,site_glomfjord,mw_energized,6.4,MW,src_news_kaiku_glomfjord,Article text,2026-10-15,2026-10-29,reported,,manual:claude-site-facts,About six months behind schedule (Bloomberg).
+st3911,site_glomfjord,construction_status,"Live but ~6 months late: repeated liquid-cooling leaks, Dec 2025 transformer fire (10 safety violations, case closed Sept 2026), diesel generators until May; delay penalties reportedly owed",,src_news_kaiku_glomfjord,Article text,2026-10-15,2026-10-29,reported,,manual:claude-site-facts,
+st3912,site_glomfjord,ownership,owned,,src_s1_full,Cash flows: refurbishment of our data center in Glomfjord,,2026-10-29,estimated,,manual:claude-site-facts,'our data center in Glomfjord'.
+st3913,site_north_carolina,mw_energized,20,MW,src_news_whitefiber_q2call,Article text,2026-08-12,2026-10-29,reported,,manual:claude-site-facts,~20 MW available for Nscale to install and test; full 40 MW at run-rate billing targeted for end-August (not confirmed).
+st3914,site_north_carolina,construction_status,"Ramp delayed by switchgear delivery and commissioning; WhiteFiber says resolved, full 40 MW billing targeted end-Aug 2026",,src_news_whitefiber_q2call,Article text,2026-08-12,2026-10-29,reported,,manual:claude-site-facts,
+st3915,site_monarch,mw_contracted,460,MW,src_news_certifiedstrategic,Article text,2026-08-25,2026-10-29,reported,,manual:claude-site-facts,First Anthropic building; a second 460 MW building is in talks.
+st3916,site_monarch,energization_target_date,2028-03,,src_news_echelon_monarch,Article text,,2026-10-29,reported,,manual:claude-site-facts,Phase one 'early 2028'; an earlier report said January 2027.
+st3917,site_monarch,construction_status,"Pre-construction / early works: DEP stormwater enforcement order (July 2026); air permits for the on-site 2,160 MW gas plant refiled; public hearings and preservation dispute (Oct 2026)",,src_news_wchs_dep,Article text,2026-10,2026-10-29,reported,,manual:claude-site-facts,
+st3918,site_kvandal_south,construction_status,Under construction; NVE notice of coercive fine unless waste-heat analysis delivered by 15 Nov 2026; target completion 5 Apr 2027,,src_news_tu_nve,Article text,2026-09-29,2026-10-29,reported,,manual:claude-site-facts,
+st3919,site_ward_county,construction_status,Leased powered site (234 MW); Texas audit of ERCOT large-load queue affects Ionic's 466 MW expansion and Nscale's +89 MW option,,src_news_powermag_texas,Article text,2026-08,2026-10-29,reported,,manual:claude-site-facts,
+st3920,site_borealis,construction_status,Colocation; service must commence by 27 Jan 2027 under the Macquarie facility (per CCIR),,src_ccir_nscale_full,Instrument card: Iceland,,2026-10-29,reported,,manual:claude-site-facts,
+st3921,site_loughton,construction_status,Microsoft terminated (Oct 2026); grid capacity not until early-to-mid 2030s,,src_news_techtarget_1019,Article text,2026-10-18,2026-10-29,reported,,manual:claude-site-facts,
+st3950,ctr_spring_glomfjord,group,group_nscale,,src_s1_full,Business / exhibits,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3951,ctr_msft_sin01,group,group_nscale,,src_s1_full,Business / exhibits,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3952,ctr_msft_sin02,group,group_nscale,,src_s1_full,Business / exhibits,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3953,ctr_iceland_customer,group,group_nscale,,src_s1_full,Business / exhibits,,2026-10-29,disclosed,,manual:claude-site-facts,
+st3954,ctr_spring_glomfjord,customer,le_spring_sg,,src_ex10_12,Definitions: 'Spring Singapore',,2026-10-29,disclosed,,manual:claude-site-facts,
+st3955,ctr_spring_glomfjord,site,site_glomfjord,,src_ex10_12,Facility purpose (Glomfjord GPU cluster),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3956,ctr_spring_glomfjord,status,active,,src_s1_full,Customers and Business Model,2025-12-31,2026-10-29,estimated,,manual:claude-site-facts,Largest 2025 customer (73% of revenue) per S-1; identified as Spring/ByteDance by the FT.
+st3957,ctr_spring_glomfjord,value_total,,,src_ex10_12,Facility agreement,,2026-10-29,checked_absent,,manual:claude-site-facts,Minimum fee per GPU-hour redacted.
+st3958,ctr_spring_glomfjord,gpu_count,2304,GPUs,src_ccir_nscale_full,Instrument card: Glomfjord,,2026-10-29,reported,,manual:claude-site-facts,
+st3959,ctr_spring_glomfjord,gpu_type,NVIDIA B200,,src_ccir_nscale_full,Instrument card: Glomfjord,,2026-10-29,reported,,manual:claude-site-facts,
+st3960,ctr_msft_sin01,customer,le_microsoft,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3961,ctr_msft_sin01,site,site_sin01,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3962,ctr_msft_sin01,gpu_count,12600,GPUs,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3963,ctr_msft_sin01,gpu_type,NVIDIA GB300,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3964,ctr_msft_sin01,status,active,,src_s1_full,Business; risk factors,2026-06-30,2026-10-29,estimated,,manual:claude-site-facts,Deployed; Portugal was 52% of H1 2026 revenue.
+st3965,ctr_msft_sin01,value_total,,,src_s1_full,Customers and Business Model,,2026-10-29,checked_absent,,manual:claude-site-facts,Included in the 'up to $43.8B' Microsoft aggregate; not broken out.
+st3966,ctr_msft_sin02,customer,le_microsoft,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3967,ctr_msft_sin02,site,site_sin02,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3968,ctr_msft_sin02,gpu_count,66000,GPUs,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,"'over 66,000'."
+st3969,ctr_msft_sin02,gpu_type,NVIDIA Vera Rubin NVL72,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,disclosed,,manual:claude-site-facts,
+st3970,ctr_msft_sin02,status,signed,,src_s1_full,Business: acquisitions (SIN02),2026-04,2026-10-29,disclosed,,manual:claude-site-facts,
+st3971,ctr_msft_sin02,start_date,2027-10,,src_s1_full,Business: acquisitions (SIN02),,2026-10-29,estimated,,manual:claude-site-facts,'starting in late 2027'.
+st3972,ctr_msft_sin02,value_total,,,src_s1_full,Customers and Business Model,,2026-10-29,checked_absent,,manual:claude-site-facts,Included in the Microsoft aggregate; not broken out.
+st3973,ctr_iceland_customer,customer,,,src_ex10_22,Definitions,,2026-10-29,checked_absent,,manual:claude-site-facts,"Customer, its guarantors and minimum fee per GPU-hour redacted."
+st3974,ctr_iceland_customer,site,site_borealis,,src_ex10_22,Definitions: 'Data Centre',,2026-10-29,disclosed,,manual:claude-site-facts,
+st3975,ctr_iceland_customer,status,signed,,src_ex10_22,Facility agreement,2026-07-29,2026-10-29,estimated,,manual:claude-site-facts,Material project contract under the facility; service must start by 27 Jan 2027.
