@@ -5,13 +5,13 @@
 /* One compact page: headline numbers, two collapsible group strips, then tabs. The map tab pairs a single
    US + Europe map with a campus panel; clicking campuses adds them to the selection and the panel totals them. */
 :root {
-  --bg: #ffffff; --ink: #37352f; --ink-2: #787774; --ink-3: #9b9a97; --line: #e9e9e7; --hover: #f1f1ef; --panel: #fbfbfa;
-  --land: #f1f1ef; --land-edge: #dcdbd8; --water: #ffffff; --accent: #2383e2;
-  --tag-red-bg: #ffe2dd; --tag-red-fg: #5d1715; --tag-orange-bg: #fadec9; --tag-orange-fg: #49290e;
-  --tag-yellow-bg: #fdecc8; --tag-yellow-fg: #402c1b; --tag-green-bg: #dbeddb; --tag-green-fg: #1c3829;
-  --tag-gray-bg: #e3e2e0; --tag-gray-fg: #32302c; --tag-blue-bg: #d3e5ef; --tag-blue-fg: #183347;
+  --bg: #191919; --ink: #d4d4d4; --ink-2: #9b9b9b; --ink-3: #7f7f7f; --line: #2f2f2f; --hover: #262626; --panel: #202020;
+  --land: #262626; --land-edge: #3a3a3a; --water: #191919; --accent: #529cca;
+  --tag-red-bg: #522e2a; --tag-red-fg: #f4b7ad; --tag-orange-bg: #5c3b23; --tag-orange-fg: #f2c8a3;
+  --tag-yellow-bg: #564328; --tag-yellow-fg: #f0d9a8; --tag-green-bg: #243d30; --tag-green-fg: #b6dcc1;
+  --tag-gray-bg: #373737; --tag-gray-fg: #d4d4d4; --tag-blue-bg: #143a4e; --tag-blue-fg: #b3d4e8;
   --risk-low: #0ca30c; --risk-medium: #fab219; --risk-high: #ec835a; --risk-critical: #d03b3b; --risk-terminated: #9b9a97; --risk-unrated: #b4b3af;
-  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -39,20 +39,22 @@ h1 { font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 2px; gap: 2px; }
 .seg button { border: 0; background: transparent; color: var(--ink-2); font: inherit; font-size: 12.5px; padding: 3px 9px; border-radius: 4px; cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--hover); color: var(--ink); font-weight: 600; }
-.top .seg { margin-left: auto; }
+.top { padding-top: 14px; }
 .wm { font-size: 11.5px; color: var(--ink-2); border-left: 3px solid var(--tag-red-bg); padding: 2px 8px; }
 .wm b { color: var(--tag-red-fg); }
 .wm summary { cursor: pointer; list-style: none; } .wm summary::-webkit-details-marker { display: none; }
 .wm summary::after { content: " · full disclaimer"; color: var(--ink-3); }
 .wm[open] summary::after { content: ""; }
-.wm-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.wm-overlay span { transform: rotate(-30deg); font-size: clamp(18px, 3.2vw, 40px); font-weight: 700; color: var(--ink); opacity: 0.045; white-space: nowrap; }
+.wm-corner { position: fixed; top: 6px; right: max(10px, env(safe-area-inset-right, 0px)); z-index: 60; pointer-events: none; font-size: 10.5px; font-weight: 600;
+  color: var(--tag-red-fg); background: color-mix(in srgb, var(--bg) 88%, transparent); border: 1px solid var(--tag-red-bg); border-radius: 4px; padding: 2px 7px; }
 .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 6px; }
 .kpi { padding: 7px 12px; border-left: 1px solid var(--line); min-width: 0; }
 .kpi:first-child { border-left: 0; }
 .kpi .k { font-size: 11.5px; color: var(--ink-2); }
 .kpi .v { font-size: 19px; font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1.3; }
 .kpi .n { font-size: 11px; color: var(--ink-3); }
+.ratio .bar { height: 5px; border-radius: 3px; background: var(--hover); overflow: hidden; margin-top: 3px; }
+.ratio .bar i { display: block; height: 100%; background: var(--accent); }
 .kpi .grp { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3); }
 details.fold { border: 1px solid var(--line); border-radius: 6px; }
 details.fold > summary { cursor: pointer; padding: 7px 12px; display: flex; gap: 10px; align-items: baseline; list-style: none; }
@@ -141,7 +143,7 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
 </style>
 
 <div class="page">
-  <div class="wm-overlay" aria-hidden="true"><span id="wm-mark"></span></div>
+  <div class="wm-corner" id="wm-mark"></div>
   <div class="top">
     <h1>Nscale</h1><span class="sub" id="asof"></span>
     <div class="seg" role="group" aria-label="Sources shown">
@@ -150,8 +152,6 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
     </div>
   </div>
   <details class="wm"><summary id="wm-short"></summary><div id="wm-detail"></div></details>
-
-  <section class="kpis" id="kpis" aria-label="Group totals"></section>
 
   <details class="fold" id="fold-cust"><summary><b>Customers</b><span id="cust-gist"></span></summary><div class="body" id="cust-body"></div></details>
   <details class="fold" id="fold-debt"><summary><b>Group-level debt</b><span id="debt-gist"></span></summary><div class="body"><div class="db"><table id="corp"></table></div></div></details>
@@ -172,7 +172,9 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
       <button class="tb-btn" id="f-clear">Clear selection</button>
       <span class="hint">Click campuses on the map to add or remove them; the panel totals your selection.</span>
     </div>
-    <div class="main">
+    <section class="kpis" id="kpis" aria-label="Group totals"></section>
+    <section class="kpis ratios" id="ratios" aria-label="Conversion ratios" style="margin-top:6px"></section>
+    <div class="main" style="margin-top:10px">
       <div class="mapbox"><svg id="map" viewBox="0 0 960 470" role="img" aria-label="Map of Nscale campuses in the US and Europe"></svg><div class="legend" id="legend"></div></div>
       <aside class="panel" id="panel" aria-live="polite"></aside>
     </div>
@@ -289,6 +291,18 @@ function renderKpis() {
     kpi("Capacity", "Potential (pipeline)", G.mw_potential, v => "~" + mw(v), "Line of sight, per the S-1") +
     kpi("Contract value", "Active", G.tcv_active, m, "Revenue-generating today") +
     kpi("Contract value", "Active + contracted", G.tcv_active_and_contracted, m, "Total backlog, 31 Aug 2026") +
+    "";
+  const ratio = (k, a, b, note) => {
+    const A = F(a), B = F(b);
+    if (!A.values || !B.values) return `<div class="kpi ratio"><div class="grp">Ratio</div><div class="k">${k}</div><div class="v"><span class="gap" style="font-size:13px;font-weight:400">${(!A.values && A.status === "hidden") || (!B.values && B.status === "hidden") ? "Needs news figures" : "Not disclosed"}</span></div><div class="n">${note}</div></div>`;
+    const pct = A.values[0].number / B.values[0].number * 100, g = [A.grade, B.grade].sort().pop();
+    return `<div class="kpi ratio"><div class="grp">Ratio</div><div class="k">${k}</div><div class="v">${pct < 10 ? pct.toFixed(1) : pct.toFixed(0)}%<span class="g ${g}" title="Weakest input grade">${g}</span></div>
+      <div class="bar" role="img" aria-label="${pct.toFixed(1)}%"><i style="width:${Math.min(100, pct)}%"></i></div><div class="n">${note}</div></div>`;
+  };
+  document.getElementById("ratios").innerHTML =
+    ratio("Active revenue / contracted", G.tcv_active, G.tcv_active_and_contracted, "Active contract value as % of total backlog") +
+    ratio("Active capacity / contracted", G.mw_energized_total, G.mw_contracted_total, "Active MW as % of active + contracted MW") +
+    ratio("Contracted / planned capacity", G.mw_contracted_total, G.mw_potential, "Active + contracted MW as % of the ~10 GW pipeline") +
     kpi("GPUs", "Active / contracted", G.gpus_active, v => n(v) + " / " + esc((num(G.gpus_active_and_contracted) / 1000).toFixed(0) + "k"), "") +
     kpi("Sites", "Active / contracted", G.sites_active, v => n(v) + " / " + esc(num(G.sites_contracted)), "");
 }
