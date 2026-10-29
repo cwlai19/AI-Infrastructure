@@ -130,5 +130,67 @@ class Resolution(unittest.TestCase):
         self.assertEqual([s.id for s in unmerged.current], ["a"])
 
 
+class RefinementsAndReviews(unittest.TestCase):
+    def test_partial_date_agrees_with_full_date(self):
+        r = resolve(make_store([st("a", "signing_date", "2026-02"), st("b", "signing_date", "2026-02-11", source="news")]),
+                    "fac", "signing_date")
+        self.assertEqual(r.conflicts, [])
+
+    def test_partial_effective_date_is_same_moment_not_history(self):
+        r = resolve(make_store([st("a", "amount_max", "1.4B", effective="2026-02", source="news"),
+                                st("b", "amount_max", "1.422B", effective="2026-02-11")]), "fac", "amount_max")
+        self.assertEqual(r.history, [])
+        self.assertEqual(r.current[0].id, "b")
+
+    def test_before_date_is_never_the_same_moment(self):
+        r = resolve(make_store([st("old", "amount_max", "770M", effective="<2026-06"),
+                                st("new", "amount_max", "900M", effective="2026-06")]), "fac", "amount_max")
+        self.assertEqual([s.id for s in r.history], ["old"])
+
+    def test_text_wording_variant_agrees(self):
+        r = resolve(make_store([st("a", "base_rate", "Term SOFR"), st("b", "base_rate", "SOFR", source="news")]),
+                    "fac", "base_rate")
+        self.assertEqual(r.conflicts, [])
+
+    def test_jurisdiction_agrees_with_parent_country(self):
+        r = resolve(make_store([st("a", "jurisdiction", "England and Wales", entity="bank"),
+                                st("b", "jurisdiction", "United Kingdom", entity="bank", source="news")]), "bank", "jurisdiction")
+        self.assertEqual(r.conflicts, [])
+
+    def test_excerpt_loses_tie_to_full_document(self):
+        r = resolve(make_store([st("ex", "amount_max", "2B", source="filing_excerpt"), st("full", "amount_max", "1B")]),
+                    "fac", "amount_max")
+        self.assertEqual(r.current[0].id, "full")
+
+    def test_rejected_statement_is_kept_but_not_used(self):
+        store = make_store([st("good", "amount_max", "1.85B"), st("bad", "amount_max", "1.831B", source="news")])
+        store.reviews = {"bad": {"statement_id": "bad", "verdict": "rejected", "reason": "misread"}}
+        r = resolve(store, "fac", "amount_max")
+        self.assertEqual(r.conflicts, [])
+        self.assertEqual([s.id for s in r.rejected], ["bad"])
+        self.assertIn("bad", [s.id for s in store.statements])
+
+    def test_explained_disagreement_is_not_an_open_conflict(self):
+        store = make_store([st("filing", "amount_max", "137.4M"), st("press", "amount_max", "8B", source="news")])
+        store.reviews = {"press": {"statement_id": "press", "verdict": "explained", "reason": "different measure"}}
+        r = resolve(store, "fac", "amount_max")
+        self.assertEqual(r.conflicts, [])
+        self.assertEqual([s.id for s in r.explained], ["press"])
+
+    def test_review_requires_reason(self):
+        store = make_store([st("a", "amount_max", "1B")])
+        store.reviews = {"a": {"statement_id": "a", "verdict": "rejected", "reason": ""}}
+        self.assertTrue(any("reason" in e for e in validate(store)))
+
+    def test_derived_value_is_as_strong_as_its_inputs(self):
+        store = make_store([st("in1", "amount_drawn", "58.9M", effective="2026-03-31"),
+                            st("flow", "drawdown", "329M", effective="2026-08"),
+                            st("out", "amount_drawn", "387.9M", source="internal", method="derived",
+                               effective="2026-08-31", derived_from=("in1", "flow"))])
+        r = resolve(store, "fac", "amount_drawn")
+        self.assertEqual(r.current[0].id, "out")
+        self.assertFalse(any("weaker" in f for f in r.flags))
+
+
 if __name__ == "__main__":
     unittest.main()

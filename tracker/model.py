@@ -20,6 +20,9 @@ DATA_DIR = ROOT / "data"
 METHOD_ORDER = ["disclosed", "derived", "reported", "estimated", "checked_absent"]
 GRADE_ORDER = ["A", "B", "C"]
 LINK_RELATIONS = {"same_as", "part_of"}
+REVIEW_VERDICTS = {"rejected", "explained"}
+PARENT_JURISDICTION = {"england and wales": "united kingdom", "scotland": "united kingdom",
+                       "northern ireland": "united kingdom"}
 NUMERIC_KINDS = {"money", "number", "percent", "bps"}
 # Two numbers closer than this (relative) are treated as the same value.
 NUMERIC_TOLERANCE = 0.001
@@ -53,6 +56,7 @@ class Store:
     links: list
     statements: list
     canonical: dict = field(default_factory=dict)
+    reviews: dict = field(default_factory=dict)   # statement id -> analyst review row
 
 
 # ---------- parsing helpers ----------
@@ -93,6 +97,8 @@ def format_value(st):
     n = parse_number(st.value) if st.unit else None
     if n is None:
         return st.value
+    if st.unit == "pct":
+        return f"{n:g}%"
     for suffix, size in (("B", 1e9), ("M", 1e6)):
         if abs(n) >= size:
             return f"{n / size:,.4g}{suffix} {st.unit}"
@@ -119,6 +125,7 @@ def load(data_dir=DATA_DIR, vocab_path=VOCAB_PATH):
         r["derived_from"] = [x for x in r.get("derived_from", "").split(";") if x]
         statements.append(Statement(**r))
     store = Store(vocab, sources, entities, links, statements)
+    store.reviews = {r["statement_id"]: r for r in _read_csv(data_dir / "reviews.csv")}
     store.canonical = _canonical_ids(store)
     for st in statements:
         st.grade = _grade(store, st)
@@ -187,8 +194,16 @@ def validate(store):
         if link["relation"] not in LINK_RELATIONS:
             errors.append(f"link {link['entity_a']}->{link['entity_b']}: unknown relation '{link['relation']}'")
 
-    seen_ids = set()
     all_ids = {s.id for s in store.statements}
+    for sid, r in store.reviews.items():
+        if sid not in all_ids:
+            errors.append(f"review of {sid}: unknown statement")
+        if r.get("verdict") not in REVIEW_VERDICTS:
+            errors.append(f"review of {sid}: verdict must be one of {sorted(REVIEW_VERDICTS)}")
+        if not r.get("reason"):
+            errors.append(f"review of {sid}: a reason is required")
+
+    seen_ids = set()
     for st in store.statements:
         where = f"statement {st.id}"
         if st.id in seen_ids:
@@ -265,6 +280,15 @@ class Resolved:
     history: list               # earlier values, superseded by later effective dates
     absent: list                # sources we checked that do not state it
     flags: list
+    explained: list = field(default_factory=list)   # disagreements an analyst has explained
+    rejected: list = field(default_factory=list)    # statements an analyst rejected (kept, not used)
+
+
+def _dates_overlap(a, b):
+    """True if two effective dates can refer to the same moment ('2026-02' vs '2026-02-11')."""
+    if a.startswith("<") != b.startswith("<"):
+        return False   # 'before June' is never the same moment as 'June'
+    return a.startswith(b) or b.startswith(a)
 
 
 def _same_value(a, b, kind):
@@ -274,13 +298,30 @@ def _same_value(a, b, kind):
             return a.value == b.value
         same_unit = a.unit == b.unit or kind != "money"
         return same_unit and abs(x - y) <= NUMERIC_TOLERANCE * max(abs(x), abs(y), 1e-9)
-    return a.value.strip().lower() == b.value.strip().lower()
+    x, y = a.value.strip().lower(), b.value.strip().lower()
+    if kind == "date":
+        # '2026-02' and '2026-02-11' agree: the second is a more precise version of the first.
+        return x.startswith(y) or y.startswith(x)
+    if kind == "text":
+        # 'SOFR' and 'Term SOFR' agree: one wording contains the other.
+        # 'England and Wales' and 'United Kingdom' agree: one is part of the other.
+        return x in y or y in x or PARENT_JURISDICTION.get(x) == y or PARENT_JURISDICTION.get(y) == x
+    return x == y
 
 
 def _strength(store, st):
-    """Lower is stronger: source rank first, then method."""
-    rank = store.vocab["source_types"].get(store.sources.get(st.source, {}).get("type"), {}).get("rank", 99)
-    return (rank, METHOD_ORDER.index(st.method) if st.method in METHOD_ORDER else 99)
+    """Lower is stronger: source rank, then whether we read the full document, then method.
+    A derived value is as strong as its weakest input."""
+    if st.method == "derived" and st.derived_from:
+        by_id = {s.id: s for s in store.statements}
+        inputs = [by_id[i] for i in st.derived_from if i in by_id and by_id[i].method != "derived"]
+        if inputs:
+            weakest = max(_strength(store, i) for i in inputs)
+            return weakest[:2] + (METHOD_ORDER.index("derived"),)
+    src = store.sources.get(st.source, {})
+    rank = store.vocab["source_types"].get(src.get("type"), {}).get("rank", 99)
+    excerpt = 1 if src.get("access") == "excerpt" else 0
+    return (rank, excerpt, METHOD_ORDER.index(st.method) if st.method in METHOD_ORDER else 99)
 
 
 def resolve(store, entity_id, prop):
@@ -301,32 +342,40 @@ def resolve(store, entity_id, prop):
     members = {e for e, c in store.canonical.items() if c == canon}
     ent_type = store.entities[canon]["type"]
     spec = store.vocab["entity_types"][ent_type]["properties"][prop]
-    sts = [s for s in store.statements if s.entity in members and s.property == prop]
+    every = [s for s in store.statements if s.entity in members and s.property == prop]
+    rejected = [s for s in every if store.reviews.get(s.id, {}).get("verdict") == "rejected"]
+    sts = [s for s in every if s not in rejected]
     absent = [s for s in sts if s.method == "checked_absent"]
     vals = [s for s in sts if s.method != "checked_absent"]
 
     if not vals:
-        return Resolved(canon, prop, "undisclosed" if absent else "not_checked", [], [], [], absent, [])
+        return Resolved(canon, prop, "undisclosed" if absent else "not_checked", [], [], [], absent, [],
+                        rejected=rejected)
 
     if spec.get("multi"):
         distinct = []
         for s in sorted(vals, key=lambda s: _strength(store, s)):
             if not any(_same_value(s, d, spec["kind"]) for d in distinct):
                 distinct.append(s)
-        return Resolved(canon, prop, "multi", distinct, [], [], absent, [])
+        return Resolved(canon, prop, "multi", distinct, [], [], absent, [], rejected=rejected)
 
     dated = [s for s in vals if s.effective_date]
     undated = [s for s in vals if not s.effective_date]
     flags, history = [], []
     if dated:
-        latest = max(date_key(s.effective_date) for s in dated)
-        top = sorted([s for s in dated if date_key(s.effective_date) == latest], key=lambda s: _strength(store, s))
+        latest_st = max(dated, key=lambda s: date_key(s.effective_date))
+        latest = date_key(latest_st.effective_date)
+        # '2026-02' and '2026-02-11' describe the same moment at different precision.
+        same_moment = lambda s: _dates_overlap(s.effective_date, latest_st.effective_date)
+        top = sorted([s for s in dated if same_moment(s)], key=lambda s: _strength(store, s))
         current = top[0]
         conflicts = [s for s in top[1:] if not _same_value(s, current, spec["kind"])]
         conflicts += [s for s in undated if not _same_value(s, current, spec["kind"])]
-        for s in sorted(dated, key=lambda s: date_key(s.effective_date)):
-            if date_key(s.effective_date) < latest and not _same_value(s, current, spec["kind"]):
-                history.append(s)
+        for s in sorted(dated, key=lambda s: (date_key(s.effective_date), _strength(store, s))):
+            if not same_moment(s) and date_key(s.effective_date) < latest and not _same_value(s, current, spec["kind"]):
+                # Several sources stating the same earlier value are one step of history, not several.
+                if not history or not _same_value(history[-1], s, spec["kind"]):
+                    history.append(s)
     else:
         ranked = sorted(undated, key=lambda s: _strength(store, s))
         current = ranked[0]
@@ -334,12 +383,14 @@ def resolve(store, entity_id, prop):
     agreeing = [s for s in vals if s is not current and s not in conflicts and s not in history
                 and _same_value(s, current, spec["kind"])]
     backing = sorted([current] + agreeing, key=lambda s: _strength(store, s))
-    if history and _strength(store, backing[0]) > min(_strength(store, s) for s in history):
+    if history and _strength(store, backing[0])[:2] > min(_strength(store, s)[:2] for s in history):
         # The newer value is only supported by weaker sources than the value it replaces.
         flags.append("newer value rests on weaker sources than the value it replaces; confirm the change")
+    explained = [s for s in conflicts if store.reviews.get(s.id, {}).get("verdict") == "explained"]
+    conflicts = [s for s in conflicts if s not in explained]
     if conflicts:
         flags.append("sources disagree")
-    return Resolved(canon, prop, "value", backing, conflicts, history, absent, flags)
+    return Resolved(canon, prop, "value", backing, conflicts, history, absent, flags, explained, rejected)
 
 
 def entities_of_group(store, group_id):

@@ -1,6 +1,6 @@
 """Render a group's credit file (Markdown) from resolved statements."""
 
-from .model import entities_of_group, format_value, resolve
+from .model import _strength, date_key, entities_of_group, format_value, resolve
 
 LEDGER_COLUMNS = [
     ("amount_max", "Size (max)"),
@@ -12,7 +12,9 @@ LEDGER_COLUMNS = [
     ("collateral", "Collateral"),
     ("named_customer", "Customer"),
     ("lender", "Lenders"),
-    ("rating_moodys", "Moody's"),
+    ("status", "Status"),
+    ("amount_drawn", "Drawn (latest)"),
+    ("carrying_value", "Carrying value"),
 ]
 
 CONTRACT_COLUMNS = [
@@ -27,8 +29,35 @@ CONTRACT_COLUMNS = [
 ]
 
 
+_NAME_CACHE = {}
+
+
 def _label(store, entity_id):
-    return store.entities.get(entity_id, {}).get("label", entity_id)
+    """The entity's best-supported name: the most recent dated name statement, else the strongest
+    undated one, else our working label from entities.csv."""
+    key = (id(store), entity_id)
+    if key not in _NAME_CACHE:
+        names = [s for s in store.statements if s.property == "name" and s.method != "checked_absent"
+                 and store.canonical.get(s.entity, s.entity) == store.canonical.get(entity_id, entity_id)
+                 and store.reviews.get(s.id, {}).get("verdict") != "rejected"]
+        dated = [s for s in names if s.effective_date]
+        if dated:
+            best = max(dated, key=lambda s: date_key(s.effective_date))
+        elif names:
+            best = min(names, key=lambda s: _strength(store, s))
+        else:
+            best = None
+        _NAME_CACHE[key] = best.value if best else store.entities.get(entity_id, {}).get("label", entity_id)
+    return _NAME_CACHE[key]
+
+
+def _value(store, st):
+    """Display one statement's value, using labels for entity references."""
+    ent = store.entities.get(st.entity, {})
+    spec = store.vocab["entity_types"].get(ent.get("type"), {}).get("properties", {}).get(st.property, {})
+    if spec.get("kind") == "entity" and st.value:
+        return _label(store, st.value)
+    return format_value(st)
 
 
 def _cell(store, r, kind):
@@ -107,13 +136,16 @@ def credit_file(store, group_id):
     out.append("")
 
     # Conflicts, history, gaps across every member entity
-    conflicts, history, undisclosed, not_checked = [], [], [], []
+    conflicts, history, undisclosed, not_checked, reviewed = [], [], [], [], []
     for e in members:
         etype = store.entities[e]["type"]
         for prop, spec in types[etype]["properties"].items():
             r = resolve(store, e, prop)
+            used.update(s.id for s in r.current + r.conflicts + r.history + r.absent)
             if r.conflicts:
                 conflicts.append((e, prop, r))
+            if r.explained or r.rejected:
+                reviewed.append((e, prop, r))
             if r.history:
                 history.append((e, prop, r))
             if r.status == "undisclosed":
@@ -126,20 +158,31 @@ def credit_file(store, group_id):
         out.append("None.")
     for e, prop, r in conflicts:
         cur = r.current[0]
-        out.append(f"- **{_label(store, e)} · {prop}**: showing {format_value(cur)} from {cur.source} ({cur.grade}, {cur.id}).")
+        out.append(f"- **{_label(store, e)} · {prop}**: showing {_value(store, cur)} from {cur.source} ({cur.grade}, {cur.id}).")
         for c in r.conflicts:
-            out.append(f"  - disagrees: {format_value(c)} from {c.source} ({c.grade}, {c.id}) — {c.note}")
+            out.append(f"  - disagrees: {_value(store, c)} from {c.source} ({c.grade}, {c.id})" + (f" — {c.note}" if c.note else ""))
         for f in r.flags:
             out.append(f"  - rule: {f}")
+    out.append("")
+
+    out += ["## Resolved by analyst review", "",
+            "_Statements stay on file. 'Explained' disagreements are understood; 'rejected' statements are not used._", ""]
+    if not reviewed:
+        out.append("None.")
+    for e, prop, r in reviewed:
+        for s, verdict in [(x, "explained") for x in r.explained] + [(x, "rejected") for x in r.rejected]:
+            rv = store.reviews[s.id]
+            out.append(f"- **{_label(store, e)} · {prop}**: {_value(store, s)} ({s.source}, {s.id}) — **{verdict}** "
+                       f"by {rv['reviewer']} on {rv['date']}: {rv['reason']}")
     out.append("")
 
     out += ["## History (superseded values)", ""]
     if not history:
         out.append("None.")
     for e, prop, r in history:
-        chain = " → ".join(f"{format_value(s)} ({s.effective_date}, {s.id})" for s in r.history)
+        chain = " → ".join(f"{_value(store, s)} ({s.effective_date}, {s.id})" for s in r.history)
         cur = r.current[0]
-        out.append(f"- **{_label(store, e)} · {prop}**: {chain} → **{format_value(cur)}** ({cur.effective_date}, {cur.id})")
+        out.append(f"- **{_label(store, e)} · {prop}**: {chain} → **{_value(store, cur)}** ({cur.effective_date}, {cur.id})")
         for f in r.flags:
             out.append(f"  - rule: {f}")
     out.append("")
@@ -151,17 +194,22 @@ def credit_file(store, group_id):
     grouped = {}
     for e, p in not_checked:
         grouped.setdefault(e, []).append(p)
-    out += [f"- {_label(store, e)}: {', '.join(ps)}" for e, ps in grouped.items()] or ["None."]
+    # Entities missing only their registry number are summarised in one line (the registry feed fills these).
+    registry_only = sorted(e for e, ps in grouped.items() if ps == ["registry_id"])
+    out += [f"- {_label(store, e)}: {', '.join(ps)}" for e, ps in grouped.items() if e not in registry_only] or ["None."]
+    if registry_only:
+        out.append(f"- {len(registry_only)} legal entities are missing only their registry number "
+                   "(to be filled from Companies House / Brønnøysund etc.).")
     out.append("")
 
     # Estimates and excerpts the reader should know about
-    caveats = [s for s in store.statements if s.id in used and s.method == "estimated"]
+    member_set = set(members)
+    caveats = [s for s in store.statements if s.method == "estimated" and store.canonical.get(s.entity, s.entity) in member_set]
     if caveats:
         out += ["## Our estimates (not from any source)", ""]
         for s in caveats:
-            kind = types[store.entities[s.entity]["type"]]["properties"][s.property]["kind"]
-            value = _label(store, s.value) if kind == "entity" else format_value(s)
-            out.append(f"- {s.id} {_label(store, s.entity)} · {s.property} = {value}: {s.note}")
+            used.add(s.id)
+            out.append(f"- {s.id} {_label(store, s.entity)} · {s.property} = {_value(store, s)}: {s.note}")
         out.append("")
 
     out += ["## Sources", "", "| id | type | access | grade cap | title |", "|---|---|---|---|---|"]

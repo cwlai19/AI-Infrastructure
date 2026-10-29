@@ -163,3 +163,50 @@ confirms it.
 Directors and individuals are not entities. Registry data includes personal details covered
 by GDPR, and we don't need them for credit risk yet. Revisit if a person-level question
 comes up (e.g. a shared director between a neocloud and its landlord).
+
+---
+
+## D11. Analyst reviews: reject or explain a statement without deleting it
+
+**Problem.** Reading the full S-1 showed that some earlier statements were *misreadings*, not
+disagreements. Example: from a search excerpt we recorded CCIR's "$1.831B" as the Ward County
+commitment; CCIR's full page shows it is Moody's sizing, and the commitment is $1.85B. D1 says
+never delete. But leaving the misreading in place keeps a false conflict open forever.
+
+**Choice.** `data/reviews.csv` records a judgement about a statement: `rejected` (kept on file,
+not used to compute what readers see) or `explained` (still used, but the disagreement is
+understood and not shown as open). A reason is mandatory. The credit file lists every review.
+
+**Alternatives rejected.**
+- *Delete or edit the bad statement.* Loses the audit trail: nobody can see that we once
+  believed it, or why we stopped.
+- *Down-grade it.* Grades describe sources, not our reading of them; a misread A-grade filing
+  is still an A-grade filing.
+
+**Rule of thumb.** Reject when *we* got it wrong (misread, wrong property). Explain when the
+*sources* differ for an understood reason (rounding, different measure).
+
+---
+
+## D12. Descriptive text accumulates; it does not compete
+
+**Problem.** "Historical DSCR covenant" (S-1 summary) and "DSCR >= 1.05x, cash trap below 1.10x"
+(CCIR reading the agreement) are both true. Treating them as rival values produced false
+conflicts.
+
+**Choice.** Narrative properties (covenants, amortization, prepayment triggers, purpose,
+termination and extension rights) are multi-valued: every source's description is shown.
+Facts that must have one answer (amounts, dates, margins, borrower) still compete.
+
+---
+
+## D13. Precision refinements agree
+
+**Problem.** "Feb 2026" vs "11 Feb 2026", "SOFR" vs "Term SOFR", "United Kingdom" vs "England and
+Wales" are the same fact at different precision, not contradictions.
+
+**Choice.** Partial dates agree with fuller dates that start the same way, and are treated as the
+same moment when ordering history (except "before" dates, which are always earlier). Text
+agrees if one wording contains the other. A jurisdiction agrees with its parent country.
+Tie-breaks prefer a full document over an excerpt. A derived value is as strong as its weakest
+input. Each rule has a test in `tests/test_model.py`.

@@ -51,7 +51,15 @@ rules decide what's shown and the disagreement stays visible.
 
 ## Status
 
-- Seed data for Nscale, built from **search excerpts only**, so everything is capped at grade B.
-  Next step: read the full S-1 and credit agreements, and add grade-A statements alongside.
+- **Nscale:** ~1,000 statements from the full S-1 and its exhibits (debt agreements, customer
+  contracts, subsidiary list), Companies House (profiles and registered charges for six key UK
+  entities) and CCIR's issuer page, cross-checked against each other. Earlier excerpt-based
+  statements are kept; misreadings are rejected in `data/reviews.csv` with reasons.
+- `scripts/oneoff/` holds the scripts that loaded those statements (kept for reproducibility).
 - Not built yet: document archive, live monitoring feeds, LLM extraction, credit metrics,
   the senior-facing view.
+
+## Secrets
+
+The Companies House API key is read from `~/.config/ai-infrastructure/companies_house_api_key`
+(or, later, a GitHub Actions secret). Never commit it.

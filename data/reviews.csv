@@ -1,0 +1,9 @@
+statement_id,verdict,reason,reviewer,date
+st0054,rejected,Misread from a search excerpt: CCIR's full page shows $1.831B is Moody's sizing in its 12 Aug 2026 rating action; the commitment is $1.85B (Ex-10.23 and CCIR card).,claude (pending analyst review),2026-10-29
+st0086,rejected,Misread from a search excerpt: 7 July 2026 is the issuer release date; the RCF agreement is dated 8 May 2026 (Ex-10.18; CCIR full page agrees).,claude (pending analyst review),2026-10-29
+st0123,rejected,11 May 2026 is the issuer release announcing the Norway financing; the Senior Facilities Agreement is dated 7 July 2026 (S-1; CCIR full page agrees).,claude (pending analyst review),2026-10-29
+st0007,explained,'More than $8B of debt' in press coverage likely sums facility commitments (~$8-10B incl. Dell and convertibles). Borrowed debt on the balance sheet at 30 June 2026 was $137.4M; the large obligations are deferred revenue ($6.5B) and leases ($2.6B).,claude (pending analyst review),2026-10-29
+st1216,rejected,"The S-1 summary names Nscale Global Holdings, but Companies House shows Macquarie's June 2025 charge over Global Holdings satisfied and the same-date charge over Nscale Drift II Holdings outstanding; Ex-10.12 and CCIR also name Drift II Holdings.",claude (pending analyst review),2026-10-29
+st1079,rejected,"The prospectus rounds the commitment to approximately $1.4B; the credit agreement (Ex-10.14, Section 2.01) states exactly $1,422,000,000, so the exact figure is used.",claude (pending analyst review),2026-10-29
+st0033,explained,"Rounded figure (""approximately $1.4 billion""); the credit agreement states exactly $1,422,000,000.",claude (pending analyst review),2026-10-29
+st0034,explained,"Rounded figure from a search excerpt of CCIR; the CCIR full page and Ex-10.14 give $1,422,000,000.",claude (pending analyst review),2026-10-29

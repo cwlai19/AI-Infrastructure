@@ -21,22 +21,42 @@ entity_types:
   group:
     description: A corporate group as the market knows it (e.g. "Nscale").
     properties:
-      name: {kind: text, key: true}
+      name: {kind: text, multi: true, key: true}   # a thing can have several names (aliases)
       hq_country: {kind: text}
       listing_venue: {kind: text}
       ticker: {kind: text}
       ipo_filing_date: {kind: date}
-      mw_contracted_total: {kind: number, unit: MW, key: true}
+      mw_contracted_total: {kind: number, unit: MW, key: true}   # active + contracted
       mw_energized_total: {kind: number, unit: MW, key: true}
       total_debt: {kind: money, key: true}
       total_assets: {kind: money}
       total_liabilities: {kind: money}
-      net_loss_annual: {kind: money}
+      net_loss_6m: {kind: money}
+      net_loss_12m: {kind: money}
+      revenue_6m: {kind: money}
+      revenue_12m: {kind: money}
+      total_equity: {kind: money}
+      cash_and_equivalents: {kind: money, key: true}
+      restricted_cash: {kind: money}
+      deferred_revenue: {kind: money, key: true}
+      operating_lease_liabilities: {kind: money, key: true}
+      leases_not_commenced: {kind: money}
+      equipment_purchase_commitments: {kind: money, key: true}
+      construction_commitments: {kind: money}
+      tcv_active: {kind: money}
+      tcv_active_and_contracted: {kind: money, key: true}
+      weighted_avg_contract_years: {kind: number, unit: years}
+      gpus_active: {kind: number, unit: GPUs}
+      gpus_active_and_contracted: {kind: number, unit: GPUs}
+      sites_active: {kind: number, unit: sites}
+      sites_contracted: {kind: number, unit: sites}
+      largest_customer_revenue_share: {kind: percent, key: true}
+      subsidiary_count: {kind: number, unit: entities}
 
   legal_entity:
     description: A registered company, SPV, lender or customer. Named as the source names it.
     properties:
-      name: {kind: text, key: true}
+      name: {kind: text, multi: true, key: true}   # a thing can have several names (aliases)
       group: {kind: entity, ref: [group]}
       parent: {kind: entity, ref: [legal_entity]}
       jurisdiction: {kind: text, key: true}
@@ -50,7 +70,7 @@ entity_types:
     description: A physical data centre campus or building.
     properties:
       group: {kind: entity, ref: [group], key: true}
-      name: {kind: text, key: true}
+      name: {kind: text, multi: true, key: true}   # a thing can have several names (aliases)
       country: {kind: text, key: true}
       operator: {kind: entity, ref: [legal_entity], key: true}
       landlord: {kind: entity, ref: [legal_entity], key: true}
@@ -59,22 +79,28 @@ entity_types:
       energization_target_date: {kind: date}
       grid_connection_date: {kind: date}
       gpu_type: {kind: text, multi: true}
+      ownership: {kind: enum, values: [owned, leased, colocation, joint_venture]}
+      location: {kind: text}
+      acquisition_cost: {kind: money}
+      deferred_consideration_outstanding: {kind: money}
 
   facility:
     description: One debt instrument (loan, revolver, bond, project finance, vendor financing).
     properties:
       group: {kind: entity, ref: [group], key: true}
-      name: {kind: text, key: true}
+      name: {kind: text, multi: true, key: true}   # a thing can have several names (aliases)
       borrower: {kind: entity, ref: [legal_entity], key: true}
+      co_borrower: {kind: entity, ref: [legal_entity], multi: true}
       facility_type: {kind: enum, key: true, values: [term_loan, delayed_draw_term_loan, revolver, project_finance, bond, abs, vendor_financing, lease_financing, other]}
       amount_max: {kind: money, key: true}
-      amount_drawn: {kind: money}
+      amount_drawn: {kind: money}          # balance outstanding at the effective date
+      drawdown: {kind: money, multi: true}   # an individual draw event (a flow, not a balance)
       base_rate: {kind: text}
       margin_bps: {kind: bps, key: true}
       coupon_pct: {kind: percent}
       signing_date: {kind: date, key: true}
       maturity_date: {kind: date, key: true}
-      amortization: {kind: text}
+      amortization: {kind: text, multi: true}
       collateral: {kind: enum, multi: true, key: true, values: [gpus, site, lease, contract_receivables, shares, all_assets, cash_accounts, other]}
       secured_on_site: {kind: entity, ref: [site], multi: true}
       named_customer: {kind: entity, ref: [legal_entity], multi: true, key: true}
@@ -85,15 +111,24 @@ entity_types:
       rating_sp: {kind: text}
       rating_fitch: {kind: text}
       dscr_covenant: {kind: number, unit: x}
-      cash_sweep: {kind: text}
+      cash_sweep: {kind: text, multi: true}
       lender_mark_pct_par: {kind: percent}
-      purpose: {kind: text}
+      purpose: {kind: text, multi: true}
+      status: {kind: enum, key: true, values: [committed_undocumented, signed_undrawn, partly_drawn, fully_drawn, repaid, converted]}
+      carrying_value: {kind: money}
+      unused_capacity: {kind: money}
+      effective_interest_rate: {kind: percent}
+      availability_end_date: {kind: date}
+      accordion: {kind: money}
+      agent: {kind: entity, ref: [legal_entity], multi: true}
+      financial_covenants: {kind: text, multi: true}
+      mandatory_prepayment: {kind: text, multi: true}
 
   contract:
     description: An offtake / compute supply contract between a provider and a customer.
     properties:
       group: {kind: entity, ref: [group], key: true}
-      name: {kind: text}
+      name: {kind: text, multi: true}
       provider: {kind: entity, ref: [legal_entity, group], key: true}
       customer: {kind: entity, ref: [legal_entity], key: true}
       site: {kind: entity, ref: [site], multi: true}
@@ -105,8 +140,11 @@ entity_types:
       mw: {kind: number, unit: MW}
       take_or_pay: {kind: bool, key: true}
       prepayment_pct: {kind: percent}
-      termination_rights: {kind: text}
+      termination_rights: {kind: text, multi: true}
       implied_usd_per_gpu_hour: {kind: number, unit: USD/GPU-hr}
+      end_date: {kind: date}
+      financing_status: {kind: enum, values: [not_required, secured, partly_secured, not_secured]}
+      extension_rights: {kind: text, multi: true}
 
   lease:
     description: A lease of space/power from a landlord to a tenant.
@@ -120,6 +158,10 @@ entity_types:
       rent_per_kw_month: {kind: money}
       start_date: {kind: date}
       guarantor: {kind: entity, ref: [legal_entity, group]}
+      lease_type: {kind: text}
+      guarantee_amount: {kind: money}
+      guarantee_term: {kind: text}
+      escrow_amount: {kind: money}
 
   charge:
     description: A registered security interest (e.g. a Companies House MR01).
@@ -129,7 +171,7 @@ entity_types:
       registry_charge_id: {kind: text}
       created_date: {kind: date, key: true}
       registered_date: {kind: date}
-      description: {kind: text}
+      description: {kind: text, multi: true}
       status: {kind: enum, values: [outstanding, satisfied, part_satisfied]}
       secures_facility: {kind: entity, ref: [facility]}
 

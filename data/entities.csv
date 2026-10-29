@@ -19,3 +19,216 @@ fac_norway_term_loan,facility,Senior term loan facility ($725M),As described in 
 fac_norway_vat_rcf,facility,Revolving VAT credit facility ($65M),As described in the S-1 excerpt.
 fac_ccir_norway_pf,facility,Norway (Narvik) project financing ($790M),"As CCIR names it. Kept separate from the two S-1 facilities; see entity_links.csv."
 ctr_msft_narvik,contract,Microsoft – Nscale/Aker Narvik compute contract,
+le_nscale_global_holdings,legal_entity,Nscale Global Holdings Limited,
+le_nc_spv,legal_entity,"Nscale NC Borrower SPV, LLC",
+le_nscale_ward_county_llc,legal_entity,"Nscale Ward County, LLC",Affiliate guarantor of the Ward County facility.
+le_nscale_services_us,legal_entity,Nscale Services US Inc.,
+le_nscale_us_holdings,legal_entity,Nscale US Holdings Inc.,Contract counterparty to Microsoft (Ward County) and the NC customer.
+le_iceland_iii,legal_entity,Nscale Services Iceland III ehf,
+le_norway_dc_da,legal_entity,Nscale Norway DC DA,
+le_drift_ii_holdings,legal_entity,Nscale Drift II Holdings Ltd,
+le_services_intermediate_iii,legal_entity,Nscale Services Intermediate Holdings III Limited,
+le_services_uk_iii,legal_entity,Nscale Services UK III Limited,
+le_gpu_mcc_b11,legal_entity,Nscale GPU MCC B1.1 LLC,Provider named in the Anthropic agreement (Ex-10.25). Not in the Ex-21.1 list.
+le_dfs,legal_entity,DFS (Dell Financial Services),Exact DFS legal entity not yet read.
+le_macquarie,legal_entity,Macquarie Bank Limited (London Branch),
+le_dnb,legal_entity,DNB Bank ASA,
+le_abn_amro,legal_entity,ABN AMRO Bank N.V.,
+le_nordea,legal_entity,Nordea Bank Abp NUF,
+le_efn,legal_entity,Export Finance Norway (Eksportfinansiering Norge),
+le_seb,legal_entity,Skandinaviska Enskilda Banken AB,
+le_us_bank_trust,legal_entity,"U.S. Bank Trust Company, National Association",
+le_glas,legal_entity,Global Loan Agency Services (GLAS),GLAS Ltd / GLAS Trust Corporation / GLAS Americas acting as agents.
+le_jpmorgan_chase,legal_entity,"JPMorgan Chase Bank, N.A.",
+le_goldman_bank_usa,legal_entity,Goldman Sachs Bank USA,
+le_ca_cib,legal_entity,Crédit Agricole Corporate and Investment Bank,
+le_deutsche_ny,legal_entity,"Deutsche Bank AG, New York Branch",
+le_mizuho,legal_entity,"Mizuho Bank, Ltd.",
+le_mufg,legal_entity,"MUFG Bank, Ltd.",
+le_rbc,legal_entity,Royal Bank of Canada,
+le_smbc,legal_entity,Sumitomo Mitsui Banking Corporation,
+le_smbc_bi,legal_entity,SMBC Bank International plc,
+le_bbva_ny,legal_entity,"Banco Bilbao Vizcaya Argentaria, S.A. New York Branch",
+le_ocbc_ny,legal_entity,"Oversea-Chinese Banking Corporation Limited, New York Agency",
+le_keybank,legal_entity,KeyBank National Association,
+le_td_ny,legal_entity,"The Toronto-Dominion Bank, New York Branch",
+le_anthropic,legal_entity,Anthropic PBC,
+le_nvidia,legal_entity,NVIDIA Corporation,
+le_figure,legal_entity,Figure (Figure AI),Exact legal entity not stated in the passages read.
+le_aker,legal_entity,"Aker (Aker Narvik DC AS, Aker Narvik GPU AS, Aker Holdco AS)",
+le_sandton,legal_entity,"Sandton Capital Solutions Master Fund V, L.P.",
+le_ward_county_landlord,legal_entity,Ward County landlord (not named in S-1),
+site_kvandal_south,site,Kvandal South (Stargate Norway),As the S-1 names it.
+site_glomfjord,site,"Glomfjord, Norway",
+site_monarch,site,"Monarch Compute Campus, Mason County WV",
+site_sin02,site,"SIN02, SINES Data Campus, Portugal",
+fac_macquarie_iceland,facility,Macquarie Iceland Facility ($331.9M),
+fac_macquarie_glomfjord,facility,"Macquarie Senior Facility, Glomfjord ($105M)",
+fac_dell_vendor,facility,Dell (DFS) vendor financing (~$2.54B rent),
+fac_convertible_2026,facility,"Convertible Loan Notes, Sept 2026 (min $3.1B incl. NVIDIA)",
+fac_committed_2_35b,facility,"Committed bank delayed-draw financings (~$2.35B, undocumented)",
+fac_sandton,facility,Sandton term loans ($76.6M),
+fac_series_a_notes,facility,Series A Convertible Notes ($160M),
+ctr_msft_sows,contract,"Microsoft statements of work (aggregate, up to $43.8B)",
+ctr_msft_sow1_ward,contract,Microsoft Partner SOW #1 (Ward County),
+ctr_nc_customer,contract,North Carolina Cloud Services Agreement (customer redacted),
+ctr_anthropic,contract,"Anthropic Services Agreements (4 agreements, up to $44.6B)",
+ctr_figure,contract,Figure Services Agreement,
+ctr_nvidia_msa,contract,NVIDIA master cloud services agreement ($1.2B),
+lease_ward_county,lease,"Ward County, Texas net lease",
+le_sub_001,legal_entity,Nscale MidCo 1 Limited,From Ex-21.1
+le_sub_002,legal_entity,Nscale MidCo 2 Limited,From Ex-21.1
+le_sub_004,legal_entity,Nscale Holdings Limited,From Ex-21.1
+le_sub_005,legal_entity,Nscale GPU Holdings Limited,From Ex-21.1
+le_sub_006,legal_entity,Nscale Operations (Aust) Limited,From Ex-21.1
+le_sub_007,legal_entity,Nscale Operations Holdings Limited,From Ex-21.1
+le_sub_008,legal_entity,Nscale Operations (UK) Limited,From Ex-21.1
+le_sub_009,legal_entity,Future-Tech S.C.I. Limited,From Ex-21.1
+le_sub_010,legal_entity,Nscale Global DC Holdings Limited,From Ex-21.1
+le_sub_011,legal_entity,Nscale GPU Holdings Limited,From Ex-21.1
+le_sub_012,legal_entity,Nscale GPU Holdings UK Limited,From Ex-21.1
+le_sub_013,legal_entity,Nscale GPU Holdings MCC (P1) Limited,From Ex-21.1
+le_sub_014,legal_entity,Nscale DC Holdings Finland Limited,From Ex-21.1
+le_sub_015,legal_entity,Nscale DC Holdings Limited,From Ex-21.1
+le_sub_016,legal_entity,Nscale DC Holdings II Limited,From Ex-21.1
+le_sub_017,legal_entity,Nscale DC Holdings Ward County Limited,From Ex-21.1
+le_sub_019,legal_entity,Scale UK Holdings Limited,From Ex-21.1
+le_sub_020,legal_entity,Nscale Services Holdings Limited,From Ex-21.1
+le_sub_021,legal_entity,Nscale Services Holdings US Limited,From Ex-21.1
+le_sub_022,legal_entity,Nscale Services Intermediate Holdings Limited,From Ex-21.1
+le_sub_023,legal_entity,Nscale Services Intermediate Holdings II Limited,From Ex-21.1
+le_sub_026,legal_entity,Nscale Services UK II Limited,From Ex-21.1
+le_sub_028,legal_entity,Nscale Intermediate Holdings APAC Limited,From Ex-21.1
+le_sub_029,legal_entity,Nscale Ventures Holdings Limited,From Ex-21.1
+le_sub_030,legal_entity,Nscale Ventures Holdings Norway Limited,From Ex-21.1
+le_sub_031,legal_entity,Nscale Ventures Holdings Portugal Limited,From Ex-21.1
+le_sub_032,legal_entity,Nscale Investment Holdings Limited,From Ex-21.1
+le_sub_033,legal_entity,Nscale Intermediate Holdings Limited,From Ex-21.1
+le_sub_034,legal_entity,Atlas AIP Holdings LLC,From Ex-21.1
+le_sub_035,legal_entity,"Nscale Union Valley Holdings, LLC",From Ex-21.1
+le_sub_036,legal_entity,American Intelligence & Power Corporation,From Ex-21.1
+le_sub_037,legal_entity,"MCC WV, LLC",From Ex-21.1
+le_sub_038,legal_entity,"MGS Lakin DA, LLC",From Ex-21.1
+le_sub_039,legal_entity,"MGS Lakin DNR, LLC",From Ex-21.1
+le_sub_040,legal_entity,Monarch Cloud Campus LLC,From Ex-21.1
+le_sub_041,legal_entity,"M2 OH Midstream, LLC",From Ex-21.1
+le_sub_042,legal_entity,"M2 WV Midstream, LLC",From Ex-21.1
+le_sub_043,legal_entity,Nscale Ables Springs LLC,From Ex-21.1
+le_sub_044,legal_entity,"Nscale DC MCC (P1), LLC",From Ex-21.1
+le_sub_045,legal_entity,"Nscale GPU Holdings MCC (P1), LLC",From Ex-21.1
+le_sub_046,legal_entity,"Nscale GPU Holdings MCC (P1) II, LLC",From Ex-21.1
+le_sub_047,legal_entity,"Nscale GPU Holdings US, LLC",From Ex-21.1
+le_sub_048,legal_entity,"Nscale GPU Holdings Utah, LLC",From Ex-21.1
+le_sub_049,legal_entity,"Nscale GPU MCC (P1) I, LLC",From Ex-21.1
+le_sub_050,legal_entity,"Nscale GPU MCC (P1) II, LLC",From Ex-21.1
+le_sub_051,legal_entity,"Nscale GPU MCC (P1) III, LLC",From Ex-21.1
+le_sub_052,legal_entity,"Nscale GPU Utah, LLC",From Ex-21.1
+le_sub_053,legal_entity,"Nscale NC Borrower Holdco SPV, LLC",From Ex-21.1
+le_sub_055,legal_entity,Nscale Oklahoma Inc,From Ex-21.1
+le_sub_056,legal_entity,Nscale Operations US LLC,From Ex-21.1
+le_sub_057,legal_entity,Nscale Posey LLC,From Ex-21.1
+le_sub_058,legal_entity,"Nscale Power MCC (P1), LLC",From Ex-21.1
+le_sub_060,legal_entity,Nscale Union Valley LLC,From Ex-21.1
+le_sub_062,legal_entity,"Nscale Ward County Borrower HoldCo SPV, LLC",From Ex-21.1
+le_sub_065,legal_entity,"Nscale Ward County II, LLC",From Ex-21.1
+le_sub_066,legal_entity,Nscale Wisconsin LLC,From Ex-21.1
+le_sub_067,legal_entity,"Monarch Meadowland Properties, LLC",From Ex-21.1
+le_sub_068,legal_entity,Nscale DC Holdings Europe B.V.,From Ex-21.1
+le_sub_069,legal_entity,Nscale Holdings B.V.,From Ex-21.1
+le_sub_070,legal_entity,Nscale Operations B.V.,From Ex-21.1
+le_sub_071,legal_entity,Nscale Ventures Portugal B.V.,From Ex-21.1
+le_sub_072,legal_entity,Nscale DC Holdings Portugal B.V.,From Ex-21.1
+le_sub_073,legal_entity,Nscale AS,From Ex-21.1
+le_sub_074,legal_entity,Nscale DC Holdings Norway AS,From Ex-21.1
+le_sub_075,legal_entity,Nscale DC Holdings Norway II AS,From Ex-21.1
+le_sub_076,legal_entity,Nscale DC Holdings Kvandal North AS,From Ex-21.1
+le_sub_077,legal_entity,Nscale DC Kvandal North AS,From Ex-21.1
+le_sub_078,legal_entity,Nscale Drift AS,From Ex-21.1
+le_sub_079,legal_entity,Nscale Drift II AS,From Ex-21.1
+le_sub_080,legal_entity,Nscale Drift III AS,From Ex-21.1
+le_sub_081,legal_entity,Nscale Drift II Holdings AS,From Ex-21.1
+le_sub_082,legal_entity,Nscale Glomfjord AS,From Ex-21.1
+le_sub_083,legal_entity,Nscale Glomfjord II AS,From Ex-21.1
+le_sub_084,legal_entity,Nscale GPU Holdings Norway AS,From Ex-21.1
+le_sub_085,legal_entity,Nscale GPU Holdings Norway II AS,From Ex-21.1
+le_sub_086,legal_entity,Nscale GPU Holdings Kvandal North AS,From Ex-21.1
+le_sub_087,legal_entity,Nscale GPU Holdings Sauda AS,From Ex-21.1
+le_sub_088,legal_entity,Nscale GPU Kvandal North AS,From Ex-21.1
+le_sub_089,legal_entity,Nscale GPU Sauda AS,From Ex-21.1
+le_sub_090,legal_entity,Nscale Land Kvandal South AS,From Ex-21.1
+le_sub_091,legal_entity,Nscale Drift Holdings AS,From Ex-21.1
+le_sub_092,legal_entity,Nscale Operations Norway AS,From Ex-21.1
+le_sub_093,legal_entity,Nscale Services Norway AS,From Ex-21.1
+le_sub_094,legal_entity,Nscale Ventures DC Holdings AS,From Ex-21.1
+le_sub_095,legal_entity,Nscale Ventures GPU Holdings AS,From Ex-21.1
+le_sub_096,legal_entity,Nscale Ventures Holdings Norway AS,From Ex-21.1
+le_sub_097,legal_entity,Nscale Norway AS,From Ex-21.1
+le_sub_099,legal_entity,Nscale Norway GPU DA,From Ex-21.1
+le_sub_100,legal_entity,Nscale Norway Holdings AS,From Ex-21.1
+le_sub_101,legal_entity,Nscale Site 1 AS,From Ex-21.1
+le_sub_102,legal_entity,Nscale Site 2 AS,From Ex-21.1
+le_sub_103,legal_entity,Nscale Site 3 AS,From Ex-21.1
+le_sub_104,legal_entity,Nscale Site 4 AS,From Ex-21.1
+le_sub_105,legal_entity,Nscale Site 5 AS,From Ex-21.1
+le_sub_106,legal_entity,Nscale Site 6 AS,From Ex-21.1
+le_sub_107,legal_entity,Åsmyra Industripark AS,From Ex-21.1
+le_sub_108,legal_entity,Framneslia Eiendom AS,From Ex-21.1
+le_sub_109,legal_entity,Narvik Batteri AS,From Ex-21.1
+le_sub_110,legal_entity,North Circulare AS,From Ex-21.1
+le_sub_111,legal_entity,"Nscale Services Portugal, Unipessoal Lda.",From Ex-21.1
+le_sub_112,legal_entity,"Nscale Services Portugal II, Unipessoal Lda.",From Ex-21.1
+le_sub_113,legal_entity,"Nscale Services Portugal III, Unipessoal Lda.",From Ex-21.1
+le_sub_114,legal_entity,"Caminho Prioritário, S.A",From Ex-21.1
+le_sub_115,legal_entity,Nscale Services Iceland ehf,From Ex-21.1
+le_sub_116,legal_entity,Nscale Services Iceland II ehf,From Ex-21.1
+le_sub_118,legal_entity,Nscale DC Holdings Finland Oy,From Ex-21.1
+le_sub_119,legal_entity,Nscale APAC Holdings Pte. Ltd.,From Ex-21.1
+le_sub_120,legal_entity,Nscale DC APAC Pte. Ltd.,From Ex-21.1
+le_sub_121,legal_entity,Nscale DC JV Holdco 1 Pte. Ltd.,From Ex-21.1
+le_sub_122,legal_entity,Nscale DC JV Holdco 2 Pte. Ltd.,From Ex-21.1
+le_sub_123,legal_entity,Nscale Korea Holdco Pte. Ltd.,From Ex-21.1
+le_sub_124,legal_entity,Nscale Operations APAC Pte. Ltd.,From Ex-21.1
+le_sub_125,legal_entity,Nscale Services APAC Pte. Ltd.,From Ex-21.1
+le_sub_126,legal_entity,Nscale Services Holdings APAC Pte. Ltd.,From Ex-21.1
+le_sub_127,legal_entity,Nscale Services Singapore Pte. Ltd.,From Ex-21.1
+le_sub_128,legal_entity,Nscale Ventures Holdings Pte. Ltd.,From Ex-21.1
+le_sub_129,legal_entity,"Nscale Services Malaysia Sdn, Bhd.",From Ex-21.1
+le_sub_130,legal_entity,Nscale Services Japan GK,From Ex-21.1
+le_sub_131,legal_entity,PT Nscale Services Indonesia,From Ex-21.1
+le_sub_132,legal_entity,Nscale Portugal TopCo S.à r.l.,From Ex-21.1
+le_sub_133,legal_entity,Nscale Portugal Midco 1 S.à r.l.,From Ex-21.1
+le_sub_134,legal_entity,Nscale Portugal Midco 2 S.à r.l.,From Ex-21.1
+le_sub_135,legal_entity,Nscale Portugal HoldCo S.à r.l.,From Ex-21.1
+le_sub_136,legal_entity,Nscale Operations Ireland Limited,From Ex-21.1
+le_sub_137,legal_entity,Nscale Services Spain SL,From Ex-21.1
+le_sub_138,legal_entity,"Nscale Operations KK Co., Ltd.",From Ex-21.1
+le_af_realizations,legal_entity,Af Realizations Sàrl,Security agent on a satisfied 2025 charge.
+chg_16925886_a,charge,Charge chg_16925886_a over le_nscale_ltd,
+chg_16925886_b,charge,Charge chg_16925886_b over le_nscale_ltd,
+chg_157494080005,charge,Charge 157494080005 over le_nscale_global_holdings,
+chg_157494080006,charge,Charge 157494080006 over le_nscale_global_holdings,
+chg_157494080007,charge,Charge 157494080007 over le_nscale_global_holdings,
+chg_157494080008,charge,Charge 157494080008 over le_nscale_global_holdings,
+chg_157494080003,charge,Charge 157494080003 over le_nscale_global_holdings,
+chg_157494080004,charge,Charge 157494080004 over le_nscale_global_holdings,
+chg_157494080002,charge,Charge 157494080002 over le_nscale_global_holdings,
+chg_157494080001,charge,Charge 157494080001 over le_nscale_global_holdings,
+chg_164451020007,charge,Charge 164451020007 over le_nscale_services_uk,
+chg_164451020001,charge,Charge 164451020001 over le_nscale_services_uk,
+chg_164451020002,charge,Charge 164451020002 over le_nscale_services_uk,
+chg_164451020003,charge,Charge 164451020003 over le_nscale_services_uk,
+chg_164451020004,charge,Charge 164451020004 over le_nscale_services_uk,
+chg_164451020005,charge,Charge 164451020005 over le_nscale_services_uk,
+chg_164451020006,charge,Charge 164451020006 over le_nscale_services_uk,
+chg_164081480001,charge,Charge 164081480001 over le_drift_ii_holdings,
+chg_164081480003,charge,Charge 164081480003 over le_drift_ii_holdings,
+chg_164081480002,charge,Charge 164081480002 over le_drift_ii_holdings,
+chg_168909670001,charge,Charge 168909670001 over le_services_uk_iii,
+chg_168909670002,charge,Charge 168909670002 over le_services_uk_iii,
+chg_168903390001,charge,Charge 168903390001 over le_services_intermediate_iii,
+le_spring_sg,legal_entity,Spring (SG) Pte. Ltd.,Glomfjord customer.
+le_pimco_funds,legal_entity,PIMCO-managed funds,Pacific Investment Management Company LLC as investment manager; CCIR counts 29 funds/vehicles.
+site_borealis,site,"Borealis Data Centre, Blönduós, Iceland",Third-party colocation.
+le_stonepeak,legal_entity,Stonepeak Infrastructure Credit Fund I,
+le_bofa,legal_entity,Bank of America,
+le_morgan_stanley_mufg,legal_entity,"Morgan Stanley MUFG Loan Partners, LLC",RCF syndication agent.
