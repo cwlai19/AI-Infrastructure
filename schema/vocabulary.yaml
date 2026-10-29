@@ -145,6 +145,7 @@ entity_types:
       prepayment_pct: {kind: percent}
       termination_rights: {kind: text, multi: true}
       implied_usd_per_gpu_hour: {kind: number, unit: USD/GPU-hr}
+      status: {kind: enum, values: [in_negotiation, signed, active, terminated, expired]}
       end_date: {kind: date}
       financing_status: {kind: enum, values: [not_required, secured, partly_secured, not_secured]}
       extension_rights: {kind: text, multi: true}

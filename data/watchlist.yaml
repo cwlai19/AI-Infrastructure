@@ -6,6 +6,7 @@
 groups:
   group_nscale:
     edgar_terms: ["Nscale"]
+    news_terms: ["Nscale"]
 
 # Filing types that mention a watched name but carry no credit information
 # (e.g. ETF registration statements listing holdings). Logged as 'ignored', not alerted.

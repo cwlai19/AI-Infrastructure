@@ -61,13 +61,16 @@ _Generated from statements. Every value shows its grade (A/B/C) and the statemen
 - Kvandal South **same_as** Kvandal South — claude (pending analyst review), 2026-10-29: CCIR calls the Kvandal South DC facility collateral the 'Narvik campus'; the S-1 puts Stargate Norway in Kvandal with Aker Narvik entities. Kvandal North is a separate site; confirm CCIR did not mean Kvandal North.
 - Microsoft – Nscale/Aker Narvik compute contract **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: CCIR's $6.2B Narvik deal should be one of the Microsoft SOWs (Sept 2025 - Apr 2026); the S-1 gives only the aggregate.
 - Microsoft Partner SOW #1 (Ward County) **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Named as the Customer Contract in the Ward County credit agreement.
+- Microsoft: Loughton (UK) GPU contract **part_of** Microsoft statements of work (aggregate, up to $43.8B) — claude (pending analyst review), 2026-10-29: Loughton was announced in Sept 2025 as one of four sites under the Microsoft agreements (with Texas, Portugal, Norway), so it sits inside the S-1's 'up to $43.8B'. Its value is not disclosed.
 
 ## Offtake contracts
 
 | Contract | Customer | Value | Term | GPUs | Chip | Site | Take-or-pay | Implied $/GPU-hr |
 |---|---|---|---|---|---|---|---|---|
 | Anthropic Services Agreements (4 agreements, up to $44.6B) | Anthropic PBC (A: st1318) | 44.6B USD (A: st1321, st3700) | — | — | NVIDIA Vera Rubin NVL72 (A: st1323) | Monarch Compute Campus (A: st1320) | false (A: st3702) | — |
+| Anthropic: proposed second Monarch building (~$45B, in talks) | Anthropic PBC (C: st3818) | 45B USD (C: st3823) | — | — | NVIDIA Vera Rubin (C: st3822) | Monarch Compute Campus (C: st3820) | — | — |
 | Figure Services Agreement | Figure (Figure AI) (A: st1328) | undisclosed [st1331] | — | 100,000 GPUs (A: st1330) | — | — | — | — |
+| Microsoft: Loughton (UK) GPU contract | Microsoft Corporation (C: st3807) | undisclosed [st3815] | — | 23,040 GPUs (C: st3810) | GB300 (C: st3811) | Loughton, Essex (UK) (C: st3809) | — | — |
 | Microsoft – Nscale/Aker Narvik compute contract | Microsoft Corporation (B: st0162) | 6.2B USD (B: st0164) | 60 months (B: st0165) | 52,000 GPUs (B: st0166) | GB300 (B: st0167) | Kvandal South (B: st0163) | — | 2.72 USD/GPU-hr (B: st0169, st0168) |
 | Microsoft Partner SOW #1 (Ward County) | Microsoft Corporation (A: st1310) | — | — | — | — | Ward County, Texas (A: st1312) | — | — |
 | Microsoft statements of work (aggregate, up to $43.8B) | Microsoft Corporation (A: st1300) | 43.8B USD (A: st1302) | 60 months (A: st1308) | — | — | — | true (A: st1305) | — |
@@ -100,6 +103,7 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 
 ## History (superseded values)
 
+- **Microsoft: Loughton (UK) GPU contract · status**: signed (2025-09, st3813) → **terminated** (2026-10-18, st3814)
 - **Revolving Credit Facility · borrower**: Nscale Global Holdings Limited (2026-05-08, st1146) → **NSCALE PLC** (2026-07, st1147)
 - **Revolving Credit Facility · amount_max**: 770M USD (2026-05-08, st1148) → **900M USD** (2026-06, st1149)
 - **Revolving Credit Facility · status**: signed_undrawn (2026-06-30, st1166) → **partly_drawn** (2026-09-18, st2164)
@@ -112,6 +116,7 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 **Undisclosed** (a source was checked and does not state it):
 
 - Figure Services Agreement · value_total (checked: src_s1_full)
+- Microsoft: Loughton (UK) GPU contract · value_total (checked: src_news_techtarget_1019)
 - North Carolina Cloud Services Agreement (customer redacted) · customer (checked: src_ex10_24)
 - Norway (Narvik) project financing ($790M) · margin_bps (checked: src_ccir_nscale)
 - Norway (Narvik) project financing ($790M) · maturity_date (checked: src_ccir_nscale)
@@ -126,7 +131,9 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 **Not yet checked** (key properties with no statement — research to-do):
 
 - Anthropic Services Agreements (4 agreements, up to $44.6B): term_months
+- Anthropic: proposed second Monarch building (~$45B, in talks): term_months, take_or_pay
 - Figure Services Agreement: provider, term_months, take_or_pay
+- Microsoft: Loughton (UK) GPU contract: term_months, take_or_pay
 - Microsoft – Nscale/Aker Narvik compute contract: take_or_pay
 - Microsoft Partner SOW #1 (Ward County): value_total, term_months, take_or_pay
 - North Carolina Cloud Services Agreement (customer redacted): value_total, term_months, take_or_pay
@@ -150,6 +157,7 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 - Borealis Data Centre, Blönduós, Iceland: name, operator, landlord, mw_contracted, mw_energized
 - Glomfjord, Norway: name, operator, landlord, mw_contracted, mw_energized
 - Kvandal South: landlord, mw_energized
+- Loughton, Essex (UK): name, operator, landlord, mw_energized
 - Monarch Compute Campus: operator, landlord, mw_contracted
 - NC-1 campus (WhiteFiber): mw_energized
 - SIN02 (SINES Data Campus): operator, landlord, mw_energized
@@ -174,6 +182,8 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 - st2213 DFS Framework Agreements · maturity_date = 2026-12-31: CCIR's approximate date; schedules run 3-4 months from Aug/Sep 2026 plus 1-2 month extensions.
 - st3094 PIMCO PDI: 'Nscale AS' floating-rate loan · facility = GPU Financing Facility: 8.66% is about SOFR + 5.00% and PIMCO funds sign the GPU Financing Facility amendments; but PIMCO labels the borrower 'Nscale AS' (a Norwegian entity), not Nscale Services UK Ltd. Confirm.
 - st3123 NC-1 colocation services agreement (WhiteFiber) · guarantor = Nscale Global Holdings Limited: Named as a party with Nscale Services US; guarantee role not confirmed.
+- st3805 Loughton, Essex (UK) · grid_connection_date = 2033: UK Power Networks told Nscale capacity would not be available until the early-to-mid 2030s (Guardian/Telegraph via TechTarget, Tech Times).
+- st3825 Anthropic: proposed second Monarch building (~$45B, in talks) · financing_status = not_secured: No financing reported; financing for the first Anthropic agreement was itself not secured at the S-1 date.
 
 ## Sources
 
@@ -229,6 +239,10 @@ _Statements stay on file. 'Explained' disagreements are understood; 'rejected' s
 | src_internal | internal | full_document | C | Our own calculations and working assumptions |
 | src_ionic_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026](https://www.sec.gov/Archives/edgar/data/2007691/000200769126000012/ioni-20260630.htm) |
 | src_mrkt30 | news | excerpt | C | [The 10 Biggest Neocloud Companies Ranked by Power Actually Live](https://mrkt30.com/biggest-neocloud-companies/) |
+| src_news_fool_1020 | news | full_document | C | [Anthropic Is in Talks for Another $45 Billion AI Deal](https://www.fool.com/investing/2026/10/20/anthropic-is-in-talks-for-another-45-billion-ai-deal-nvidia-could-be-a-big-winner/) |
+| src_news_siliconangle_1018 | news | full_document | C | [Nscale's IPO plans could be at risk after Microsoft cancels UK data center project](https://siliconangle.com/2026/10/18/neocloud-operator-nscales-ipo-plans-could-be-at-risk-after-microsoft-pulls-the-plug-on-u-k-data-center-project/) |
+| src_news_techtarget_1019 | news | full_document | C | [Microsoft's Nscale exit exposes $103B AI contract pipeline risk](https://www.techtarget.com/it-infrastructure/news/366652477/Microsofts-Nscale-exit-exposes-103B-AI-contract-pipeline-risk) |
+| src_news_techtimes_1019 | news | full_document | C | [Microsoft Exits Nscale's UK Flagship as Grid Can't Supply Power Until 2030s](https://www.techtimes.com/articles/329207/20261019/microsoft-exits-nscales-uk-flagship-grid-cant-supply-power-until-2030s-ipo-risk.htm) |
 | src_nscale_pr_ipo | company_release | excerpt | B | [Nscale Files Registration Statement for Proposed Initial Public Offering](https://www.nscale.com/press-releases/nscale-files-initial-public-offering) |
 | src_obdc2_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026: schedule of investments](https://www.sec.gov/Archives/edgar/data/1655887/000165588726000016/obdc-20260630.htm) |
 | src_obdc_10q | counterparty_filing | full_document | A | [10-Q for quarter ended 30 June 2026: schedule of investments](https://www.sec.gov/Archives/edgar/data/1655888/000165588826000056/obdc-20260630.htm) |

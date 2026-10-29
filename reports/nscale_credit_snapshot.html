@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Nscale Credit Snapshot</title>
+<title>Nscale Credit Snapshot (updated)</title>
 <style>
   @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
   :root { --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3; --accent:#1f4e79; --warn:#9a3412; --bg:#f5f7fa; }
@@ -36,15 +36,24 @@
 </head>
 <body>
 
-<h1>Nscale: Credit Snapshot</h1>
+<h1>Nscale: Credit Snapshot <span style="font-size:11pt;color:#9a3412">(updated 29 Oct 2026)</span></h1>
 <div class="meta">Facts as of 29 October 2026 · Built from public primary sources: Nscale S-1 and exhibits (filed 18 Sept 2026), lender and counterparty SEC filings, UK Companies House, Anthropic S-1 (26 Oct 2026), CCIR · Prepared with AI-assisted extraction; analyst review pending</div>
+
+<div class="box" style="border-left-color:#9a3412;background:#fdf4ef">
+<b>Update since the S-1 (news, 17–20 Oct 2026; not yet in any filing)</b>
+<ul>
+  <li><b>Microsoft terminated its Loughton (UK) contract.</b> 23,040 GB300 GPUs, 50 MW expandable to 90 MW, planned for Q1 2027. UK Power Networks said grid capacity would not be available until the early-to-mid 2030s. Both companies confirmed through spokespeople. Microsoft: "This decision relates to a single site." Nscale: no impact on its other Microsoft contracts (Texas, Portugal, Norway). <b>The value is not disclosed, so the S-1's "up to $43.8B" Microsoft figure is now overstated by an unknown amount.</b></li>
+  <li><b>Anthropic is reportedly in talks for a second ~$45B deal:</b> a second 460 MW building at Monarch (Vera Rubin GPUs), with a right of first refusal on a third. It is not signed, and Anthropic declined to comment. If signed, Anthropic would be ~$90B of contracted value on one unpowered campus, with financing for the first deal still not secured.</li>
+  <li><b>Read-across:</b> this is the delivery risk below playing out. A grid date, not demand, cost the contract, and concentration shifts further towards Anthropic and Monarch.</li>
+</ul>
+</div>
 
 <div class="box">
 <b>Bottom line</b>
 <ul>
   <li><b>The credit risk is delivery, not leverage.</b> Borrowed debt on the balance sheet was only <b>$137M</b> at 30 June 2026. The real obligations are <b>$6.5B of customer prepayments</b> that must be repaid in delivered compute, <b>$2.6B of leases</b>, and <b>$24B of GPU orders</b> not yet delivered, against <b>$1.5B of cash</b>.</li>
   <li><b>Borrowing has accelerated since June:</b> $830M drawn on the $900M revolver, a further $329M on the GPU loan, a $3.1B convertible (incl. $1.0B from NVIDIA), and $4.17B of new facilities.</li>
-  <li><b>Revenue is concentrated and largely future:</b> $103.4B of contracted value, but only $2.6B is active today. Microsoft (up to $43.8B) and Anthropic (up to $44.6B) are most of it.</li>
+  <li><b>Revenue is concentrated and largely future:</b> $103.4B of contracted value at 31 Aug, but only $2.6B is active today. Microsoft (up to $43.8B, <b>less Loughton</b>) and Anthropic (up to $44.6B) are most of it.</li>
   <li><b>Anthropic pays only on delivery, and the financing to deliver is not in place.</b> Nscale must fund the GPUs and the Monarch (West Virginia) campus first; Anthropic can drop late tranches.</li>
   <li><b>Near-term refinancing point:</b> ~$2.54B of short Dell bridge financing (3–4 month terms from Aug/Sept 2026) is meant to be taken out by the Ward County and North Carolina loans, which can only be drawn once strict conditions are met.</li>
 </ul>
@@ -76,8 +85,8 @@
 <h2>2. Customers (offtake)</h2>
 <table>
   <tr><th>Customer</th><th class="num">Contract value</th><th>Term</th><th>Payment basis</th><th>Key terms / risk</th></tr>
-  <tr><td>Microsoft</td><td class="num">up to $43.8B</td><td>To Dec 2033; 5–6 yrs per tranche</td><td>Fixed price; customers have prepaid</td><td>Terminable for cause or insolvency. Backs the Ward County loan.</td></tr>
-  <tr><td>Anthropic</td><td class="num">up to $44.6B</td><td>Into 2033</td><td class="warn">Pays only on delivery and acceptance</td><td>Financing not secured. Tranches can be terminated if late or below uptime thresholds. Monarch campus, WV.</td></tr>
+  <tr><td>Microsoft</td><td class="num">up to $43.8B <span class="warn">less Loughton (n/d)</span></td><td>To Dec 2033; 5–6 yrs per tranche</td><td>Fixed price; customers have prepaid</td><td>Terminable for cause or insolvency. Backs the Ward County loan. <b>Loughton (UK) site terminated Oct 2026 over grid delay.</b></td></tr>
+  <tr><td>Anthropic</td><td class="num">up to $44.6B</td><td>Into 2033</td><td class="warn">Pays only on delivery and acceptance</td><td>Financing not secured. Tranches can be terminated if late or below uptime thresholds. Monarch campus, WV. <b>Second ~$45B / 460 MW deal in talks (Oct 2026).</b></td></tr>
   <tr><td>NVIDIA</td><td class="num">$1.2B</td><td>12–48 months</td><td>Reserved capacity</td><td>Iceland, UK, Norway. NVIDIA is also a shareholder, convertible holder and lease guarantor.</td></tr>
   <tr><td>Figure</td><td class="num">n/d</td><td>From H2 2027</td><td>n/d</td><td>Up to 100,000 Vera Rubin GPUs; Nscale also investing in Figure.</td></tr>
   <tr><td>Spring (SG) Pte. Ltd.</td><td class="num">n/d</td><td>n/d</td><td>Minimum fee per GPU-hour (redacted) <span class="tag">per CCIR</span></td><td>Glomfjord cluster; backs the Macquarie Glomfjord loan.</td></tr>
@@ -119,11 +128,15 @@
   <li><b>11 Oct:</b> a GLAS (revolver collateral agent) charge over the plc was satisfied; one remains outstanding.</li>
   <li><b>13 Oct:</b> changes of persons with significant control and a share allotment at Nscale Global Holdings.</li>
   <li><b>19 &amp; 23 Oct:</b> share allotments at NSCALE PLC.</li>
+  <li><b>18 Oct (news):</b> Microsoft terminates the Loughton contract over the UK grid delay.</li>
+  <li><b>20 Oct (news):</b> Anthropic reported in talks for a second ~$45B Monarch deal.</li>
   <li><b>26 Oct:</b> Anthropic's S-1 confirms the $44.6B commitment and its pay-on-delivery terms.</li>
 </ul>
 
 <h2>7. Open questions</h2>
 <ul>
+  <li>How much of the $43.8B was Loughton, and were GPUs, financing or Dell schedules tied to it? Is there a termination payment?</li>
+  <li>Does Nscale file an amended S-1 reflecting Loughton and any second Anthropic agreement?</li>
   <li>Who is the redacted North Carolina customer, and what is the Iceland customer's credit?</li>
   <li>How will the Anthropic build (Monarch, Vera Rubin GPUs) be financed, and by when?</li>
   <li>Why does PIMCO book its loan to "Nscale AS" (a Norwegian entity) rather than Nscale Services UK Ltd?</li>
@@ -132,7 +145,7 @@
 </ul>
 
 <h2>How this was built</h2>
-<p class="small">Every figure is held as a separate sourced statement (value, source document, location, date, method) in a tracker that flags where sources disagree and keeps superseded values as history. Sources: Nscale S-1 and exhibits 10.12–10.25 and 21.1; Companies House profiles, charges and filing history for 32 UK entities; Blue Owl BDC 10-Qs (OBDC, OCIC, OTF, OTIC, OBDC II); PIMCO and Fidelity N-PORT filings; Ionic Digital, WhiteFiber and KiNRG 10-Qs; Anthropic S-1; CCIR (ccir.io) issuer page, used as a cross-check. A daily monitor logs new SEC and Companies House filings naming Nscale. Figures marked "per CCIR" have not been independently verified against the underlying document. This is research from public information, not investment advice.</p>
+<p class="small">Every figure is held as a separate sourced statement (value, source document, location, date, method) in a tracker that flags where sources disagree and keeps superseded values as history. Sources: Nscale S-1 and exhibits 10.12–10.25 and 21.1; Companies House profiles, charges and filing history for 32 UK entities; Blue Owl BDC 10-Qs (OBDC, OCIC, OTF, OTIC, OBDC II); PIMCO and Fidelity N-PORT filings; Ionic Digital, WhiteFiber and KiNRG 10-Qs; Anthropic S-1; CCIR (ccir.io) issuer page, used as a cross-check; news reports (Reuters, Telegraph, Guardian, CNBC via SiliconANGLE, TechTarget, Tech Times, Motley Fool) for the October updates, graded below filings. A daily monitor logs new SEC and Companies House filings naming Nscale. Figures marked "per CCIR" have not been independently verified against the underlying document. This is research from public information, not investment advice.</p>
 
 </body>
 </html>

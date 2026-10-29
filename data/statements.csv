@@ -1264,3 +1264,30 @@ st3701,ctr_anthropic,end_date,2033,,src_anthropic_s1,MD&A: commitments (Nscale S
 st3702,ctr_anthropic,take_or_pay,false,,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,"'fees accruing only as capacity is delivered to and accepted by us'. Non-cancelable otherwise, but nothing is owed before delivery and acceptance."
 st3703,ctr_anthropic,termination_rights,"Non-cancelable except in limited circumstances, including Nscale's failure to meet delivery or service availability requirements or an uncured material breach",,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,
 st3704,ctr_anthropic,provider,le_nscale_global_holdings,,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,'wholly owned subsidiaries of Nscale Global Holdings Limited'.
+st3800,site_loughton,group,group_nscale,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3801,site_loughton,country,United Kingdom,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3802,site_loughton,location,"Loughton, Essex",,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3803,site_loughton,mw_contracted,50,MW,src_news_siliconangle_1018,Article text,2025-09,2026-10-29,reported,,manual:claude-news,"Initial 50 MW, expandable to 90 MW."
+st3804,site_loughton,energization_target_date,2027-03,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,"Planned 23,040 GPUs by Q1 2027."
+st3805,site_loughton,grid_connection_date,2033,,src_news_techtimes_1019,Article text,,2026-10-29,estimated,,manual:claude-news,"UK Power Networks told Nscale capacity would not be available until the early-to-mid 2030s (Guardian/Telegraph via TechTarget, Tech Times)."
+st3806,ctr_msft_loughton,group,group_nscale,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3807,ctr_msft_loughton,customer,le_microsoft,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3808,ctr_msft_loughton,provider,group_nscale,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3809,ctr_msft_loughton,site,site_loughton,,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3810,ctr_msft_loughton,gpu_count,23040,GPUs,src_news_techtarget_1019,Article text,,2026-10-29,reported,,manual:claude-news,
+st3811,ctr_msft_loughton,gpu_type,GB300,,src_news_techtarget_1019,Article text,,2026-10-29,reported,,manual:claude-news,
+st3812,ctr_msft_loughton,mw,50,MW,src_news_siliconangle_1018,Article text,,2026-10-29,reported,,manual:claude-news,
+st3813,ctr_msft_loughton,status,signed,,src_news_siliconangle_1018,Article text,2025-09,2026-10-29,reported,,manual:claude-news,
+st3814,ctr_msft_loughton,status,terminated,,src_news_techtarget_1019,Article text,2026-10-18,2026-10-29,reported,,manual:claude-news,Microsoft terminated after the grid delay; confirmed by an Nscale spokesperson. Microsoft: 'This decision relates to a single site.' Nscale: no impact on other Microsoft contracts.
+st3815,ctr_msft_loughton,value_total,,,src_news_techtarget_1019,Article text,,2026-10-29,checked_absent,,manual:claude-news,'The companies have not disclosed the financial consequences of the termination.'
+st3816,ctr_msft_sows,status,active,,src_news_techtarget_1019,Article text,2026-10-18,2026-10-29,reported,,manual:claude-news,"Other Microsoft sites (Texas, Portugal, Norway) reported unaffected. The S-1's 'up to $43.8B' includes Loughton, so it is now overstated by an undisclosed amount."
+st3817,ctr_anthropic_2,group,group_nscale,,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,
+st3818,ctr_anthropic_2,customer,le_anthropic,,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,
+st3819,ctr_anthropic_2,provider,group_nscale,,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,
+st3820,ctr_anthropic_2,site,site_monarch,,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,
+st3821,ctr_anthropic_2,mw,460,MW,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,"Second building at Monarch, Vera Rubin GPUs; right of first refusal on a planned third building."
+st3822,ctr_anthropic_2,gpu_type,NVIDIA Vera Rubin,,src_news_fool_1020,Article text,,2026-10-29,reported,,manual:claude-news,
+st3823,ctr_anthropic_2,value_total,45B,USD,src_news_fool_1020,Article text,2026-10-20,2026-10-29,reported,,manual:claude-news,'roughly $45 billion' per CNBC's source; not signed; Anthropic declined to comment.
+st3824,ctr_anthropic_2,status,in_negotiation,,src_news_fool_1020,Article text,2026-10-20,2026-10-29,reported,,manual:claude-news,
+st3825,ctr_anthropic_2,financing_status,not_secured,,src_news_fool_1020,Article text,,2026-10-29,estimated,,manual:claude-news,No financing reported; financing for the first Anthropic agreement was itself not secured at the S-1 date.
+st3826,ctr_anthropic,status,signed,,src_anthropic_s1,Article text,2026-08,2026-10-29,disclosed,,manual:claude-news,

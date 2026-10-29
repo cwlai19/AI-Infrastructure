@@ -3,7 +3,7 @@
     python -m tracker check              validate every data file against the vocabulary
     python -m tracker build              validate, then write build/tracker.db (SQLite) for querying
     python -m tracker report <group_id>  print a credit file, e.g. group_nscale
-    python -m tracker monitor [edgar|ch]  log new filings about watched groups to data/events.csv
+    python -m tracker monitor [edgar|ch|news]  log new filings about watched groups to data/events.csv
 """
 
 import sqlite3
@@ -54,7 +54,7 @@ def main(argv):
         print(f"Wrote {path}")
     elif cmd == "monitor":
         from .monitor import run
-        feeds = tuple(argv[1:]) or ("edgar", "ch")
+        feeds = tuple(argv[1:]) or ("edgar", "ch", "news")
         new = run(store, feeds)
         print(f"{len(new)} new event(s)")
         out = ROOT / "build" / "new_events.md"

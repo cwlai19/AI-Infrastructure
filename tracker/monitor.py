@@ -8,6 +8,8 @@ Feeds:
   edgar      SEC full-text search for the group's search terms: catches the company's own filings
              and anyone else who files about it (lenders' holdings, landlords, suppliers, customers).
   ch         Companies House filing history and charges for every UK entity with a registry id.
+  news       Google News search for the group's terms. Fastest but weakest (grade C): use it to
+             know something happened, then confirm in a filing before it becomes an A-grade statement.
 """
 
 import base64
@@ -73,6 +75,30 @@ def edgar_events(group, terms, since):
     return list(events.values())
 
 
+def news_events(group, terms):
+    """One event per news article (Google News RSS) matching any term."""
+    import xml.etree.ElementTree as ET
+    from email.utils import parsedate_to_datetime
+    events = []
+    for term in terms:
+        q = urllib.parse.urlencode({"q": f'"{term}"', "hl": "en-GB", "gl": "GB", "ceid": "GB:en"})
+        req = urllib.request.Request(f"https://news.google.com/rss/search?{q}", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            root = ET.fromstring(r.read())
+        for item in root.iter("item"):
+            get = lambda tag: (item.findtext(tag) or "").strip()
+            try:
+                when = parsedate_to_datetime(get("pubDate")).date().isoformat()
+            except (TypeError, ValueError):
+                when = ""
+            events.append(dict(
+                event_id=f"news:{get('guid') or get('link')}", feed="news", group=group,
+                subject=get("source") or "news", kind="news", event_date=when,
+                title=get("title"), url=get("link")))
+        time.sleep(1)
+    return events
+
+
 def ch_events(group, companies):
     """One event per filing-history item and per charge, for each (entity_id, company_number)."""
     auth = {"Authorization": _ch_key()}
@@ -112,14 +138,17 @@ def append_new(events, ignore_kinds=(), baseline_days=21):
     status: 'new' (needs triage), 'ignored' (a form type on the watchlist's ignore list),
     or 'baseline' (on the very first run, anything older than `baseline_days` is history, not news).
     """
-    seen = {e["event_id"] for e in load_events()}
+    logged = load_events()
+    seen = {e["event_id"] for e in logged}
+    feeds_seen = {e["feed"] for e in logged}
     new = [e for e in events if e["event_id"] not in seen]
     first = not EVENTS.exists()
     cutoff = (date.today() - timedelta(days=baseline_days)).isoformat()
     for e in new:
         if e["kind"] in ignore_kinds:
             e["status"] = "ignored"
-        elif first and e["event_date"] < cutoff:
+        elif e["feed"] not in feeds_seen and e["event_date"] < cutoff:
+            # first run of this feed: older items are history, not news
             e["status"] = "baseline"
         else:
             e["status"] = "new"
@@ -146,7 +175,7 @@ def uk_companies(store, group_id):
     return out
 
 
-def run(store, feeds=("edgar", "ch"), lookback_days=45):
+def run(store, feeds=("edgar", "ch", "news"), lookback_days=45):
     import yaml
     watch = yaml.safe_load(WATCHLIST.read_text())
     since = (date.today() - timedelta(days=lookback_days)).isoformat()
@@ -156,4 +185,6 @@ def run(store, feeds=("edgar", "ch"), lookback_days=45):
             all_events += edgar_events(group_id, cfg["edgar_terms"], since)
         if "ch" in feeds:
             all_events += ch_events(group_id, uk_companies(store, group_id))
+        if "news" in feeds and cfg.get("news_terms"):
+            all_events += news_events(group_id, cfg["news_terms"])
     return append_new(all_events, tuple(watch.get("ignore_kinds", [])))
