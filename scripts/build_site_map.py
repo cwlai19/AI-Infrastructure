@@ -79,14 +79,14 @@ def late_terms(sid, contracts, facilities):
             cust.append({"contract": c["name"], "customer": c["customer"].get("text"), "proxy": proxy, **terms})
     lend = [{"facility": f["name"], **{k: fact(f["id"], k) for k in LENDER_LATE}} for f in facilities]
     lend = [x for x in lend if any(x[k].get("values") for k in LENDER_LATE)]
-    return {"customer": cust, "lender": lend, **overlay["if_late"].get(sid, {"stage": None, "read": []})}
+    return {"customer": cust, "lender": lend}
 
 
 sites = []
 for sid, ov in overlay["sites"].items():
     sites.append({
         "id": sid, "label": ov["label"], "lat": ov["lat"], "lon": ov["lon"], "region": ov["region"],
-        "risk": ov["risk"], "drivers": ov["drivers"], "label_dy": ov.get("label_dy", 4),
+        "risk": ov["risk"],
         **{k: fact(sid, k) for k in ("country", "ownership", "landlord", "operator", "mw_contracted", "mw_energized",
                                       "gpus_deployed", "energization_target_date", "construction_status", "location")},
         "facilities": [facility(f) for f in ov.get("facilities", [])],
@@ -94,7 +94,7 @@ for sid, ov in overlay["sites"].items():
     })
     sites[-1]["late"] = late_terms(sid, sites[-1]["contracts"], sites[-1]["facilities"])
 
-group = {k: fact(GROUP, k) for k in ("mw_contracted_total", "tcv_active", "tcv_active_and_contracted", "gpus_active",
+group = {k: fact(GROUP, k) for k in ("mw_contracted_total", "mw_energized_total", "mw_potential", "tcv_active", "tcv_active_and_contracted", "gpus_active",
                                      "gpus_active_and_contracted", "sites_active", "sites_contracted", "revenue_6m",
                                      "revenue_share_by_country_6m", "total_debt", "cash_and_equivalents")}
 corporate = [dict(facility(f), why=why) for f, why in overlay["corporate_facilities"].items()]
@@ -112,7 +112,7 @@ customers = []
 for cid, ov in overlay["customers"].items():
     ctrs = [e for e, ent in store.entities.items() if ent["type"] == "contract"
             and any(store.canonical.get(x.value, x.value) == store.canonical.get(cid, cid) for x in resolve(store, e, "customer").current)]
-    customers.append({"id": cid, "name": _label(store, cid), "read": ov["read"], "headline": ov["headline"],
+    customers.append({"id": cid, "name": _label(store, cid), "headline": ov["headline"],
                       "sites": sorted({x for c in ctrs for x in sites_of(c)}),
                       "contracts": [{"id": c, "name": _label(store, c), "sites": sites_of(c), **{k: fact(c, k) for k in CONTRACT_PROPS}}
                                     for c in ctrs]})
@@ -122,7 +122,7 @@ LEASE_PROPS = ("lease_type", "mw", "start_date", "term_months", "guarantor", "gu
 upstream = []
 for sid, ov in overlay["upstream"].items():
     cp = ov.get("counterparty")
-    upstream.append({"site": sid, "read": ov["read"],
+    upstream.append({"site": sid,
                      **{k: fact(sid, k) for k in ("ownership", "landlord", "acquisition_cost", "deferred_consideration_outstanding")},
                      "counterparty": cp and {"id": cp, "name": _label(store, cp), "dependency": fact(cp, "dependency")},
                      "lease": ov.get("lease") and {"id": ov["lease"], "name": _label(store, ov["lease"]),
@@ -146,7 +146,7 @@ asia = {"entities": sum(apac.values()),
         "grade": "A", "source": store.sources["src_ex21"]["title"]}
 
 geo_dir = Path(sys.argv[1])
-data = {"as_of": "2026-10-29", "rated_by": overlay["rated_by"], "rated_date": overlay["rated_date"],
+data = {"as_of": "2026-10-29",
         "group": group, "asia": asia, "sites": sites, "corporate": corporate,
         "customers": customers, "upstream": upstream, "group_lease": group_lease,
         "rcf_cross_default": rcf_cross_default}

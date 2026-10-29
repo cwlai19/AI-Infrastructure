@@ -53,6 +53,7 @@ entity_types:
       largest_customer_revenue_share: {kind: percent, key: true}
       subsidiary_count: {kind: number, unit: entities}
       revenue_share_by_country_6m: {kind: text, multi: true}
+      mw_potential: {kind: number, unit: MW}   # pipeline of potential power the company says it has line of sight to
 
   legal_entity:
     description: A registered company, SPV, lender or customer. Named as the source names it.
