@@ -59,3 +59,67 @@ corporate_facilities:
   fac_parent_rcf: "Group revolver"
   fac_convertible_2026: "Group-level unsecured convertible"
   fac_committed_2_35b: "Bank commitments subject to documentation; use not disclosed"
+
+# Counterparty view. Facts are pulled from the tracker; 'read' is analyst judgement (pending review), shown as such.
+# headline: the one contract whose value stands for that customer (Microsoft's site contracts sit inside its aggregate).
+customers:
+  le_microsoft:
+    headline: ctr_msft_sows
+    read:
+      - "Strongest payer on the book; the risk is walk-away, not payment. It already exited Loughton (UK) after grid delays."
+      - "Termination is for cause (60 days' notice) or insolvency, so Nscale's own delivery is the main lever Microsoft holds."
+      - "Revenue today is mostly Microsoft at Sines: the largest customer was 52% of H1 2026 revenue and Portugal 52%."
+  le_anthropic:
+    headline: ctr_anthropic
+    read:
+      - "Largest single backlog ($44.6B) but not take-or-pay: Anthropic pays on delivery and can drop late or under-performing tranches."
+      - "All of it sits on one campus (Monarch) that is pre-construction, with financing not secured."
+      - "A second ~$45B building is in talks (news only). It would deepen, not diversify, the Monarch and Anthropic concentration."
+  le_nvidia:
+    headline: ctr_nvidia_msa
+    read:
+      - "Also a shareholder (>5%) and guarantor of $860M of the Ward County rent, so it supports Nscale from three sides."
+  le_spring_sg:
+    headline: ctr_spring_glomfjord
+    read:
+      - "Was 73% of 2025 revenue. Fee per GPU-hour redacted; Glomfjord's Macquarie loan depends on this contract."
+  le_figure:
+    headline: ctr_figure
+    read:
+      - "100,000 GPUs but no value disclosed and no site named, so it cannot yet be tied to an asset or a loan."
+
+# Upstream view per campus: who Nscale depends on for the building and power shell.
+upstream:
+  site_ward_county:
+    counterparty: le_ionic
+    lease: lease_ward_county
+    read:
+      - "Mutual dependence: Ionic's growth business is this one lease, and its subsidiary KiNRG gets 86% of revenue from Nscale."
+      - "Strong credit support for the landlord: NVIDIA guarantees $860M of rent for five years plus a $470M escrow."
+      - "Nscale must take a further 89 MW if Ionic delivers it, a contingent obligation with no penalty on Ionic if it cannot."
+  site_north_carolina:
+    counterparty: le_whitefiber
+    lease: lease_nc1
+    read:
+      - "Nscale is WhiteFiber's sole contracted tenant at NC-1, so the landlord's credit is tied to Nscale's."
+  site_borealis:
+    read:
+      - "Third-party colocation; the operator is not named in the Macquarie facility. Customer redacted; service must start by 27 Jan 2027."
+  site_sin01:
+    read:
+      - "Colocation; the landlord is not named in the S-1. Generates most current revenue (Portugal 52% of H1 2026)."
+  site_sin02:
+    read:
+      - "Owned, but $430.7M of the purchase price is still owed to the seller: an upstream payable that ranks alongside the build cost."
+  site_monarch:
+    read:
+      - "Owned land ($792.6M acquisition). No landlord risk; the upstream risk is the on-site gas plant and its permits."
+  site_kvandal_south:
+    read:
+      - "Came in through the Aker JV, rolled up into Nscale in March 2026. No landlord disclosed; NVE fine notice pending (deadline 15 Nov 2026)."
+  site_glomfjord:
+    read:
+      - "Owned. No landlord; the risk is delivery: about six months late, with delay penalties reportedly owed to the customer."
+  site_loughton:
+    read:
+      - "Terminated: the grid connection was not expected until 2033."

@@ -43,6 +43,8 @@ for line in [
     "(e.g. CCIR), or an A source seen only as an excerpt; C = news, analysts, our own estimates.",
     "review_verdict: 'rejected' = kept on file but not used (our misreading); 'explained' = known, understood disagreement.",
     "Debt_ledger: the value shown for each facility after applying the resolution rules (latest date, then strongest source).",
+    "Customer_contracts / Leases / Sites / Counterparty_dependence: resolved values per contract, lease, campus and counterparty, with grade.",
+    "Credit reads and construction-risk ratings are analyst judgement and live in the site map, not here.",
     "Events: the daily monitor's log of new SEC and Companies House filings naming Nscale (status new / baseline / ignored).",
 ]:
     readme.append([line])
@@ -77,6 +79,35 @@ for e, ent in store.entities.items():
             row.append("; ".join(f"{_value(store, s)} [{s.grade}]" for s in shown) + (" (disputed)" if r.conflicts else ""))
     ledger_rows.append(row)
 sheet("Debt_ledger", ["Facility"] + [h for _, h in LEDGER_COLUMNS], ledger_rows, [40] + [24] * len(LEDGER_COLUMNS))
+
+
+
+def cell(e, prop):
+    r = resolve(store, e, prop)
+    if r.status == "not_checked":
+        return ""
+    if r.status == "undisclosed":
+        return "undisclosed"
+    shown = r.current if r.status == "multi" else r.current[:1]
+    return "; ".join(f"{_value(store, s)} [{s.grade}]" for s in shown) + (" (disputed)" if r.conflicts else "")
+
+
+def table(etype, props):
+    return [[_label(store, e)] + [cell(e, p) for p in props] for e, ent in store.entities.items() if ent["type"] == etype]
+
+
+CONTRACT_PROPS = ["customer", "provider", "site", "status", "value_total", "take_or_pay", "start_date", "end_date", "term_months",
+                  "termination_rights", "extension_rights", "financing_status", "gpu_count", "gpu_type", "mw"]
+sheet("Customer_contracts", ["Contract"] + CONTRACT_PROPS, table("contract", CONTRACT_PROPS), [44] + [24] * len(CONTRACT_PROPS))
+LEASE_PROPS = ["site", "landlord", "tenant", "lease_type", "mw", "start_date", "term_months", "guarantor", "guarantee_amount",
+               "guarantee_term", "escrow_amount", "expansion_obligation", "landlord_revenue_6m"]
+sheet("Leases", ["Lease"] + LEASE_PROPS, table("lease", LEASE_PROPS), [40] + [24] * len(LEASE_PROPS))
+SITE_PROPS = ["country", "ownership", "landlord", "operator", "acquisition_cost", "deferred_consideration_outstanding",
+              "mw_contracted", "mw_energized", "gpus_deployed", "energization_target_date", "construction_status"]
+sheet("Sites", ["Site"] + SITE_PROPS, table("site", SITE_PROPS), [36] + [24] * len(SITE_PROPS))
+COUNTERPARTY_PROPS = ["role", "dependency", "largest_customer", "largest_customer_revenue_share", "sec_cik"]
+sheet("Counterparty_dependence", ["Entity"] + COUNTERPARTY_PROPS,
+      [r for r in table("legal_entity", COUNTERPARTY_PROPS) if r[2]], [36] + [40] * len(COUNTERPARTY_PROPS))
 
 sheet("Sources", ["id", "type", "access", "publisher", "title", "url", "published_date", "retrieved_date", "note"],
       [[s.get(k, "") for k in ["id", "type", "access", "publisher", "title", "url", "published_date", "retrieved_date", "note"]]

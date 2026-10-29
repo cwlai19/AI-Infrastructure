@@ -75,6 +75,42 @@ group = {k: fact(GROUP, k) for k in ("mw_contracted_total", "tcv_active", "tcv_a
                                      "revenue_share_by_country_6m", "total_debt", "cash_and_equivalents")}
 corporate = [dict(facility(f), why=why) for f, why in overlay["corporate_facilities"].items()]
 
+
+def sites_of(contract):
+    canon = {store.canonical.get(sid, sid): sid for sid in overlay["sites"]}
+    return sorted({canon[store.canonical.get(x.value, x.value)] for x in resolve(store, contract, "site").current
+                   if store.canonical.get(x.value, x.value) in canon})
+
+
+CONTRACT_PROPS = ("value_total", "status", "take_or_pay", "start_date", "end_date", "term_months", "termination_rights",
+                  "extension_rights", "financing_status", "gpu_count", "gpu_type")
+customers = []
+for cid, ov in overlay["customers"].items():
+    ctrs = [e for e, ent in store.entities.items() if ent["type"] == "contract"
+            and any(store.canonical.get(x.value, x.value) == store.canonical.get(cid, cid) for x in resolve(store, e, "customer").current)]
+    customers.append({"id": cid, "name": _label(store, cid), "read": ov["read"], "headline": ov["headline"],
+                      "sites": sorted({x for c in ctrs for x in sites_of(c)}),
+                      "contracts": [{"id": c, "name": _label(store, c), "sites": sites_of(c), **{k: fact(c, k) for k in CONTRACT_PROPS}}
+                                    for c in ctrs]})
+
+LEASE_PROPS = ("lease_type", "mw", "start_date", "term_months", "guarantor", "guarantee_amount", "guarantee_term",
+               "escrow_amount", "expansion_obligation", "landlord_revenue_6m")
+upstream = []
+for sid, ov in overlay["upstream"].items():
+    cp = ov.get("counterparty")
+    upstream.append({"site": sid, "read": ov["read"],
+                     **{k: fact(sid, k) for k in ("ownership", "landlord", "acquisition_cost", "deferred_consideration_outstanding")},
+                     "counterparty": cp and {"id": cp, "name": _label(store, cp), "dependency": fact(cp, "dependency")},
+                     "lease": ov.get("lease") and {"id": ov["lease"], "name": _label(store, ov["lease"]),
+                                                   **{k: fact(ov["lease"], k) for k in LEASE_PROPS}}})
+# Landlord-side subsidiaries whose revenue depends on Nscale (e.g. KiNRG at Ward County).
+for e in ("le_kinrg",):
+    for u in upstream:
+        if u["site"] == "site_ward_county":
+            u["supplier"] = {"id": e, "name": _label(store, e), "dependency": fact(e, "dependency")}
+group_lease = {k: fact(GROUP, k) for k in ("operating_lease_liabilities", "leases_not_commenced", "largest_customer_revenue_share",
+                                          "deferred_revenue", "weighted_avg_contract_years")}
+
 APAC = ("Singapore", "Malaysia", "Japan", "Indonesia", "South Korea")
 apac = {}
 for st in store.statements:
@@ -87,9 +123,16 @@ asia = {"entities": sum(apac.values()),
 geo_dir = Path(sys.argv[1])
 data = {"as_of": "2026-10-29", "rated_by": overlay["rated_by"], "rated_date": overlay["rated_date"],
         "group": group, "asia": asia, "sites": sites, "corporate": corporate,
-        "geo": {"world": json.loads((geo_dir / "countries-50m.json").read_text()),
-                "us": json.loads((geo_dir / "states-10m.json").read_text())}}
+        "customers": customers, "upstream": upstream, "group_lease": group_lease}
 template = (ROOT / "reports" / "site_map_template.html").read_text()
+# Email copy: map outlines load from the web when opened, so the file stays small.
+lite = ROOT / "reports" / "Nscale_Site_Map.html"
+lite.write_text("<!doctype html><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
+                + template.replace("/*__DATA__*/null", json.dumps(data, separators=(",", ":"))))
+# Published copy: outlines embedded (the artifact page cannot fetch them).
+data["geo"] = {"world": json.loads((geo_dir / "countries-50m.json").read_text()),
+               "us": json.loads((geo_dir / "states-10m.json").read_text())}
 out = ROOT / "reports" / "site_map.html"
 out.write_text(template.replace("/*__DATA__*/null", json.dumps(data, separators=(",", ":"))))
-print(f"wrote {out} ({out.stat().st_size // 1024} KB): {len(sites)} sites, {len(corporate)} corporate facilities")
+print(f"wrote {out} ({out.stat().st_size // 1024} KB) and {lite.name} ({lite.stat().st_size // 1024} KB): "
+      f"{len(sites)} sites, {len(customers)} customers, {len(corporate)} corporate facilities")

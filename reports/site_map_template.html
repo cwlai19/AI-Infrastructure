@@ -136,6 +136,18 @@ tr.total td { font-weight: 600; cursor: default; } tr.total:hover td { backgroun
 .note p { margin: 0; }
 a { color: inherit; text-decoration-color: var(--ink-3); }
 .empty { color: var(--ink-3); }
+.sub-h { color: var(--ink-2); margin: -12px 0 0; max-width: 90ch; }
+.conc { display: flex; flex-direction: column; gap: 6px; max-width: 760px; }
+.conc .row { display: grid; grid-template-columns: 170px minmax(0, 1fr) 120px; gap: 12px; align-items: center; font-size: 13.5px; }
+.conc .row .track { height: 14px; background: var(--hover); border-radius: 0 4px 4px 0; overflow: hidden; }
+.conc .row .track i { display: block; height: 100%; background: var(--accent); border-radius: 0 4px 4px 0; }
+.conc .row .track i.talks { background: transparent; border: 1.5px dashed var(--accent); border-left: 0; }
+.conc .row .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+@media (max-width: 640px) { .conc .row { grid-template-columns: 110px minmax(0, 1fr) 90px; } }
+td ul.read { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+td .small { font-size: 12.5px; color: var(--ink-2); }
+td .stack { display: flex; flex-direction: column; gap: 3px; }
+.yes { color: var(--tag-green-fg); background: var(--tag-green-bg); } .no { color: var(--tag-red-fg); background: var(--tag-red-bg); }
 </style>
 
 <div class="page">
@@ -159,7 +171,7 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
 
   <div class="regions"><table id="regions"><thead></thead><tbody></tbody></table></div>
 
-  <div class="main">
+  <div class="main" id="map">
     <div class="maps">
       <div class="pane" id="pane-us"><span class="cap">United States</span><svg id="map-us" viewBox="0 0 640 380" role="img" aria-label="US campuses"></svg></div>
       <div class="pane" id="pane-eu"><span class="cap">Europe</span><svg id="map-eu" viewBox="0 0 640 520" role="img" aria-label="European campuses"></svg></div>
@@ -170,6 +182,15 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
 
   <h2>Campuses</h2>
   <div class="db"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+
+  <h2>Customers</h2>
+  <p class="sub-h" id="cust-sub"></p>
+  <div class="conc" id="conc" role="img" aria-label="Contracted value by customer"></div>
+  <div class="db"><table id="custs"><thead></thead><tbody></tbody></table></div>
+
+  <h2>Lessors and upstream obligations</h2>
+  <p class="sub-h" id="up-sub"></p>
+  <div class="db"><table id="ups"><thead></thead><tbody></tbody></table></div>
 
   <h2>Group-level debt</h2>
   <p class="gap" style="margin:-12px 0 0">Facilities not tied to a single campus.</p>
@@ -347,6 +368,10 @@ function renderRegions() {
 }
 
 // ---------- maps ----------
+if (!D.geo) {
+  const get = u => { const x = new XMLHttpRequest(); x.open("GET", u, false); x.send(); return JSON.parse(x.responseText); };
+  D.geo = { world: get("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json"), us: get("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json") };
+}
 const world = topojson.feature(D.geo.world, D.geo.world.objects.countries);
 const states = topojson.feature(D.geo.us, D.geo.us.objects.states);
 const nation = topojson.feature(D.geo.us, D.geo.us.objects.nation);
@@ -498,10 +523,87 @@ document.getElementById("legend").innerHTML =
 document.getElementById("method").innerHTML = `
   <p><b>How to read this.</b> Circles sit at approximate town-level locations. Construction-risk ratings are analyst judgements with their drivers shown on each campus;
   every other figure is a sourced statement from the tracker, with a grade that links to the document. "Not disclosed" means a source was checked and is silent; "not yet checked" is a research gap.</p>
-  <p><b>Known gaps.</b> Nscale does not disclose MW, revenue or contract value by campus. Active MW is filled only where the press or a counterparty reports it; Microsoft's contract value (up to $43.8B, less Loughton) is disclosed only in aggregate; the Dell bridge is shared by Ward County and North Carolina in an undisclosed split. Asia-Pacific shows registered subsidiaries only.</p>`;
+  <p><b>Known gaps.</b> Nscale does not disclose MW, revenue or contract value by campus. Active MW is filled only where the press or a counterparty reports it; Microsoft's contract value (up to $43.8B, less Loughton) is disclosed only in aggregate; the Dell bridge is shared by Ward County and North Carolina in an undisclosed split. Asia-Pacific shows registered subsidiaries only.</p>
+  <p><b>Credit reads.</b> The "Credit read" column on the customer and lessor tables is analyst judgement (${esc(D.rated_by)}, ${esc(D.rated_date)}); every other cell is a sourced statement.</p>`;
+
+// ---------- counterparties ----------
+const firstText = f => f && f.values ? f.values[0].text : null;
+const yesNo = (f, yes, no) => !f || !f.values ? show(f) : `<span class="tag ${/true/.test(f.values[0].text) ? "yes" : "no"}">${/true/.test(f.values[0].text) ? yes : no}</span>${grade(f)}`;
+const siteName = id => (D.sites.find(s => s.id === id) || {}).label || id;
+const siteLinks = ids => ids.length ? ids.map(id => `<a href="#map" data-site="${id}">${esc(siteName(id))}</a>`).join(", ") : '<span class="gap">No campus named</span>';
+function focusSites(ids) {
+  if (!ids.length) return;
+  state.regions = new Set(Object.keys(REGIONS)); state.risks = new Set(Object.keys(RISK)); state.campuses = new Set(ids);
+  state.selected = ids[0]; update(); renderCampus();
+  document.querySelector(".toolbar").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function wireSites(root) {
+  root.querySelectorAll("a[data-site]").forEach(a => a.onclick = e => { e.preventDefault(); e.stopPropagation(); focusSites([a.dataset.site]); });
+}
+const TCV = num(G.tcv_active_and_contracted);
+function headline(c) { return c.contracts.find(x => x.id === c.headline) || c.contracts[0]; }
+function renderCustomers() {
+  const live = c => c.contracts.filter(x => /negotiation/.test(firstText(x.status) || ""));
+  const rows = D.customers.map(c => ({ c, h: headline(c), v: num(headline(c).value_total), talks: d3.sum(live(c), x => num(x.value_total) || 0) }))
+    .sort((a, b) => (b.v ?? -1) - (a.v ?? -1));
+  const named = d3.sum(rows, r => r.v || 0);
+  document.getElementById("cust-sub").innerHTML = `Who pays Nscale, how much of the ${money(TCV)} contracted backlog${grade(G.tcv_active_and_contracted)} each holds, whether they must pay if Nscale delivers late, and when they can walk.
+    Click a campus name to see it on the map.`;
+  const max = Math.max(...rows.map(r => (r.v || 0) + r.talks), TCV - named);
+  const bar = (label, v, talks, note) => `<div class="row"><span>${label}</span><span class="track" style="display:flex">
+      <i style="width:${(v / max * 100).toFixed(1)}%"></i>${talks ? `<i class="talks" style="width:${(talks / max * 100).toFixed(1)}%"></i>` : ""}</span>
+      <span class="v">${note}</span></div>`;
+  document.getElementById("conc").innerHTML = rows.filter(r => r.v).map(r => bar(esc(r.c.name.replace(/ (Corporation|PBC)$/, "")), r.v, r.talks,
+      `${money(r.v)} · ${(r.v / TCV * 100).toFixed(0)}%${r.talks ? ` <span title="In talks, not signed">+${money(r.talks)}</span>` : ""}`)).join("") +
+    bar('<span class="gap">Not attributed</span>', TCV - named, 0, `${money(TCV - named)} · ${((TCV - named) / TCV * 100).toFixed(0)}%`) +
+    `<div class="gap" style="font-size:12px">Share of ${money(TCV)} active and contracted value. Dashed: in talks, not signed (news only), not in the total. "Not attributed": customers whose contract value is not disclosed (Figure, Spring, redacted Iceland and North Carolina customers).</div>`;
+  const t = document.getElementById("custs");
+  t.querySelector("thead").innerHTML = "<tr><th>Customer</th><th>Contracted value</th><th>Campuses</th><th>Pays if not delivered?</th><th>Runs to</th><th>Can walk if…</th><th>Financing</th><th>Credit read</th></tr>";
+  t.querySelector("tbody").innerHTML = rows.map(({ c, h, v, talks }) => {
+    const term = h.end_date.values ? show(h.end_date) : h.term_months.values ? show(h.term_months) : show(h.end_date);
+    const walk = h.termination_rights.values ? h.termination_rights.values.map(x => esc(x.text) + grade({ values: [x], grade: x.grade })).join('<br><span class="gap">Anthropic\'s own filing:</span> ') : show(h.termination_rights);
+    const other = c.contracts.filter(x => x.id !== h.id && x.status.values).map(x => `<div class="small">${esc(x.name)}${/terminated/.test(firstText(x.status)) ? ' <span class="tag gray">Terminated</span>' : /negotiation/.test(firstText(x.status)) ? ' <span class="tag blue">In talks</span>' : ""}</div>`).join("");
+    return `<tr data-sites="${c.sites.join(" ")}"><td style="min-width:210px"><div class="stack"><b>${esc(c.name)}</b><span class="small">${esc(h.name)}</span>${other}</div></td>
+      <td class="num">${v != null ? money(v) + grade(h.value_total) + `<div class="small">${(v / TCV * 100).toFixed(0)}% of backlog</div>` : '<span class="gap">Not disclosed</span>'}</td>
+      <td style="min-width:150px">${siteLinks(c.sites)}</td>
+      <td>${h.take_or_pay.values ? yesNo(h.take_or_pay, "Yes, take-or-pay", "No, on delivery") : show(h.take_or_pay)}</td>
+      <td>${term}${h.extension_rights.values ? `<div class="small">${esc(h.extension_rights.values[0].text)}</div>` : ""}</td>
+      <td class="small" style="min-width:220px">${walk}</td>
+      <td>${h.financing_status.values ? `<span class="tag ${/not/.test(firstText(h.financing_status)) ? "red" : "green"}">${words(firstText(h.financing_status))}</span>${grade(h.financing_status)}` : show(h.financing_status)}</td>
+      <td style="min-width:260px"><ul class="read">${c.read.map(r => `<li>${esc(r)}</li>`).join("")}</ul></td></tr>`;
+  }).join("");
+  t.querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => focusSites(tr.dataset.sites ? tr.dataset.sites.split(" ") : []));
+  wireSites(t);
+}
+function renderUpstream() {
+  const GL = D.group_lease;
+  document.getElementById("up-sub").innerHTML = `Who Nscale depends on for each campus, and who depends on Nscale. Group operating lease liabilities ${showMoney(GL.operating_lease_liabilities)},
+    plus ${showMoney(GL.leases_not_commenced)} of colocation leases signed but not yet started (June 2026).`;
+  const t = document.getElementById("ups");
+  t.querySelector("thead").innerHTML = "<tr><th>Campus</th><th>How held</th><th>Upstream counterparty</th><th>Key terms</th><th>Credit support</th><th>Who depends on whom</th><th>Credit read</th></tr>";
+  t.querySelector("tbody").innerHTML = D.upstream.map(u => {
+    const L = u.lease, cp = u.counterparty, s = D.sites.find(x => x.id === u.site);
+    const kv = (k, f, fmt) => f && f.values ? `<div><span class="gap">${k}:</span> ${fmt ? show(f, fmt) : show(f)}</div>` : "";
+    const terms = L ? kv("Type", L.lease_type) + kv("Size", L.mw, x => esc(x.number + " MW")) + kv("Start", L.start_date) + kv("Term", L.term_months)
+                    : kv("Bought for", u.acquisition_cost, x => esc(money(x.number))) + kv("Still owed to seller", u.deferred_consideration_outstanding, x => esc(money(x.number)));
+    const support = L ? kv("Guarantor", L.guarantor) + kv("Guarantee", L.guarantee_amount, x => esc(money(x.number))) + kv("For", L.guarantee_term) + kv("Escrow", L.escrow_amount, x => esc(money(x.number))) + kv("Obligation", L.expansion_obligation) : "";
+    const dep = [cp && cp.dependency.values ? `<div><b>${esc(cp.name)}:</b> ${show(cp.dependency)}</div>` : "",
+                 u.supplier && u.supplier.dependency.values ? `<div><b>${esc(u.supplier.name)}:</b> ${show(u.supplier.dependency)}</div>` : "",
+                 L && L.landlord_revenue_6m.values ? `<div>Landlord revenue from the lease, six months: ${show(L.landlord_revenue_6m, x => esc(money(x.number)))}</div>` : ""].join("");
+    const who = cp ? `${esc(cp.name)}${L ? `<div class="small">via ${esc(L.name)}</div>` : ""}` : u.landlord.values ? show(u.landlord) : '<span class="gap">Not named in filings</span>';
+    return `<tr data-sites="${u.site}"><td><a href="#map" data-site="${u.site}">${esc(siteName(u.site))}</a>${s ? `<div style="margin-top:4px">${riskTag(s.risk)}</div>` : ""}</td>
+      <td>${u.ownership.values ? `<span class="tag gray">${words(firstText(u.ownership))}</span>${grade(u.ownership)}` : show(u.ownership)}</td>
+      <td>${who}</td><td class="small stack" style="min-width:180px">${terms || '<span class="gap">Not disclosed</span>'}</td>
+      <td class="small stack" style="min-width:180px">${support || '<span class="gap">None disclosed</span>'}</td>
+      <td class="small stack" style="min-width:200px">${dep || '<span class="gap">Not disclosed</span>'}</td>
+      <td style="min-width:260px"><ul class="read">${u.read.map(r => `<li>${esc(r)}</li>`).join("")}</ul></td></tr>`;
+  }).join("");
+  t.querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => focusSites([tr.dataset.sites]));
+  wireSites(t);
+}
 
 function update() { syncToolbar(); renderStats(); renderRegions(); render(); renderTable(); }
 try { const saved = localStorage.getItem("nscale-map-site"); if (saved && D.sites.some(s => s.id === saved)) state.selected = saved; } catch (e) {}
 if (!state.selected) state.selected = "site_monarch";
-update(); renderCampus(); renderCorp();
+update(); renderCampus(); renderCorp(); renderCustomers(); renderUpstream();
 </script>
