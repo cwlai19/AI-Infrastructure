@@ -1,163 +1,179 @@
 <title>Nscale Site Map</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: map-first credit view. Two map panes (US, Europe) beside a sticky site dossier; comparison table below. */
+/* Layout: Notion-style page. Title block, a database-style toolbar of filters, totals that follow the filters,
+   map panes beside a campus page, then a database table. Quiet greys, pastel select tags, colour only where it means something. */
 :root {
-  --bg: #f4f6f7;
-  --surface: #fcfcfb;
-  --ink: #14181b;
-  --ink-2: #4b545b;
-  --ink-3: #7a838a;
-  --line: #dde2e5;
-  --land: #e4e8ea;
-  --land-edge: #c6cdd2;
-  --water: #f8fafb;
-  --accent: #1d5f8a;
-  --accent-wash: #e3eef5;
-  --risk-low: #0ca30c;
-  --risk-medium: #fab219;
-  --risk-high: #ec835a;
-  --risk-critical: #d03b3b;
-  --risk-terminated: #8a9298;
-  --on-warning: #0b0b0b;
-  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
-  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg: #ffffff;
+  --ink: #37352f;
+  --ink-2: #787774;
+  --ink-3: #9b9a97;
+  --line: #e9e9e7;
+  --hover: #f1f1ef;
+  --panel: #fbfbfa;
+  --land: #f1f1ef;
+  --land-edge: #dcdbd8;
+  --water: #ffffff;
+  --accent: #2383e2;
+  --tag-red-bg: #ffe2dd; --tag-red-fg: #5d1715;
+  --tag-orange-bg: #fadec9; --tag-orange-fg: #49290e;
+  --tag-yellow-bg: #fdecc8; --tag-yellow-fg: #402c1b;
+  --tag-green-bg: #dbeddb; --tag-green-fg: #1c3829;
+  --tag-gray-bg: #e3e2e0; --tag-gray-fg: #32302c;
+  --tag-blue-bg: #d3e5ef; --tag-blue-fg: #183347;
+  --risk-low: #0ca30c; --risk-medium: #fab219; --risk-high: #ec835a; --risk-critical: #d03b3b; --risk-terminated: #9b9a97;
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111416; --surface: #181c1f; --ink: #eef1f2; --ink-2: #b6bec4; --ink-3: #8a949b;
-    --line: #2a3035; --land: #252b30; --land-edge: #3a4248; --water: #15191c;
-    --accent: #6fb0db; --accent-wash: #1d2c37; --risk-terminated: #7d868c; color-scheme: dark;
+    --bg: #191919; --ink: #d4d4d4; --ink-2: #9b9b9b; --ink-3: #7f7f7f; --line: #2f2f2f; --hover: #262626; --panel: #202020;
+    --land: #262626; --land-edge: #3a3a3a; --water: #191919; --accent: #529cca;
+    --tag-red-bg: #522e2a; --tag-red-fg: #f4b7ad; --tag-orange-bg: #5c3b23; --tag-orange-fg: #f2c8a3;
+    --tag-yellow-bg: #564328; --tag-yellow-fg: #f0d9a8; --tag-green-bg: #243d30; --tag-green-fg: #b6dcc1;
+    --tag-gray-bg: #373737; --tag-gray-fg: #d4d4d4; --tag-blue-bg: #143a4e; --tag-blue-fg: #b3d4e8; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111416; --surface: #181c1f; --ink: #eef1f2; --ink-2: #b6bec4; --ink-3: #8a949b;
-  --line: #2a3035; --land: #252b30; --land-edge: #3a4248; --water: #15191c;
-  --accent: #6fb0db; --accent-wash: #1d2c37; --risk-terminated: #7d868c; color-scheme: dark;
+  --bg: #191919; --ink: #d4d4d4; --ink-2: #9b9b9b; --ink-3: #7f7f7f; --line: #2f2f2f; --hover: #262626; --panel: #202020;
+  --land: #262626; --land-edge: #3a3a3a; --water: #191919; --accent: #529cca;
+  --tag-red-bg: #522e2a; --tag-red-fg: #f4b7ad; --tag-orange-bg: #5c3b23; --tag-orange-fg: #f2c8a3;
+  --tag-yellow-bg: #564328; --tag-yellow-fg: #f0d9a8; --tag-green-bg: #243d30; --tag-green-fg: #b6dcc1;
+  --tag-gray-bg: #373737; --tag-gray-fg: #d4d4d4; --tag-blue-bg: #143a4e; --tag-blue-fg: #b3d4e8; color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body {
-  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 14px; line-height: 1.45;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 20px 40px;
-}
-.wrap { max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
-h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.2vw, 34px); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-.sub { color: var(--ink-2); margin: 2px 0 0; max-width: 70ch; }
-.asof { color: var(--ink-3); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
-.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; min-width: 0; }
-.kpi .k { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
-.kpi .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
-.kpi .n { font-size: 12px; color: var(--ink-2); }
-.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); }
-.seg button { border: 0; background: transparent; color: var(--ink-2); font: inherit; font-size: 13px; padding: 6px 10px; cursor: pointer; }
-.seg button[aria-pressed="true"] { background: var(--accent-wash); color: var(--ink); font-weight: 600; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);
-  border-radius: 999px; padding: 4px 10px 4px 6px; font: inherit; font-size: 12px; cursor: pointer; }
-.chip[aria-pressed="false"] { opacity: 0.45; }
-.ctl-label { font-size: 12px; color: var(--ink-3); }
-button:focus-visible, [tabindex]:focus-visible, th:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.main { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; }
+.page { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { font-size: clamp(30px, 4vw, 40px); font-weight: 700; margin: 0; letter-spacing: -0.01em; line-height: 1.2; }
+.props { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 24px; font-size: 14px; }
+.props dt { color: var(--ink-2); } .props dd { margin: 0; }
+.desc { color: var(--ink); max-width: 80ch; margin: 0; }
+h2 { font-size: 20px; font-weight: 600; margin: 12px 0 0; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.tb-btn { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; color: var(--ink-2); font: inherit; font-size: 14px;
+  padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+.tb-btn:hover, .tb-btn[aria-expanded="true"] { background: var(--hover); }
+.tb-btn.on { color: var(--accent); background: transparent; }
+.tb-btn .count { font-size: 12px; color: var(--ink-3); }
+.tb-btn.on .count { color: var(--accent); }
+.tb-sep { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+.tb-right { margin-left: auto; display: flex; gap: 2px; align-items: center; }
+.seg button { border: 0; background: transparent; color: var(--ink-2); font: inherit; font-size: 13px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--hover); color: var(--ink); }
+.dd { position: relative; }
+.pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 20; width: 280px; max-height: 360px; overflow: auto;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px rgba(15,15,15,0.12); padding: 6px; }
+.pop input[type="search"] { width: 100%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 4px; padding: 6px 8px; font: inherit; margin-bottom: 4px; }
+.opt { display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+.opt:hover { background: var(--hover); }
+.opt input { accent-color: var(--accent); margin: 0; }
+.opt .sub { color: var(--ink-3); font-size: 12px; margin-left: auto; }
+.pop-actions { display: flex; justify-content: space-between; border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; }
+.link { border: 0; background: transparent; color: var(--ink-2); font: inherit; font-size: 13px; cursor: pointer; padding: 4px 6px; border-radius: 4px; }
+.link:hover { background: var(--hover); }
+button:focus-visible, [tabindex]:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.stat .k { font-size: 12px; color: var(--ink-2); }
+.stat .v { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .n { font-size: 12px; color: var(--ink-3); }
+.regions { border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; }
+.main { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
 @media (max-width: 900px) { .main { grid-template-columns: minmax(0, 1fr); } }
-.maps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
-.pane { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; position: relative; overflow: hidden; }
-.pane h2 { position: absolute; top: 10px; left: 12px; margin: 0; font-size: 11px; font-weight: 600; color: var(--ink-3);
-  letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; }
+.maps { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.pane { border: 1px solid var(--line); border-radius: 6px; position: relative; overflow: hidden; }
+.pane[hidden] { display: none !important; }
+.pane .cap { position: absolute; top: 8px; left: 10px; font-size: 12px; color: var(--ink-2); pointer-events: none; }
 .pane svg { display: block; width: 100%; height: auto; background: var(--water); }
 .land { fill: var(--land); stroke: var(--land-edge); stroke-width: 0.5; }
 .site { cursor: pointer; }
-.site circle.mark { stroke: var(--surface); stroke-width: 2; }
-.site.terminated circle.mark { fill: none !important; stroke: var(--risk-terminated); stroke-width: 2; stroke-dasharray: 3 2; }
+.site circle.mark { stroke: var(--bg); stroke-width: 2; }
+.site.terminated circle.mark { fill: none !important; stroke: var(--risk-terminated); stroke-dasharray: 3 2; }
 .site.unknown circle.mark { stroke-dasharray: 2 2; }
 .site.selected circle.ring { stroke: var(--ink); stroke-width: 1.5; fill: none; }
-.site text { font-size: 11px; fill: var(--ink); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
-.site.dim { opacity: 0.18; }
-.tip { position: absolute; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line);
-  border-radius: 6px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); max-width: 260px; z-index: 2; }
-.tip b { display: block; margin-bottom: 2px; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-2); padding: 0 2px; }
+.site circle.ring { fill: none; }
+.site text { font-size: 11px; fill: var(--ink); paint-order: stroke; stroke: var(--water); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.site.out { display: none; }
+.tip { position: absolute; pointer-events: none; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px;
+  font-size: 12px; box-shadow: 0 8px 24px rgba(15,15,15,0.12); max-width: 260px; z-index: 5; }
+.tip b { display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
-.dossier { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; position: sticky;
-  top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; min-width: 0; }
-@media (max-width: 900px) { .dossier { position: static; max-height: none; } }
-.dossier h3 { font-family: var(--font-display); font-weight: 600; font-size: 22px; margin: 0; }
-.meta { color: var(--ink-2); font-size: 13px; margin-top: 2px; }
-.sec { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
-.sec > .t { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
-.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px 3px 4px; font-size: 12px; font-weight: 600;
-  background: var(--accent-wash); color: var(--ink); width: fit-content; }
-.dot { width: 18px; height: 18px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 11px; font-weight: 700; color: #fff; flex: none; }
-.dot.medium { color: var(--on-warning); }
-.dot.terminated { background: transparent !important; border: 2px dashed var(--risk-terminated); color: var(--risk-terminated); }
-ul.drv { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; color: var(--ink-2); }
-.bar { height: 10px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
-.bar i { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 3px; }
-.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 13px; }
-.kv dt { color: var(--ink-3); }
-.kv dd { margin: 0; font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
-.card { border: 1px solid var(--line); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-.card .h { font-weight: 600; }
-.g { display: inline-block; font-size: 10px; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 3px; margin-left: 4px;
-  border: 1px solid var(--line); color: var(--ink-2); vertical-align: 1px; text-decoration: none; }
-.g.A { border-color: var(--accent); color: var(--accent); }
-.gap { color: var(--ink-3); font-style: italic; }
-.disputed { color: var(--risk-critical); font-size: 11px; font-weight: 600; margin-left: 4px; }
-.empty { color: var(--ink-3); }
-.tablewrap { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 860px; }
-th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; cursor: pointer; white-space: nowrap; }
-th[aria-sort="ascending"]::after { content: " ▲"; } th[aria-sort="descending"]::after { content: " ▼"; }
+.sw { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.sw.terminated { background: transparent !important; border: 1.5px dashed var(--risk-terminated); }
+.campus { border-left: 1px solid var(--line); padding-left: 24px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px);
+  max-height: calc(100vh - 32px); overflow: auto; min-width: 0; }
+@media (max-width: 900px) { .campus { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 16px; position: static; max-height: none; } }
+.campus h3 { font-size: 22px; font-weight: 700; margin: 0 0 8px; }
+.campus .props { font-size: 13.5px; }
+.block { margin-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+.block > .t { font-size: 12px; color: var(--ink-2); font-weight: 600; }
+.callout { background: var(--panel); border-radius: 4px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.callout ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; border-radius: 3px; padding: 0 6px; font-size: 13px; line-height: 20px; white-space: nowrap; width: fit-content; }
+.tag.red { background: var(--tag-red-bg); color: var(--tag-red-fg); } .tag.orange { background: var(--tag-orange-bg); color: var(--tag-orange-fg); }
+.tag.yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-fg); } .tag.green { background: var(--tag-green-bg); color: var(--tag-green-fg); }
+.tag.gray { background: var(--tag-gray-bg); color: var(--tag-gray-fg); } .tag.blue { background: var(--tag-blue-bg); color: var(--tag-blue-fg); }
+.item { border-top: 1px solid var(--line); padding-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.item .h { font-weight: 600; }
+.kv { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 2px 12px; font-size: 13.5px; }
+.kv dt { color: var(--ink-2); } .kv dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.bar { height: 6px; border-radius: 3px; background: var(--hover); overflow: hidden; } .bar i { display: block; height: 100%; background: var(--accent); }
+.g { display: inline-block; font-size: 10px; font-weight: 600; line-height: 14px; padding: 0 4px; border-radius: 3px; margin-left: 5px;
+  background: var(--tag-gray-bg); color: var(--tag-gray-fg); text-decoration: none; vertical-align: 1px; }
+.g.A { background: var(--tag-blue-bg); color: var(--tag-blue-fg); }
+.gap { color: var(--ink-3); }
+.disputed { color: var(--tag-red-fg); background: var(--tag-red-bg); border-radius: 3px; font-size: 11px; padding: 0 4px; margin-left: 4px; }
+.db { border-top: 1px solid var(--line); overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 900px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th + th, td + td { border-left: 1px solid var(--line); }
+th { color: var(--ink-2); font-weight: 400; font-size: 13px; cursor: pointer; white-space: nowrap; }
+th[aria-sort="ascending"]::after { content: " ↑"; } th[aria-sort="descending"]::after { content: " ↓"; }
 td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-tbody tr { cursor: pointer; } tbody tr:hover { background: var(--accent-wash); } tbody tr.sel { background: var(--accent-wash); }
-h2.sect { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 6px 0 0; }
-.note { color: var(--ink-2); font-size: 12.5px; max-width: 95ch; }
-.note p { margin: 4px 0; }
-a { color: var(--accent); }
-@media (prefers-reduced-motion: no-preference) { .site circle.mark { transition: r 200ms ease; } }
+tbody tr { cursor: pointer; } tbody tr:hover td { background: var(--hover); } tbody tr.sel td { background: var(--hover); }
+tr.total td { font-weight: 600; cursor: default; } tr.total:hover td { background: transparent; }
+.note { color: var(--ink-2); font-size: 13px; max-width: 95ch; display: flex; flex-direction: column; gap: 6px; }
+.note p { margin: 0; }
+a { color: inherit; text-decoration-color: var(--ink-3); }
+.empty { color: var(--ink-3); }
 </style>
 
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Nscale Site Map</h1>
-      <p class="sub">Capacity, debt, customers and construction risk by campus. Click a campus for its dossier; every figure links to its source and carries a grade.</p>
-    </div>
-    <div class="asof" id="asof"></div>
-  </header>
+<div class="page">
+  <h1>Nscale Site Map</h1>
+  <dl class="props" id="props"></dl>
+  <p class="desc">Where Nscale's capacity, debt and customers sit, and how much construction risk each campus carries. Filter by region, campus or risk; click a campus to open it. Every figure links to its source and carries a grade.</p>
 
-  <section class="kpis" id="kpis" aria-label="Group totals"></section>
-
-  <div class="controls">
-    <span class="ctl-label" id="size-label">Circle size</span>
-    <div class="seg" role="group" aria-labelledby="size-label">
-      <button id="size-mw" aria-pressed="true">Contracted MW</button>
-      <button id="size-debt" aria-pressed="false">Site debt</button>
+  <div class="toolbar" role="toolbar" aria-label="Filters">
+    <div class="dd"><button class="tb-btn" id="f-region" aria-haspopup="true" aria-expanded="false">Region <span class="count"></span></button></div>
+    <div class="dd"><button class="tb-btn" id="f-campus" aria-haspopup="true" aria-expanded="false">Campus <span class="count"></span></button></div>
+    <div class="dd"><button class="tb-btn" id="f-risk" aria-haspopup="true" aria-expanded="false">Construction risk <span class="count"></span></button></div>
+    <button class="tb-btn" id="f-reset">Reset</button>
+    <div class="tb-right"><span class="gap" style="font-size:13px;margin-right:4px">Size by</span>
+      <div class="seg" role="group" aria-label="Circle size">
+        <button id="size-mw" aria-pressed="true">Contracted MW</button><button id="size-debt" aria-pressed="false">Campus debt</button>
+      </div>
     </div>
-    <span class="ctl-label">Construction risk</span>
-    <div class="chips" id="risk-chips"></div>
   </div>
+
+  <section class="stats" id="stats" aria-label="Totals for the current selection"></section>
+
+  <div class="regions"><table id="regions"><thead></thead><tbody></tbody></table></div>
 
   <div class="main">
     <div class="maps">
-      <div class="pane" id="pane-us"><h2>United States</h2><svg id="map-us" viewBox="0 0 640 380" role="img" aria-label="US sites"></svg></div>
-      <div class="pane" id="pane-eu"><h2>Europe</h2><svg id="map-eu" viewBox="0 0 640 520" role="img" aria-label="European sites"></svg></div>
+      <div class="pane" id="pane-us"><span class="cap">United States</span><svg id="map-us" viewBox="0 0 640 380" role="img" aria-label="US campuses"></svg></div>
+      <div class="pane" id="pane-eu"><span class="cap">Europe</span><svg id="map-eu" viewBox="0 0 640 520" role="img" aria-label="European campuses"></svg></div>
       <div class="legend" id="legend"></div>
     </div>
-    <aside class="dossier" id="dossier" aria-live="polite"></aside>
+    <aside class="campus" id="campus" aria-live="polite"></aside>
   </div>
 
-  <h2 class="sect">Compare campuses</h2>
-  <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  <h2>Campuses</h2>
+  <div class="db"><table id="tbl"><thead></thead><tbody></tbody></table></div>
 
-  <h2 class="sect">Group-level debt not tied to one campus</h2>
-  <div class="tablewrap"><table id="corp"><thead></thead><tbody></tbody></table></div>
+  <h2>Group-level debt</h2>
+  <p class="gap" style="margin:-12px 0 0">Facilities not tied to a single campus.</p>
+  <div class="db"><table id="corp"><thead></thead><tbody></tbody></table></div>
 
   <div class="note" id="method"></div>
 </div>
@@ -167,14 +183,17 @@ a { color: var(--accent); }
 <script>
 const D = /*__DATA__*/null;
 const RISK = {
-  critical:   { label: "Critical", icon: "✕", order: 0 },
-  high:       { label: "High", icon: "▲", order: 1 },
-  medium:     { label: "Medium", icon: "!", order: 2 },
-  low:        { label: "Low", icon: "✓", order: 3 },
-  terminated: { label: "Terminated", icon: "–", order: 4 },
+  critical:   { label: "Critical", tag: "red", order: 0 },
+  high:       { label: "High", tag: "orange", order: 1 },
+  medium:     { label: "Medium", tag: "yellow", order: 2 },
+  low:        { label: "Low", tag: "green", order: 3 },
+  terminated: { label: "Terminated", tag: "gray", order: 4 },
 };
+const REGIONS = { us: "United States", eu: "Europe", asia: "Asia-Pacific" };
 const riskVar = r => `var(--risk-${r})`;
-const state = { size: "mw", risks: new Set(Object.keys(RISK)), selected: null, sort: { key: "risk", dir: 1 } };
+const allCampus = D.sites.map(s => s.id);
+const state = { size: "mw", regions: new Set(Object.keys(REGIONS)), campuses: new Set(allCampus), risks: new Set(Object.keys(RISK)),
+                selected: null, sort: { key: "risk", dir: 1 } };
 
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function money(n) {
@@ -185,60 +204,90 @@ function money(n) {
   return "$" + n.toLocaleString();
 }
 const num = f => (f && f.number != null) ? f.number : null;
+const riskTag = r => `<span class="tag ${RISK[r].tag}">${RISK[r].label}</span>`;
 function grade(f) {
   if (!f || !f.values) return "";
   const v = f.values[0];
   const title = `${v.source}${v.date ? " · as of " + v.date : ""} · ${v.method}${v.note ? " · " + v.note : ""}`;
-  const tag = v.url ? "a" : "span";
-  return `<${tag} class="g ${f.grade}" ${v.url ? `href="${esc(v.url)}" target="_blank" rel="noopener"` : ""} title="${esc(title)}">${f.grade}</${tag}>`;
+  return v.url ? `<a class="g ${f.grade}" href="${esc(v.url)}" target="_blank" rel="noopener" title="${esc(title)}">${f.grade}</a>`
+               : `<span class="g ${f.grade}" title="${esc(title)}">${f.grade}</span>`;
 }
 function show(f, fmt) {
-  if (!f || f.status === "not_checked") return `<span class="gap">not yet checked</span>`;
-  if (f.status === "undisclosed") return `<span class="gap">not disclosed</span>`;
-  const txt = fmt ? fmt(f) : esc(f.text);
-  return `${txt}${grade(f)}${f.disputed ? '<span class="disputed">disputed</span>' : ""}`;
+  if (!f || f.status === "not_checked") return `<span class="gap">Not yet checked</span>`;
+  if (f.status === "undisclosed") return `<span class="gap">Not disclosed</span>`;
+  return `${fmt ? fmt(f) : esc(f.text)}${grade(f)}${f.disputed ? '<span class="disputed">disputed</span>' : ""}`;
 }
 const showMoney = f => show(f, x => esc(money(x.number) ?? x.text));
 const showMW = f => show(f, x => esc((x.number != null ? (+x.number).toLocaleString() : x.text) + " MW"));
+const words = t => esc(String(t).replace(/_/g, " ").replace(/^./, c => c.toUpperCase()));
 
-// Facilities shared by more than one campus (e.g. Dell bridge) are listed on each but counted once, outside site totals.
+// Facilities shared by more than one campus (the Dell bridge) are listed on each but counted once.
 const facCount = {};
 D.sites.forEach(s => s.facilities.forEach(f => facCount[f.id] = (facCount[f.id] || 0) + 1));
+const sharedFacs = {};
 D.sites.forEach(s => {
+  s.mw = num(s.mw_contracted); s.mwActive = num(s.mw_energized);
   s.debtOwn = d3.sum(s.facilities.filter(f => facCount[f.id] === 1), f => num(f.amount_max) || 0);
   s.debtShared = s.facilities.filter(f => facCount[f.id] > 1);
-  s.mw = num(s.mw_contracted);
-  s.mwActive = num(s.mw_energized);
+  s.debtShared.forEach(f => sharedFacs[f.id] = f);
   const live = s.contracts.filter(c => !(c.status.values && /terminated|in_negotiation/.test(c.status.values[0].text)) && num(c.value_total) != null);
   s.value = live.length ? d3.sum(live, c => num(c.value_total)) : null;
 });
+const visible = s => state.regions.has(s.region) && state.campuses.has(s.id) && state.risks.has(s.risk);
 
-// ---------- header + KPIs ----------
-document.getElementById("asof").textContent = "Facts as of " + D.as_of;
+// ---------- page properties ----------
 const G = D.group;
-const sharedIds = Object.keys(facCount).filter(k => facCount[k] > 1);
-const sharedTotal = d3.sum(D.sites.flatMap(s => s.facilities).filter((f, i, a) => sharedIds.includes(f.id) && a.findIndex(x => x.id === f.id) === i), f => num(f.amount_max) || 0);
-const siteDebt = d3.sum(D.sites, s => s.debtOwn) + sharedTotal;
-const corpDebt = d3.sum(D.corporate, f => num(f.amount_max) || 0);
-const kpis = [
-  ["Contracted capacity", (num(G.mw_contracted_total) / 1000).toFixed(2) + " GW", `${num(G.sites_active)} active · ${num(G.sites_contracted)} contracted sites`, G.mw_contracted_total],
-  ["Contracted value", money(num(G.tcv_active_and_contracted)), `${money(num(G.tcv_active))} active today`, G.tcv_active_and_contracted],
-  ["GPUs", Math.round(num(G.gpus_active) / 1000) + "k active", `${Math.round(num(G.gpus_active_and_contracted) / 1000)}k active + contracted`, G.gpus_active],
-  ["Debt tied to campuses", money(siteDebt), "Committed facility size, incl. Dell bridge", null],
-  ["Group-level debt", money(corpDebt), "Revolver, GPU facility, convertible, bank commitments", null],
-];
-document.getElementById("kpis").innerHTML = kpis.map(([k, v, n, f]) =>
-  `<div class="kpi"><div class="k">${k}</div><div class="v">${esc(v)}${f ? grade(f) : ""}</div><div class="n">${esc(n)}</div></div>`).join("");
+document.getElementById("props").innerHTML = `
+  <dt>As of</dt><dd>${esc(D.as_of)}</dd>
+  <dt>Company</dt><dd>NSCALE PLC (NYSE: NSCL, IPO pending)</dd>
+  <dt>Group totals</dt><dd>${esc((num(G.mw_contracted_total) / 1000).toFixed(2))} GW active + contracted${grade(G.mw_contracted_total)} ·
+    ${esc(money(num(G.tcv_active_and_contracted)))} contracted value${grade(G.tcv_active_and_contracted)} (${esc(money(num(G.tcv_active)))} active) ·
+    ${num(G.sites_active)} active / ${num(G.sites_contracted)} contracted sites${grade(G.sites_contracted)}</dd>
+  <dt>Revenue by country</dt><dd>${esc(G.revenue_share_by_country_6m.text || "n/d")}${grade(G.revenue_share_by_country_6m)}</dd>`;
 
-// ---------- controls ----------
-const chips = document.getElementById("risk-chips");
-Object.entries(RISK).forEach(([k, r]) => {
-  const b = document.createElement("button");
-  b.className = "chip"; b.id = "risk-" + k; b.setAttribute("aria-pressed", "true");
-  b.innerHTML = `<span class="dot ${k}" style="background:${riskVar(k)}">${r.icon}</span>${r.label}`;
-  b.onclick = () => { state.risks.has(k) ? state.risks.delete(k) : state.risks.add(k); b.setAttribute("aria-pressed", state.risks.has(k)); render(); };
-  chips.appendChild(b);
+// ---------- filters ----------
+const DD = {
+  region: { btn: "f-region", items: () => Object.entries(REGIONS).map(([k, v]) => ({ id: k, label: v,
+      sub: k === "asia" ? "entities only" : `${D.sites.filter(s => s.region === k).length} campuses` })), set: () => state.regions, search: false },
+  campus: { btn: "f-campus", items: () => D.sites.slice().sort((a, b) => a.label.localeCompare(b.label)).map(s => ({ id: s.id, label: s.label, sub: REGIONS[s.region] })),
+            set: () => state.campuses, search: true },
+  risk: { btn: "f-risk", items: () => Object.entries(RISK).map(([k, r]) => ({ id: k, label: r.label, tag: r.tag })), set: () => state.risks, search: false },
+};
+let openPop = null;
+function closePop() { if (openPop) { openPop.pop.remove(); document.getElementById(openPop.btn).setAttribute("aria-expanded", "false"); openPop = null; } }
+Object.entries(DD).forEach(([name, cfg]) => {
+  const btn = document.getElementById(cfg.btn);
+  btn.onclick = ev => {
+    ev.stopPropagation();
+    if (openPop && openPop.name === name) return closePop();
+    closePop();
+    const pop = document.createElement("div"); pop.className = "pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", name + " filter");
+    pop.onclick = e => e.stopPropagation();
+    const draw = (q = "") => {
+      const set = cfg.set();
+      const items = cfg.items().filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
+      pop.querySelector(".list").innerHTML = items.map(i => `<label class="opt"><input type="checkbox" id="opt-${name}-${i.id}" data-id="${i.id}" ${set.has(i.id) ? "checked" : ""}>
+        ${i.tag ? `<span class="tag ${i.tag}">${esc(i.label)}</span>` : esc(i.label)}${i.sub ? `<span class="sub">${esc(i.sub)}</span>` : ""}</label>`).join("") || '<div class="gap" style="padding:6px">No match</div>';
+      pop.querySelectorAll(".list input").forEach(cb => cb.onchange = () => { cb.checked ? set.add(cb.dataset.id) : set.delete(cb.dataset.id); update(); });
+    };
+    pop.innerHTML = `${cfg.search ? `<input type="search" id="search-${name}" placeholder="Search campuses" aria-label="Search campuses">` : ""}<div class="list"></div>
+      <div class="pop-actions"><button class="link" data-a="all">Select all</button><button class="link" data-a="none">Clear</button></div>`;
+    btn.parentNode.appendChild(pop);
+    draw();
+    if (cfg.search) { const s = pop.querySelector("input[type=search]"); s.oninput = () => draw(s.value); s.focus(); }
+    pop.querySelectorAll(".pop-actions .link").forEach(b => b.onclick = () => {
+      const set = cfg.set(); set.clear(); if (b.dataset.a === "all") cfg.items().forEach(i => set.add(i.id));
+      draw(cfg.search ? pop.querySelector("input[type=search]").value : ""); update();
+    });
+    btn.setAttribute("aria-expanded", "true");
+    openPop = { name, pop, btn: cfg.btn };
+  };
 });
+document.addEventListener("click", closePop);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePop(); });
+document.getElementById("f-reset").onclick = () => {
+  state.regions = new Set(Object.keys(REGIONS)); state.campuses = new Set(allCampus); state.risks = new Set(Object.keys(RISK)); closePop(); update();
+};
 document.getElementById("size-mw").onclick = () => setSize("mw");
 document.getElementById("size-debt").onclick = () => setSize("debt");
 function setSize(v) {
@@ -247,134 +296,176 @@ function setSize(v) {
   document.getElementById("size-debt").setAttribute("aria-pressed", v === "debt");
   render();
 }
-document.getElementById("legend").innerHTML =
-  Object.entries(RISK).map(([k, r]) => `<span><span class="dot ${k}" style="background:${riskVar(k)}">${r.icon}</span>${r.label}</span>`).join("") +
-  `<span>Dashed ring: size not disclosed</span><span>Grade chips: A filing / registry · B company or aggregator · C news or our estimate</span>`;
+function syncToolbar() {
+  [["region", state.regions, Object.keys(REGIONS).length], ["campus", state.campuses, allCampus.length], ["risk", state.risks, Object.keys(RISK).length]]
+    .forEach(([n, set, total]) => {
+      const b = document.getElementById(DD[n].btn);
+      const filtered = set.size !== total;
+      b.classList.toggle("on", filtered);
+      b.querySelector(".count").textContent = filtered ? `${set.size}/${total}` : "";
+    });
+}
+
+// ---------- totals ----------
+function totals(list) {
+  const shared = {};
+  list.forEach(s => s.debtShared.forEach(f => shared[f.id] = f));
+  return {
+    n: list.length,
+    mw: d3.sum(list, s => s.mw || 0), mwKnown: list.filter(s => s.mw != null).length,
+    act: d3.sum(list, s => s.mwActive || 0), actKnown: list.filter(s => s.mwActive != null).length,
+    debt: d3.sum(list, s => s.debtOwn) + d3.sum(Object.values(shared), f => num(f.amount_max) || 0),
+    value: d3.sum(list, s => s.value || 0), valueKnown: list.filter(s => s.value != null).length,
+  };
+}
+function renderStats() {
+  const list = D.sites.filter(visible);
+  const t = totals(list);
+  const stat = (k, v, n) => `<div class="stat"><div class="k">${k}</div><div class="v">${v}</div><div class="n">${n}</div></div>`;
+  document.getElementById("stats").innerHTML =
+    stat("Campuses selected", t.n, `${list.filter(s => s.risk === "critical" || s.risk === "high").length} at high or critical risk`) +
+    stat("Contracted MW", t.mw.toLocaleString(), `${t.mwKnown} of ${t.n} campuses disclose MW`) +
+    stat("Active MW", t.act.toLocaleString(), `${t.actKnown} of ${t.n} campuses report active MW`) +
+    stat("Campus debt", money(t.debt) || "–", "Committed facility size, incl. shared Dell bridge") +
+    stat("Disclosed contract value", money(t.value) || "–", `${t.valueKnown} of ${t.n} campuses disclose value`);
+}
+function renderRegions() {
+  const t = document.getElementById("regions");
+  t.querySelector("thead").innerHTML = "<tr><th>Region</th><th>Campuses</th><th>Contracted MW</th><th>Active MW</th><th>Campus debt</th><th>Disclosed contract value</th><th>Notes</th></tr>";
+  const rows = Object.entries(REGIONS).filter(([k]) => state.regions.has(k)).map(([k, name]) => {
+    if (k === "asia") {
+      const a = D.asia;
+      return `<tr><td>${name}</td><td class="num">0</td><td class="num gap">n/d</td><td class="num gap">n/d</td><td class="num gap">–</td><td class="num gap">n/d</td>
+        <td>${a.entities} subsidiaries (${esc(a.breakdown)})${a.grade ? `<span class="g ${a.grade}" title="${esc(a.source)}">${a.grade}</span>` : ""}; no campus, capacity or customer disclosed.</td></tr>`;
+    }
+    const list = D.sites.filter(s => s.region === k && state.campuses.has(s.id) && state.risks.has(s.risk));
+    const x = totals(list);
+    return `<tr><td>${name}</td><td class="num">${x.n}</td><td class="num">${x.mw.toLocaleString()}</td><td class="num">${x.act.toLocaleString()}</td>
+      <td class="num">${money(x.debt) || "–"}</td><td class="num">${money(x.value) || "–"}</td><td class="gap">${x.mwKnown}/${x.n} disclose MW</td></tr>`;
+  });
+  t.querySelector("tbody").innerHTML = rows.join("") || '<tr><td colspan="7" class="gap">No region selected</td></tr>';
+}
 
 // ---------- maps ----------
 const world = topojson.feature(D.geo.world, D.geo.world.objects.countries);
 const states = topojson.feature(D.geo.us, D.geo.us.objects.states);
 const nation = topojson.feature(D.geo.us, D.geo.us.objects.nation);
 const panes = {
-  us: { svg: d3.select("#map-us"), w: 640, h: 380,
-        proj: d3.geoAlbersUsa().fitExtent([[10, 30], [630, 370]], nation), land: states.features },
-  eu: { svg: d3.select("#map-eu"), w: 640, h: 520,
+  us: { el: "pane-us", svg: d3.select("#map-us"), proj: d3.geoAlbersUsa().fitExtent([[10, 30], [630, 370]], nation), land: states.features },
+  eu: { el: "pane-eu", svg: d3.select("#map-eu"),
         proj: d3.geoConicConformal().rotate([-2, 0]).parallels([45, 65])
           .fitExtent([[10, 30], [630, 510]], { type: "Feature", geometry: { type: "MultiPoint", coordinates: [[-24, 33], [24, 33], [-24, 70.5], [24, 70.5]] } }),
         land: world.features },
 };
 Object.values(panes).forEach(p => {
-  const path = d3.geoPath(p.proj);
-  p.svg.append("g").selectAll("path").data(p.land).join("path").attr("class", "land").attr("d", path);
+  p.svg.append("g").selectAll("path").data(p.land).join("path").attr("class", "land").attr("d", d3.geoPath(p.proj));
   p.g = p.svg.append("g");
 });
 const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true;
-
+const maxMw = d3.max(D.sites, s => s.mw || 0);
+const maxDebt = d3.max(D.sites, s => s.debtOwn + d3.sum(s.debtShared, f => num(f.amount_max) || 0));
 function radius(s) {
-  const mwScale = d3.scaleSqrt().domain([0, d3.max(D.sites, x => x.mw || 0)]).range([0, 30]);
-  const debtScale = d3.scaleSqrt().domain([0, d3.max(D.sites, x => x.debtOwn + d3.sum(x.debtShared, f => num(f.amount_max) || 0))]).range([0, 30]);
-  if (state.size === "mw") return s.mw ? Math.max(7, mwScale(s.mw)) : 9;
+  if (state.size === "mw") return s.mw ? Math.max(7, d3.scaleSqrt().domain([0, maxMw]).range([0, 30])(s.mw)) : 9;
   const d = s.debtOwn + d3.sum(s.debtShared, f => num(f.amount_max) || 0);
-  return d ? Math.max(7, debtScale(d)) : 7;
+  return d ? Math.max(7, d3.scaleSqrt().domain([0, maxDebt]).range([0, 30])(d)) : 7;
 }
-function sizeUnknown(s) { return state.size === "mw" ? !s.mw : !(s.debtOwn || s.debtShared.length); }
-
+const sizeUnknown = s => state.size === "mw" ? !s.mw : !(s.debtOwn || s.debtShared.length);
 function render() {
   Object.entries(panes).forEach(([region, p]) => {
+    document.getElementById(p.el).hidden = !state.regions.has(region);
     const data = D.sites.filter(s => s.region === region).sort((a, b) => radius(b) - radius(a));
     const g = p.g.selectAll("g.site").data(data, d => d.id).join(enter => {
       const e = enter.append("g").attr("tabindex", 0).attr("role", "button");
-      e.append("circle").attr("class", "ring");
-      e.append("circle").attr("class", "mark");
-      e.append("text");
+      e.append("circle").attr("class", "ring"); e.append("circle").attr("class", "mark"); e.append("text");
       e.on("click", (ev, d) => select(d.id))
        .on("keydown", (ev, d) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(d.id); } })
-       .on("mouseenter focus", (ev, d) => showTip(ev, d, p))
-       .on("mousemove", (ev, d) => showTip(ev, d, p))
+       .on("mouseenter focus mousemove", (ev, d) => showTip(ev, d, p))
        .on("mouseleave blur", () => tip.hidden = true);
       return e;
     });
-    g.attr("class", d => `site ${d.risk}${sizeUnknown(d) ? " unknown" : ""}${state.selected === d.id ? " selected" : ""}${state.risks.has(d.risk) ? "" : " dim"}`)
+    g.attr("class", d => `site ${d.risk}${sizeUnknown(d) ? " unknown" : ""}${state.selected === d.id ? " selected" : ""}${visible(d) ? "" : " out"}`)
      .attr("aria-label", d => `${d.label}: ${RISK[d.risk].label} construction risk`)
      .attr("transform", d => { const [x, y] = p.proj([d.lon, d.lat]); return `translate(${x},${y})`; });
     g.select("circle.mark").attr("r", radius).attr("fill", d => riskVar(d.risk));
     g.select("circle.ring").attr("r", d => radius(d) + 4);
     g.select("text").text(d => d.label.split(",")[0]).attr("x", d => radius(d) + 6).attr("y", d => d.label_dy);
   });
-  renderTable();
 }
 function showTip(ev, d, p) {
   const pane = p.svg.node().parentNode;
   if (tip.parentNode !== pane) pane.appendChild(tip);
   const rect = pane.getBoundingClientRect();
   const x = (ev.clientX || rect.left + rect.width / 2) - rect.left, y = (ev.clientY || rect.top + 40) - rect.top;
-  tip.innerHTML = `<b>${esc(d.label)}</b>${RISK[d.risk].icon} ${RISK[d.risk].label} construction risk<br>` +
-    `Contracted: ${d.mw ? d.mw.toLocaleString() + " MW" : "n/d"} · Active: ${d.mwActive != null ? d.mwActive.toLocaleString() + " MW" : "n/d"}<br>` +
-    `Campus debt: ${d.debtOwn ? money(d.debtOwn) : "none"}${d.debtShared.length ? " + shared Dell bridge" : ""}`;
+  tip.innerHTML = `<b>${esc(d.label)}</b>${RISK[d.risk].label} construction risk<br>
+    Contracted ${d.mw ? d.mw.toLocaleString() + " MW" : "n/d"} · Active ${d.mwActive != null ? d.mwActive.toLocaleString() + " MW" : "n/d"}<br>
+    Campus debt ${d.debtOwn ? money(d.debtOwn) : "none"}${d.debtShared.length ? " + shared Dell bridge" : ""}`;
   tip.hidden = false;
   tip.style.left = Math.min(x + 14, rect.width - 270) + "px";
   tip.style.top = Math.max(8, y - 10) + "px";
 }
 
-// ---------- dossier ----------
+// ---------- campus page ----------
 function select(id) {
   state.selected = id;
   try { localStorage.setItem("nscale-map-site", id); } catch (e) {}
-  render(); renderDossier();
+  render(); renderCampus(); renderTable();
 }
-function renderDossier() {
+function renderCampus() {
   const s = D.sites.find(x => x.id === state.selected) || D.sites[0];
-  const r = RISK[s.risk];
-  const mw = s.mw, act = s.mwActive;
-  const pct = mw && act != null ? Math.min(100, act / mw * 100) : null;
-  const facHtml = s.facilities.length ? s.facilities.map(f => `
-    <div class="card"><div class="h">${esc(f.name)}${facCount[f.id] > 1 ? ' <span class="gap">(shared with another campus; split not disclosed)</span>' : ""}</div>
-      <dl class="kv">
-        <dt>Size</dt><dd>${showMoney(f.amount_max)}</dd>
-        <dt>Drawn</dt><dd>${f.amount_drawn.status === "not_checked" && f.carrying_value.status !== "not_checked" ? showMoney(f.carrying_value) + ' <span class="gap">(carrying value)</span>' : showMoney(f.amount_drawn)}</dd>
-        <dt>Status</dt><dd>${show(f.status, x => esc(x.text.replace(/_/g, " ")))}</dd>
-        <dt>Margin</dt><dd>${show(f.margin_bps, x => esc(x.number != null ? "+" + x.number + " bps" : x.text))}</dd>
+  const mw = s.mw, act = s.mwActive, pct = mw && act != null ? Math.min(100, act / mw * 100) : null;
+  const lenders = f => f.lender.values ? esc(f.lender.values.slice(0, 4).map(v => v.text).join(", ")) + (f.lender.values.length > 4 ? ` +${f.lender.values.length - 4} more` : "") + grade(f.lender) : show(f.lender);
+  const facs = s.facilities.length ? s.facilities.map(f => `<div class="item"><div class="h">${esc(f.name)}</div>
+      ${facCount[f.id] > 1 ? '<div class="gap">Shared with another campus; split not disclosed.</div>' : ""}
+      <dl class="kv"><dt>Size</dt><dd>${showMoney(f.amount_max)}</dd>
+        <dt>Drawn</dt><dd>${f.amount_drawn.status === "not_checked" && f.carrying_value.status !== "not_checked" ? showMoney(f.carrying_value) + ' <span class="gap">carrying value</span>' : showMoney(f.amount_drawn)}</dd>
+        <dt>Status</dt><dd>${show(f.status, x => words(x.text))}</dd>
+        <dt>Margin</dt><dd>${show(f.margin_bps, x => esc(x.number != null ? "SOFR + " + x.number + " bps" : x.text))}</dd>
         <dt>Maturity</dt><dd>${show(f.maturity_date)}</dd>
-        <dt>Lenders</dt><dd>${f.lender.values ? esc(f.lender.values.slice(0, 4).map(v => v.text).join(", ")) + (f.lender.values.length > 4 ? ` +${f.lender.values.length - 4}` : "") + grade(f.lender) : show(f.lender)}</dd>
-      </dl></div>`).join("") : `<div class="empty">No financing tied to this campus${s.risk === "critical" ? " (financing not yet secured)" : ""}.</div>`;
-  const ctrHtml = s.contracts.length ? s.contracts.map(c => `
-    <div class="card"><div class="h">${esc(c.name)}</div>
-      <dl class="kv">
-        <dt>Customer</dt><dd>${show(c.customer)}</dd>
+        <dt>Lenders</dt><dd>${lenders(f)}</dd></dl></div>`).join("")
+    : `<div class="empty">No financing tied to this campus${s.risk === "critical" ? "; financing not yet secured" : ""}.</div>`;
+  const ctrs = s.contracts.length ? s.contracts.map(c => `<div class="item"><div class="h">${esc(c.name)}</div>
+      <dl class="kv"><dt>Customer</dt><dd>${show(c.customer)}</dd>
         <dt>Value</dt><dd>${showMoney(c.value_total)}</dd>
-        <dt>Status</dt><dd>${show(c.status, x => esc(x.text.replace(/_/g, " ")))}</dd>
+        <dt>Status</dt><dd>${show(c.status, x => words(x.text))}</dd>
         ${c.gpu_count.status !== "not_checked" ? `<dt>GPUs</dt><dd>${show(c.gpu_count, x => esc((+x.number).toLocaleString() + (c.gpu_type.text ? " " + c.gpu_type.text : "")))}</dd>` : ""}
-        ${c.take_or_pay.status !== "not_checked" ? `<dt>Take-or-pay</dt><dd>${show(c.take_or_pay, x => x.text === "true" ? "Yes" : "No: pays on delivery")}</dd>` : ""}
-        ${c.financing_status.status !== "not_checked" ? `<dt>Financing</dt><dd>${show(c.financing_status, x => esc(x.text.replace(/_/g, " ")))}</dd>` : ""}
-      </dl></div>`).join("") : `<div class="empty">No customer contract linked to this campus in the tracker.</div>`;
-  const status = s.construction_status.values ? s.construction_status.values.map(v =>
+        ${c.take_or_pay.status !== "not_checked" ? `<dt>Take-or-pay</dt><dd>${show(c.take_or_pay, x => x.text === "true" ? "Yes" : "No, pays on delivery")}</dd>` : ""}
+        ${c.financing_status.status !== "not_checked" ? `<dt>Financing</dt><dd>${show(c.financing_status, x => words(x.text))}</dd>` : ""}</dl></div>`).join("")
+    : `<div class="empty">No customer contract linked to this campus.</div>`;
+  const build = s.construction_status.values ? s.construction_status.values.map(v =>
     `<li>${esc(v.text)}<a class="g ${v.grade}" href="${esc(v.url)}" target="_blank" rel="noopener" title="${esc(v.source)}">${v.grade}</a></li>`).join("") : "";
-  document.getElementById("dossier").innerHTML = `
+  document.getElementById("campus").innerHTML = `
     <h3>${esc(s.label)}</h3>
-    <div class="meta">${s.country.text ? esc(s.country.text) : ""}${s.ownership.text ? " · " + esc(s.ownership.text) : ""}${s.landlord.text ? " · landlord " + esc(s.landlord.text) : ""}</div>
-    <div class="sec"><div class="t">Construction risk</div>
-      <span class="pill"><span class="dot ${s.risk}" style="background:${riskVar(s.risk)}">${r.icon}</span>${r.label}</span>
-      <ul class="drv">${s.drivers.map(d => `<li>${esc(d)}</li>`).join("")}</ul>
-      <div class="gap" style="font-size:12px">Analyst rating (${esc(D.rated_by)}, ${esc(D.rated_date)}), not a source fact.</div></div>
-    <div class="sec"><div class="t">Capacity</div>
-      <dl class="kv"><dt>Contracted</dt><dd>${showMW(s.mw_contracted)}</dd><dt>Active</dt><dd>${showMW(s.mw_energized)}</dd>
+    <dl class="props">
+      <dt>Construction risk</dt><dd>${riskTag(s.risk)}</dd>
+      <dt>Region</dt><dd>${REGIONS[s.region]}</dd>
+      <dt>Ownership</dt><dd>${show(s.ownership, x => words(x.text))}</dd>
+      ${s.landlord.status !== "not_checked" ? `<dt>Landlord</dt><dd>${show(s.landlord)}</dd>` : ""}
+      <dt>Contracted</dt><dd>${showMW(s.mw_contracted)}</dd>
+      <dt>Active</dt><dd>${showMW(s.mw_energized)}</dd>
       ${s.gpus_deployed.status !== "not_checked" ? `<dt>GPUs deployed</dt><dd>${show(s.gpus_deployed, x => esc((+x.number).toLocaleString()))}</dd>` : ""}
-      ${s.energization_target_date.status !== "not_checked" ? `<dt>Target online</dt><dd>${show(s.energization_target_date)}</dd>` : ""}</dl>
-      ${pct != null ? `<div class="bar" role="img" aria-label="${act} of ${mw} MW active"><i style="width:${pct}%"></i></div><div class="gap" style="font-size:12px">${act} of ${mw} MW active (${pct.toFixed(0)}%)</div>` : ""}</div>
-    ${status ? `<div class="sec"><div class="t">Build status</div><ul class="drv">${status}</ul></div>` : ""}
-    <div class="sec"><div class="t">Customers</div>${ctrHtml}</div>
-    <div class="sec"><div class="t">Debt on this campus</div>${facHtml}</div>`;
+      ${s.energization_target_date.status !== "not_checked" ? `<dt>Target online</dt><dd>${show(s.energization_target_date)}</dd>` : ""}
+    </dl>
+    ${pct != null ? `<div class="block"><div class="bar" role="img" aria-label="${act} of ${mw} MW active"><i style="width:${pct}%"></i></div><div class="gap" style="font-size:12px">${act} of ${mw} MW active (${pct.toFixed(0)}%)</div></div>` : ""}
+    <div class="block"><div class="t">Why this rating</div><div class="callout"><ul>${s.drivers.map(d => `<li>${esc(d)}</li>`).join("")}</ul>
+      <div class="gap" style="font-size:12px">Analyst judgement (${esc(D.rated_by)}, ${esc(D.rated_date)}).</div></div></div>
+    ${build ? `<div class="block"><div class="t">Build status</div><ul style="margin:0;padding-left:18px">${build}</ul></div>` : ""}
+    <div class="block"><div class="t">Customers</div>${ctrs}</div>
+    <div class="block"><div class="t">Debt on this campus</div>${facs}</div>`;
 }
 
 // ---------- tables ----------
 const COLS = [
   { key: "label", label: "Campus", get: s => s.label },
-  { key: "risk", label: "Risk", get: s => RISK[s.risk].order, html: s => `<span class="pill"><span class="dot ${s.risk}" style="background:${riskVar(s.risk)}">${RISK[s.risk].icon}</span>${RISK[s.risk].label}</span>` },
+  { key: "region", label: "Region", get: s => REGIONS[s.region] },
+  { key: "risk", label: "Construction risk", get: s => RISK[s.risk].order, html: s => riskTag(s.risk) },
   { key: "mw", label: "Contracted MW", num: true, get: s => s.mw ?? -1, html: s => s.mw != null ? s.mw.toLocaleString() + grade(s.mw_contracted) : '<span class="gap">n/d</span>' },
   { key: "act", label: "Active MW", num: true, get: s => s.mwActive ?? -1, html: s => s.mwActive != null ? s.mwActive.toLocaleString() + grade(s.mw_energized) : '<span class="gap">n/d</span>' },
-  { key: "debt", label: "Campus debt", num: true, get: s => s.debtOwn, html: s => (s.debtOwn ? money(s.debtOwn) : "–") + (s.debtShared.length ? ' <span class="gap">+ shared Dell bridge</span>' : "") },
+  { key: "debt", label: "Campus debt", num: true, get: s => s.debtOwn, html: s => (s.debtOwn ? money(s.debtOwn) : "–") + (s.debtShared.length ? ' <span class="gap">+ Dell</span>' : "") },
   { key: "cust", label: "Customers", get: s => s.contracts.map(c => c.customer.text || "").join(", "),
-    html: s => esc([...new Set(s.contracts.map(c => (c.customer.text || "redacted") + (c.status.values && /terminated/.test(c.status.values[0].text) ? " (terminated)" : c.status.values && /negotiation/.test(c.status.values[0].text) ? " (in talks)" : "")))].join(", ") || "–") },
+    html: s => [...new Set(s.contracts.map(c => {
+      const st = c.status.values ? c.status.values[0].text : "";
+      return esc(c.customer.text || "Redacted") + (/terminated/.test(st) ? ' <span class="tag gray">Terminated</span>' : /negotiation/.test(st) ? ' <span class="tag blue">In talks</span>' : "");
+    }))].join(", ") || "–" },
   { key: "value", label: "Contract value", num: true, get: s => s.value ?? -1, html: s => s.value != null ? money(s.value) : '<span class="gap">n/d</span>' },
 ];
 function renderTable() {
@@ -385,29 +476,32 @@ function renderTable() {
     th.onclick = go; th.onkeydown = e => { if (e.key === "Enter") go(); };
   });
   const col = COLS.find(c => c.key === state.sort.key);
-  const rows = D.sites.filter(s => state.risks.has(s.risk)).slice().sort((a, b) => d3.ascending(col.get(a), col.get(b)) * state.sort.dir);
+  const rows = D.sites.filter(visible).sort((a, b) => d3.ascending(col.get(a), col.get(b)) * state.sort.dir);
+  const tot = totals(rows);
   t.querySelector("tbody").innerHTML = rows.map(s => `<tr data-id="${s.id}" class="${state.selected === s.id ? "sel" : ""}">` +
-    COLS.map(c => `<td class="${c.num ? "num" : ""}">${c.html ? c.html(s) : esc(c.get(s))}</td>`).join("") + "</tr>").join("");
-  t.querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => { select(tr.dataset.id); document.getElementById("dossier").scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+    COLS.map(c => `<td class="${c.num ? "num" : ""}">${c.html ? c.html(s) : esc(c.get(s))}</td>`).join("") + "</tr>").join("") +
+    (rows.length ? `<tr class="total"><td>Total (${rows.length})</td><td></td><td></td><td class="num">${tot.mw.toLocaleString()}</td><td class="num">${tot.act.toLocaleString()}</td>
+      <td class="num">${money(tot.debt) || "–"}</td><td></td><td class="num">${money(tot.value) || "–"}</td></tr>` : `<tr><td colspan="8" class="gap">No campuses match the filters.</td></tr>`);
+  t.querySelectorAll("tbody tr[data-id]").forEach(tr => tr.onclick = () => select(tr.dataset.id));
 }
 function renderCorp() {
   const t = document.getElementById("corp");
   t.querySelector("thead").innerHTML = "<tr><th>Facility</th><th>Size</th><th>Drawn</th><th>Margin</th><th>Maturity</th><th>Why not on a campus</th></tr>";
-  t.querySelector("tbody").innerHTML = D.corporate.map(f => `<tr><td>${esc(f.name)}</td><td class="num">${showMoney(f.amount_max)}</td>
+  t.querySelector("tbody").innerHTML = D.corporate.map(f => `<tr style="cursor:default"><td>${esc(f.name)}</td><td class="num">${showMoney(f.amount_max)}</td>
     <td class="num">${showMoney(f.amount_drawn)}</td><td class="num">${show(f.margin_bps, x => esc(x.number != null ? "+" + x.number + " bps" : x.text))}</td>
-    <td>${show(f.maturity_date)}</td><td>${esc(f.why)}</td></tr>`).join("");
+    <td>${show(f.maturity_date)}</td><td>${esc(f.why)}</td></tr>`).join("") +
+    `<tr class="total"><td>Total</td><td class="num">${money(d3.sum(D.corporate, f => num(f.amount_max) || 0))}</td><td colspan="4"></td></tr>`;
 }
+document.getElementById("legend").innerHTML =
+  Object.entries(RISK).map(([k, r]) => `<span><span class="sw ${k}" style="background:${riskVar(k)}"></span>${r.label}</span>`).join("") +
+  `<span>Dashed outline: size not disclosed</span><span>Grades: <span class="g A">A</span> filing or registry · <span class="g">B</span> company or aggregator · <span class="g">C</span> news or our estimate</span>`;
 document.getElementById("method").innerHTML = `
-  <p><b>How to read this.</b> Circles sit at approximate town-level locations, sized by contracted MW (or campus debt) and coloured by construction risk.
-  Construction-risk ratings are analyst judgements, each with its stated drivers; everything else comes from sourced statements in the tracker,
-  shown with a grade chip that links to the document (A: filing, registry or a lender's/counterparty's own filing; B: company or aggregator,
-  or an A source seen only in excerpt; C: news or our estimate). "Not disclosed" means a source was checked and does not state it;
-  "not yet checked" is a research gap.</p>
-  <p><b>Known gaps.</b> Nscale does not disclose MW or revenue by site: active MW is known only where press or counterparties report it, and revenue is
-  disclosed by country (H1 2026: ${esc(G.revenue_share_by_country_6m.text || "n/d")}). Microsoft's contract value (up to $43.8B) is disclosed only in aggregate,
-  so per-campus contract values are mostly blank. The Dell bridge is shared by Ward County and North Carolina in an undisclosed split.</p>`;
+  <p><b>How to read this.</b> Circles sit at approximate town-level locations. Construction-risk ratings are analyst judgements with their drivers shown on each campus;
+  every other figure is a sourced statement from the tracker, with a grade that links to the document. "Not disclosed" means a source was checked and is silent; "not yet checked" is a research gap.</p>
+  <p><b>Known gaps.</b> Nscale does not disclose MW, revenue or contract value by campus. Active MW is filled only where the press or a counterparty reports it; Microsoft's contract value (up to $43.8B, less Loughton) is disclosed only in aggregate; the Dell bridge is shared by Ward County and North Carolina in an undisclosed split. Asia-Pacific shows registered subsidiaries only.</p>`;
 
+function update() { syncToolbar(); renderStats(); renderRegions(); render(); renderTable(); }
 try { const saved = localStorage.getItem("nscale-map-site"); if (saved && D.sites.some(s => s.id === saved)) state.selected = saved; } catch (e) {}
 if (!state.selected) state.selected = "site_monarch";
-render(); renderDossier(); renderCorp();
+update(); renderCampus(); renderCorp();
 </script>

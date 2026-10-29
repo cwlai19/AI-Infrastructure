@@ -75,9 +75,18 @@ group = {k: fact(GROUP, k) for k in ("mw_contracted_total", "tcv_active", "tcv_a
                                      "revenue_share_by_country_6m", "total_debt", "cash_and_equivalents")}
 corporate = [dict(facility(f), why=why) for f, why in overlay["corporate_facilities"].items()]
 
+APAC = ("Singapore", "Malaysia", "Japan", "Indonesia", "South Korea")
+apac = {}
+for st in store.statements:
+    if st.property == "jurisdiction" and st.source == "src_ex21" and st.value in APAC:
+        apac[st.value] = apac.get(st.value, 0) + 1
+asia = {"entities": sum(apac.values()),
+        "breakdown": ", ".join(f"{k} {v}" for k, v in sorted(apac.items(), key=lambda kv: -kv[1])),
+        "grade": "A", "source": store.sources["src_ex21"]["title"]}
+
 geo_dir = Path(sys.argv[1])
 data = {"as_of": "2026-10-29", "rated_by": overlay["rated_by"], "rated_date": overlay["rated_date"],
-        "group": group, "sites": sites, "corporate": corporate,
+        "group": group, "asia": asia, "sites": sites, "corporate": corporate,
         "geo": {"world": json.loads((geo_dir / "countries-50m.json").read_text()),
                 "us": json.loads((geo_dir / "states-10m.json").read_text())}}
 template = (ROOT / "reports" / "site_map_template.html").read_text()
