@@ -1,0 +1,16 @@
+{
+ "ex10_19_microsoft_sow_kvandal_north.txt": {
+  "bytes": 146247,
+  "content_type": "text/plain; flattened from EDGAR HTML",
+  "retrieved_at": "2026-10-29",
+  "sha256": "9fab3ab7fbb60008ad677dfd59cfed15a452c021b166a73d6e6c92c27652abef",
+  "url": "https://www.sec.gov/Archives/edgar/data/2110365/000119312526395475/ck0002110365-ex10_19.htm"
+ },
+ "ex10_25_anthropic_gpu_services.txt": {
+  "bytes": 96322,
+  "content_type": "text/plain; flattened from EDGAR HTML",
+  "retrieved_at": "2026-10-29",
+  "sha256": "fe4e14ad26bc735f6cdd5d16aa7a7d0c95ee1aeed3f61c2af23204601e38be30",
+  "url": "https://www.sec.gov/Archives/edgar/data/2110365/000119312526395475/ck0002110365-ex10_25.htm"
+ }
+}

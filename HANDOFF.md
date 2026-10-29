@@ -84,12 +84,18 @@ Derived values take the grade of their weakest input.
 | `data/events.csv`, `data/watchlist.yaml` | Monitor log and search terms |
 | `data/site_overlay.yaml` | Map-only inputs: coordinates, region, risk ranking, facility-to-site mapping, customer headline contract |
 | `data/contract_writeup.yaml` | Condensed contract points, each with start/end anchors for verbatim quotes |
-| `data/archive/` | Archived exhibit text (Anthropic Ex-10.25, Microsoft SOW Ex-10.19) |
+| `data/archive/` | Archived exhibit text (Anthropic Ex-10.25, Microsoft SOW Ex-10.19); each folder has a `manifest.json` with SHA-256 hashes |
+| `data/quotes.csv` | Verbatim quotes behind statements, checked against the archive by `check` |
+| `data/source_directory.yaml` | 108 free and paid sources by jurisdiction; feeds `search`, `sources` and the directory page |
 | `tracker/model.py` | Load, validate, resolve |
 | `tracker/report.py` | Credit file |
-| `tracker/monitor.py` | EDGAR / Companies House / news feeds |
+| `tracker/monitor.py` | EDGAR / Companies House / news feeds (all pages; a failing feed is reported, not fatal) |
+| `tracker/net.py` | Polite HTTP: per-host rate limits, retries with Retry-After, honest User-Agent |
+| `tracker/archive.py` | Archive manifest (hashes) and verbatim-quote checks |
+| `tracker/jurisdictions.py` | Live registry adapters by jurisdiction and the `search` / `sources` commands |
 | `tracker/disclaimer.py` | Watermark text |
-| `tracker/__main__.py` | CLI: `check` / `build` / `report` / `monitor` |
+| `tracker/__main__.py` | CLI: `check` / `build` / `report` / `monitor` / `search` / `sources` |
+| `scripts/build_source_directory.py` | Source directory page (artifact `claude.ai/artifact/MzG1cGgaNfnTSqN7PQtYsf`) and CSV |
 | `scripts/fetch_edgar.py` | **Download any EDGAR filing and all exhibits, as HTML, text and flattened text** |
 | `scripts/clause_defs.py` | Print defined terms from a flattened agreement (fast reading of credit agreements) |
 | `scripts/html2text.py` | EDGAR HTML to text |
@@ -99,7 +105,7 @@ Derived values take the grade of their weakest input.
 | `scripts/export_xlsx.py` (`--compact`) + `scripts/xlsx_compact.py` | Excel export, plus a small email-size copy |
 | `tools/*.js` | Playwright screenshot and PDF helpers for checking outputs |
 | `.github/workflows/monitor.yml` | Daily monitor (needs the `COMPANIES_HOUSE_API_KEY` secret and the `EDGAR_USER_AGENT` variable) |
-| `tests/` | 33 tests on the model and the monitor |
+| `tests/` | 49 tests on the model, monitor, fetching, archive, quotes and directory |
 | `docs/decisions.md` | Design decisions D1–D13 with reasoning |
 
 ## 4. Run it
@@ -114,6 +120,9 @@ python scripts/build_contract_writeup.py       # reports/contract_writeup.html +
 python scripts/export_xlsx.py reports/Nscale_tracker_data.xlsx
 EDGAR_USER_AGENT="Name email" python scripts/fetch_edgar.py 2110365 0001193125-26-395475
 COMPANIES_HOUSE_API_KEY=... python -m tracker monitor     # never commit the key
+python -m tracker search uk,lu,ie "Nscale"     # live registry search by jurisdiction
+python -m tracker sources de                   # every source for Germany, free and paid
+python scripts/build_source_directory.py       # reports/source_directory.html + .csv
 ```
 
 ## 5. What was built for Nscale (state at handoff)
@@ -226,6 +235,12 @@ COMPANIES_HOUSE_API_KEY=... python -m tracker monitor     # never commit the key
 4. Match the names against BDC and N-PORT holdings, EDGAR and the EIB/export-credit-agency lists.
 5. Load everything as statements: facility → lender, borrower, secured site (with coordinates), owner.
 6. Build a "capital map" of concentration by asset, owner and lender.
+
+**Built (29 Oct 2026, second session):** `python -m tracker search <jurisdiction> "<name>"` with live adapters for
+Companies House, The Gazette, Find Case Law, CRO open data, Annuaire des Entreprises, BODACC (untested: blocked from the
+build sandbox), KVK (needs a paid key; untested), Brønnøysund, PRH, GLEIF (every country), ESEF filings and EDGAR; the
+directory of 108 sources (`data/source_directory.yaml`, page and CSV). Next adapters worth adding: Companies House
+Document API (MR01 PDFs), Rechtspraak open data (WHOA), BORME, ESMA FIRDS (bonds by LEI), Nordic Trustee notices.
 
 ## 8. Open items
 

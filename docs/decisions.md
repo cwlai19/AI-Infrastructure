@@ -210,3 +210,47 @@ same moment when ordering history (except "before" dates, which are always earli
 agrees if one wording contains the other. A jurisdiction agrees with its parent country.
 Tie-breaks prefer a full document over an excerpt. A derived value is as strong as its weakest
 input. Each rule has a test in `tests/test_model.py`.
+
+---
+
+## D14. Fetching rules live in one place
+
+**Problem.** Each feed had its own sleep, retry and User-Agent. Limits were per call rather than per host, so
+two calls per company could exceed Companies House's 2 requests a second; only the first page of results was read
+(EDGAR returns 100 of 366 "Nscale" hits); one failing feed lost the whole run; the monitor sent SEC an anonymous
+User-Agent when the variable was unset.
+
+**Choice.** `tracker/net.py` holds per-host intervals, retries (honouring Retry-After) and the User-Agent; EDGAR
+callers require a contact. Every paged API is read to the end. Each feed runs in isolation and failures go into
+the daily issue.
+
+**Alternative rejected.** *A scraping framework (Scrapy).* Built for crawling sites; we call a few documented APIs,
+and a framework would hide the per-source rules we need to see.
+
+## D15. Archived documents are hashed; quotes are checked against them
+
+**Problem.** A fact is only as good as our ability to show the words behind it. Locators are free text, and an
+LLM extractor can paraphrase or invent while citing the right clause.
+
+**Choice.** Every downloaded file is logged in a `manifest.json` (URL, SHA-256, time). `data/quotes.csv` links a
+statement to its exact words; `check` fails if the file changed or the quote is not in it. Whitespace and curly
+quotes are ignored, nothing else. This is the contract write-up's anchor rule, extended to any statement.
+
+**Alternative rejected.** *A quote column in statements.csv.* Most statements predate the archive; a separate
+file adds evidence without rewriting 1,400 rows, like `reviews.csv`.
+
+## D16. The source directory is data; adapters are code
+
+**Problem.** Europe has no EDGAR. Each country splits company, security, insolvency and court records across
+different sites, with different access terms. We need one list colleagues can browse and a way to search a country
+when we know a company is there.
+
+**Choice.** `data/source_directory.yaml` lists every source (free and paid) with access, machine access and what it
+tells a credit analyst. Live adapters exist only where a documented, free or keyed API allows it. Where terms forbid
+automation (German Handelsregister: 60 views an hour) or there is no stable interface, the tool prints a one-click
+link instead of scraping.
+
+**Alternatives rejected.**
+- *Scrape every register.* Breaks site terms, the EU database right and GDPR for registers that list individuals.
+- *Rely on one paid aggregator (Orbis, North Data).* Good coverage, but it can't be cited as the primary record and
+  it isn't in the public repo.

@@ -19,7 +19,10 @@ See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and wh
 | `data/entities.csv` | One row per company, SPV, site, facility or contract, as sources name them |
 | `data/entity_links.csv` | Judgements that two entities are the same (`same_as`) or related (`part_of`) |
 | `data/statements.csv` | The facts |
-| `tracker/` | Validator, resolution rules and report generator |
+| `data/quotes.csv` | Verbatim quotes behind statements; `check` fails if a quote is not in the archived document |
+| `data/source_directory.yaml` | Every free and paid source by jurisdiction (registers, security, insolvency, courts, markets, lenders) |
+| `data/archive/` | Downloaded documents, each folder with a `manifest.json` (URL, SHA-256, retrieval time) |
+| `tracker/` | Validator, resolution rules, report generator, monitor, archive checks, jurisdiction search |
 | `docs/decisions.md` | Design decisions with first-principles reasoning |
 
 ## Commands
@@ -27,11 +30,20 @@ See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and wh
 Needs Python 3.11+ and PyYAML (`pip install pyyaml`).
 
 ```bash
-python -m tracker check                 # validate all data against the vocabulary
+python -m tracker check                 # validate data, archive hashes, quotes and the source directory
 python -m tracker report group_nscale   # print the Nscale credit file
 python -m tracker build                 # write build/tracker.db (SQLite) for querying
+python -m tracker search uk "Nscale"    # live registry search for one jurisdiction (uk, ie, lu, nl, de, fr, ...)
+python -m tracker search lu,ie "Nscale" # several at once; --links prints lookup links only
+python -m tracker sources lu --paid     # the source directory for a jurisdiction (--free, --channel security)
+python scripts/build_source_directory.py   # reports/source_directory.html (shareable page) + .csv
 python -m unittest discover -s tests -t .
 ```
+
+`search` runs every source with a live adapter for that jurisdiction, plus GLEIF filtered to the country
+(the LEI record gives the registry number), and prints one-click lookup links for the rest. Search hits
+are leads: confirm in the register before recording a statement. Keys it uses when set:
+`COMPANIES_HOUSE_API_KEY`, `KVK_API_KEY`; EDGAR needs `EDGAR_USER_AGENT="Name email"`.
 
 ## Adding a fact
 
@@ -44,7 +56,9 @@ python -m unittest discover -s tests -t .
    - The source states it: `disclosed`. It reports it second-hand: `reported`. You calculated it:
      `derived` (list input ids in `derived_from`). You estimated it: `estimated` (explain in `note`).
    - The source was checked and does not state it: `checked_absent`, with an empty value.
-4. Run `python -m tracker check`. It tells you exactly what's wrong.
+4. If the document is archived, add the exact words to `data/quotes.csv` (statement id, archived file,
+   quote). `check` fails if the quote is not in the file, so a paraphrase or a misread cannot pass.
+5. Run `python -m tracker check`. It tells you exactly what's wrong.
 
 Never edit or delete an old statement because a newer one disagrees. Add the new one; the
 rules decide what's shown and the disagreement stays visible.
@@ -56,8 +70,10 @@ rules decide what's shown and the disagreement stays visible.
   entities) and CCIR's issuer page, cross-checked against each other. Earlier excerpt-based
   statements are kept; misreadings are rejected in `data/reviews.csv` with reasons.
 - `scripts/oneoff/` holds the scripts that loaded those statements (kept for reproducibility).
-- Not built yet: document archive, live monitoring feeds, LLM extraction, credit metrics,
-  the senior-facing view.
+- Built: daily monitor (EDGAR, Companies House, news), document archive with hashes, verbatim-quote
+  checks, per-jurisdiction registry search, and a directory of 108 European sources.
+- Not built yet: LLM extraction, credit metrics, archive of every source document (only two exhibits
+  are archived; `scripts/fetch_edgar.py` now archives with hashes), the senior-facing view.
 
 ## Secrets
 

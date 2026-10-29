@@ -1,17 +1,26 @@
 """Command line.
 
-    python -m tracker check              validate every data file against the vocabulary
+    python -m tracker check              validate data, archived-file hashes, quotes and the source directory
     python -m tracker build              validate, then write build/tracker.db (SQLite) for querying
     python -m tracker report <group_id>  print a credit file, e.g. group_nscale
     python -m tracker monitor [edgar|ch|news]  log new filings about watched groups to data/events.csv
+    python -m tracker search <jurisdiction[,jurisdiction]> "<name>" [--links]
+                                         search a country's registers live (uk, ie, lu, nl, de, fr, es, it,
+                                         no, se, dk, fi, eu, us); --links prints the lookup links only
+    python -m tracker sources [<jurisdiction>] [--channel <c>] [--paid | --free]
+                                         list the source directory (data/source_directory.yaml)
 """
 
 import sqlite3
 import sys
 from dataclasses import asdict
 
+from . import archive, jurisdictions
 from .model import ROOT, load, validate
 from .report import credit_file
+
+PAID = {"pay_per_doc", "freemium", "subscription"}
+FREE = {"free", "free_key", "free_limited"}
 
 
 def build_db(store, path):
@@ -35,19 +44,65 @@ def build_db(store, path):
     db.close()
 
 
+def _option(argv, name):
+    return argv[argv.index(name) + 1] if name in argv and argv.index(name) + 1 < len(argv) else None
+
+
+def search_cmd(argv):
+    args = [a for a in argv if not a.startswith("--")]
+    if len(args) < 2:
+        print('usage: python -m tracker search <jurisdiction[,jurisdiction]|all> "<name>" [--links]')
+        return 2
+    d = jurisdictions.directory()
+    try:
+        keys = list(d["jurisdictions"]) if args[0] == "all" else [jurisdictions.jurisdiction_key(k) for k in args[0].split(",")]
+    except KeyError as e:
+        print(e.args[0])
+        return 2
+    term = " ".join(args[1:])
+    for key in keys:
+        results, failures, links = jurisdictions.search(key, term, live="--links" not in argv)
+        print(jurisdictions.format_search(key, term, results, failures, links) + "\n")
+    return 0
+
+
+def sources_cmd(argv):
+    d = jurisdictions.directory()
+    jur = next((a for a in argv if not a.startswith("--") and a != _option(argv, "--channel")), None)
+    try:
+        jur = jurisdictions.jurisdiction_key(jur) if jur else None
+    except KeyError as e:
+        print(e.args[0])
+        return 2
+    access = PAID if "--paid" in argv else FREE if "--free" in argv else None
+    rows = jurisdictions.resources(jur, _option(argv, "--channel"), access)
+    print(jurisdictions.format_sources(rows, d))
+    print(f"\n{len(rows)} source(s). Channels: {', '.join(d['channels'])}")
+    return 0
+
+
 def main(argv):
-    if not argv or argv[0] not in ("check", "build", "report", "monitor"):
+    commands = ("check", "build", "report", "monitor", "search", "sources")
+    if not argv or argv[0] not in commands:
         print(__doc__)
         return 2
+    if argv[0] == "search":
+        return search_cmd(argv[1:])
+    if argv[0] == "sources":
+        return sources_cmd(argv[1:])
     store = load()
     errors = validate(store)
+    if argv[0] == "check":
+        errors += archive.verify() + archive.check_quotes(store) + jurisdictions.validate_directory()
     if errors:
         print(f"{len(errors)} problem(s):")
         print("\n".join(f"  - {e}" for e in errors))
         return 1
     cmd = argv[0]
     if cmd == "check":
-        print(f"OK: {len(store.statements)} statements, {len(store.entities)} entities, {len(store.sources)} sources.")
+        n_quotes = len(archive._read_csv(archive.QUOTES))
+        print(f"OK: {len(store.statements)} statements, {len(store.entities)} entities, {len(store.sources)} sources, "
+              f"{n_quotes} verbatim quotes, {len(jurisdictions.directory()['resources'])} directory sources.")
     elif cmd == "build":
         path = ROOT / "build" / "tracker.db"
         build_db(store, path)
@@ -55,13 +110,18 @@ def main(argv):
     elif cmd == "monitor":
         from .monitor import run
         feeds = tuple(argv[1:]) or ("edgar", "ch", "news")
-        new = run(store, feeds)
-        print(f"{len(new)} new event(s)")
+        new, failures = run(store, feeds)
+        print(f"{len(new)} new event(s), {len(failures)} feed failure(s)")
+        for f in failures:
+            print(f"  FEED FAILED: {f}")
         out = ROOT / "build" / "new_events.md"
         out.parent.mkdir(exist_ok=True)
         lines = [f"{len(new)} new filing(s) to triage:", ""]
         lines += [f"- {e['event_date']} [{e['feed']}] [{e['title']}]({e['url']})"
                   for e in sorted(new, key=lambda e: e["event_date"], reverse=True)]
+        if failures:
+            lines += ["", "**Feeds that failed this run (their filings were not checked):**", ""]
+            lines += [f"- {f}" for f in failures]
         out.write_text("\n".join(lines) + "\n")
         for e in sorted(new, key=lambda e: e["event_date"], reverse=True)[:40]:
             print(f"  {e['event_date']}  [{e['feed']}] {e['title'][:110]}")

@@ -40,6 +40,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! grep -q "^0 new event" build_monitor.log; then
-            gh issue create --title "New filings to triage $(date -u +%Y-%m-%d)" --body-file build/new_events.md
+          if ! grep -q "^0 new event(s), 0 feed failure(s)" build_monitor.log; then
+            gh issue create --title "Monitor $(date -u +%Y-%m-%d): new filings or feed failures" --body-file build/new_events.md
           fi

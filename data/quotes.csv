@@ -1,0 +1,7 @@
+statement_id,file,quote
+st1068,data/archive/ex10_25_anthropic_gpu_services.txt,Provider Name: Nscale GPU MCC B1.1 LLC
+st1319,data/archive/ex10_25_anthropic_gpu_services.txt,Provider Name: Nscale GPU MCC B1.1 LLC
+st4003,data/archive/ex10_19_microsoft_sow_kvandal_north.txt,"located at the land at Kvandal North in the municipality of Narvik, Norway at Nordmoveien 301, 8530 Bjerkvik, Narvik, Norway"
+st4006,data/archive/ex10_19_microsoft_sow_kvandal_north.txt,Company Name: Microsoft Ireland Operations Limited
+st4011,data/archive/ex10_19_microsoft_sow_kvandal_north.txt,"Microsoft may, in its sole discretion choose to extend the expiration date of a Tranche beyond the Year 6 End Date"
+st4014,data/archive/ex10_19_microsoft_sow_kvandal_north.txt,"If a GPU Service is not delivered by its Delivery Date, Partner will credit Microsoft 100% of the equivalent of a daily bill for each day after the Delivery Date"

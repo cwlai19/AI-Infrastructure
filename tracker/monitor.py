@@ -10,58 +10,55 @@ Feeds:
   ch         Companies House filing history and charges for every UK entity with a registry id.
   news       Google News search for the group's terms. Fastest but weakest (grade C): use it to
              know something happened, then confirm in a filing before it becomes an A-grade statement.
+
+Every feed reads all pages of results (a search for "Nscale" has several hundred EDGAR hits), and a feed
+that fails is reported, not fatal: the other feeds' events are still logged.
 """
 
 import base64
 import csv
-import json
 import os
-import time
 import urllib.parse
-import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
 
+from . import net
 from .model import DATA_DIR
 
 EVENTS = DATA_DIR / "events.csv"
 FIELDS = ["event_id", "observed_date", "feed", "group", "subject", "kind", "event_date", "title", "url", "status"]
-USER_AGENT = os.environ.get("EDGAR_USER_AGENT", "ai-infrastructure research tracker")
 CH_KEY_FILE = Path.home() / ".config" / "ai-infrastructure" / "companies_house_api_key"
 WATCHLIST = DATA_DIR / "watchlist.yaml"
+MAX_PAGES = 50   # safety stop for any one paged query
 
 
-def _get_json(url, headers=None, tries=3):
-    for attempt in range(tries):
-        try:
-            req = urllib.request.Request(url, headers=headers or {})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                return json.load(r)
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                return {}
-            if e.code in (429, 500, 502, 503) and attempt < tries - 1:
-                time.sleep(2 ** (attempt + 1))
-                continue
-            raise
-    return {}
+def _ch_items(url, auth):
+    """Every item of a paged Companies House list (filing history, charges)."""
+    items, start = [], 0
+    for _ in range(MAX_PAGES):
+        sep = "&" if "?" in url else "?"
+        page = net.get_json(f"{url}{sep}items_per_page=100&start_index={start}", auth)
+        batch = page.get("items", [])
+        items += batch
+        start += len(batch)
+        if not batch or start >= int(page.get("total_count") or page.get("total_results") or 0):
+            break
+    return items
 
 
 def _ch_key():
     key = os.environ.get("COMPANIES_HOUSE_API_KEY") or (CH_KEY_FILE.read_text().strip() if CH_KEY_FILE.exists() else "")
     if not key:
-        raise SystemExit("No Companies House key: set COMPANIES_HOUSE_API_KEY or write it to " + str(CH_KEY_FILE))
+        raise RuntimeError("No Companies House key: set COMPANIES_HOUSE_API_KEY or write it to " + str(CH_KEY_FILE))
     return "Basic " + base64.b64encode(f"{key}:".encode()).decode()
 
 
 def edgar_events(group, terms, since):
     """One event per filing (accession) that mentions any search term since `since`."""
     events = {}
+    headers = {"User-Agent": net.user_agent(require_contact=True)}
     for term in terms:
-        q = urllib.parse.urlencode({"q": f'"{term}"', "dateRange": "custom", "startdt": since,
-                                    "enddt": date.today().isoformat()})
-        data = _get_json(f"https://efts.sec.gov/LATEST/search-index?{q}", {"User-Agent": USER_AGENT})
-        for hit in data.get("hits", {}).get("hits", []):
+        for hit in edgar_hits(term, since, headers):
             s = hit["_source"]
             acc, filename = hit["_id"].split(":")
             cik = s["ciks"][0].lstrip("0")
@@ -71,8 +68,22 @@ def edgar_events(group, terms, since):
                 kind=s.get("form", ""), event_date=s.get("file_date", ""),
                 title=f"{s.get('form', '')} by {s['display_names'][0]} mentions '{term}'",
                 url=f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}/{filename}"))
-        time.sleep(0.2)   # SEC fair access: well under 10 requests/second
     return list(events.values())
+
+
+def edgar_hits(term, since, headers, until=None):
+    """Every EDGAR full-text search hit for an exact phrase, following pages of 100."""
+    hits, start = [], 0
+    for _ in range(MAX_PAGES):
+        q = urllib.parse.urlencode({"q": f'"{term}"', "dateRange": "custom", "startdt": since,
+                                    "enddt": until or date.today().isoformat(), "from": start})
+        page = net.get_json(f"https://efts.sec.gov/LATEST/search-index?{q}", headers).get("hits", {})
+        batch = page.get("hits", [])
+        hits += batch
+        start += len(batch)
+        if not batch or start >= page.get("total", {}).get("value", 0):
+            break
+    return hits
 
 
 def news_events(group, terms):
@@ -82,9 +93,8 @@ def news_events(group, terms):
     events = []
     for term in terms:
         q = urllib.parse.urlencode({"q": f'"{term}"', "hl": "en-GB", "gl": "GB", "ceid": "GB:en"})
-        req = urllib.request.Request(f"https://news.google.com/rss/search?{q}", headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=60) as r:
-            root = ET.fromstring(r.read())
+        body, _ = net.get(f"https://news.google.com/rss/search?{q}")
+        root = ET.fromstring(body or b"<rss/>")
         for item in root.iter("item"):
             get = lambda tag: (item.findtext(tag) or "").strip()
             try:
@@ -95,7 +105,6 @@ def news_events(group, terms):
                 event_id=f"news:{get('guid') or get('link')}", feed="news", group=group,
                 subject=get("source") or "news", kind="news", event_date=when,
                 title=get("title"), url=get("link")))
-        time.sleep(1)
     return events
 
 
@@ -105,15 +114,13 @@ def ch_events(group, companies):
     base = "https://api.company-information.service.gov.uk/company/"
     events = []
     for entity_id, number in companies:
-        history = _get_json(f"{base}{number}/filing-history?items_per_page=50", auth)
-        for f in history.get("items", []):
+        for f in _ch_items(f"{base}{number}/filing-history", auth):
             events.append(dict(
                 event_id=f"ch:{number}:filing:{f.get('transaction_id')}", feed="ch", group=group, subject=entity_id,
                 kind=f.get("type", ""), event_date=f.get("date", ""),
                 title=f"{number} {f.get('type', '')}: {f.get('description', '')}",
                 url=f"https://find-and-update.company-information.service.gov.uk/company/{number}/filing-history"))
-        charges = _get_json(f"{base}{number}/charges", auth)
-        for c in charges.get("items", []):
+        for c in _ch_items(f"{base}{number}/charges", auth):
             holders = ", ".join(p.get("name", "") for p in c.get("persons_entitled", []))
             events.append(dict(
                 event_id=f"ch:{number}:charge:{c.get('charge_code') or c.get('id')}:{c.get('status')}", feed="ch",
@@ -121,7 +128,6 @@ def ch_events(group, companies):
                 event_date=c.get("satisfied_on") or c.get("created_on", ""),
                 title=f"{number} charge {c.get('status', '')} in favour of {holders}",
                 url=f"https://find-and-update.company-information.service.gov.uk/company/{number}/charges"))
-        time.sleep(0.6)   # Companies House: 600 requests / 5 minutes
     return events
 
 
@@ -176,15 +182,23 @@ def uk_companies(store, group_id):
 
 
 def run(store, feeds=("edgar", "ch", "news"), lookback_days=45):
+    """Poll every feed for every watched group. Returns (new events to triage, feed failures).
+
+    A failing feed (site down, key missing, format changed) is recorded in `failures` and the
+    other feeds' events are still logged, so one outage never hides everything else."""
     import yaml
     watch = yaml.safe_load(WATCHLIST.read_text())
     since = (date.today() - timedelta(days=lookback_days)).isoformat()
-    all_events = []
+    all_events, failures = [], []
     for group_id, cfg in watch["groups"].items():
-        if "edgar" in feeds:
-            all_events += edgar_events(group_id, cfg["edgar_terms"], since)
-        if "ch" in feeds:
-            all_events += ch_events(group_id, uk_companies(store, group_id))
-        if "news" in feeds and cfg.get("news_terms"):
-            all_events += news_events(group_id, cfg["news_terms"])
-    return append_new(all_events, tuple(watch.get("ignore_kinds", [])))
+        jobs = {
+            "edgar": lambda: edgar_events(group_id, cfg["edgar_terms"], since),
+            "ch": lambda: ch_events(group_id, uk_companies(store, group_id)),
+            "news": lambda: news_events(group_id, cfg.get("news_terms") or []),
+        }
+        for feed in feeds:
+            try:
+                all_events += jobs[feed]()
+            except Exception as e:   # noqa: BLE001 - any failure is reported, never fatal
+                failures.append(f"{feed} ({group_id}): {type(e).__name__}: {str(e)[:200]}")
+    return append_new(all_events, tuple(watch.get("ignore_kinds", []))), failures

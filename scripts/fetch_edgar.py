@@ -5,51 +5,43 @@
 
 Writes <out_dir>/<accession>/{name}.htm, {name}.txt (one line per block) and {name}.flat.txt (one line,
 whitespace collapsed: the form the clause anchors in data/contract_writeup.yaml and the reading helpers expect).
-SEC requires a descriptive User-Agent: set EDGAR_USER_AGENT="Your Name your@email". Keeps to SEC's 10 requests/second.
+Every downloaded file is logged in <out_dir>/<accession>/manifest.json (URL, SHA-256, size, retrieval time);
+`python -m tracker check` re-hashes them. Skips the full-submission .txt and index pages, which only repeat the
+documents. SEC requires a descriptive User-Agent: set EDGAR_USER_AGENT="Your Name your@email".
+Requests go through tracker.net, which keeps to SEC's 10 requests/second and retries rate-limit errors.
 """
 import json
-import os
 import re
 import sys
-import time
-import urllib.request
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from html2text import P  # noqa: E402
-
-UA = os.environ.get("EDGAR_USER_AGENT")
-if not UA:
-    raise SystemExit("Set EDGAR_USER_AGENT, e.g. 'Jane Doe jane@example.com' (SEC requirement)")
+from html2text import to_text  # noqa: E402
+from tracker import archive, net  # noqa: E402
 
 
-def get(url):
-    time.sleep(0.15)
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Encoding": "identity"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return r.read()
-
-
-def to_text(raw):
-    p = P()
-    p.feed(raw.decode("utf-8", errors="replace"))
-    text = "".join(p.out)
-    lines = [re.sub(r"[ \t ]+", " ", ln).strip() for ln in text.splitlines()]
-    return "\n".join(ln for ln in lines if ln)
+def documents(index, acc):
+    """Names of the filing's own documents: the main document and exhibits, not indexes or the full submission."""
+    skip = {f"{acc}.txt", f"{acc}-index.htm", f"{acc}-index.html", f"{acc}-index-headers.html"}
+    return [i["name"] for i in index["directory"]["item"]
+            if i["name"].lower().endswith((".htm", ".html", ".txt")) and i["name"] not in skip]
 
 
 def main(cik, acc, out_dir="data/archive/edgar"):
-    nodash = acc.replace("-", "")
-    base = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{nodash}/"
-    index = json.loads(get(base + "index.json"))
+    net.user_agent(require_contact=True)
+    base = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{acc.replace('-', '')}/"
+    body, _ = net.get(base + "index.json")
+    if body is None:
+        raise SystemExit(f"no such filing: {base}")
     out = Path(out_dir) / acc
-    out.mkdir(parents=True, exist_ok=True)
-    docs = [i["name"] for i in index["directory"]["item"] if i["name"].lower().endswith((".htm", ".html", ".txt"))
-            and not i["name"].endswith("-index.htm")]
+    docs = documents(json.loads(body), acc)
     for name in docs:
-        raw = get(base + name)
-        (out / name).write_bytes(raw)
-        text = to_text(raw) if name.lower().endswith((".htm", ".html")) else raw.decode("utf-8", errors="replace")
+        raw, ctype = net.get(base + name)
+        archive.record(out, name, raw, base + name, ctype)
+        decoded = raw.decode("utf-8", errors="replace")
+        text = to_text(decoded) if name.lower().endswith((".htm", ".html")) else decoded
         stem = Path(name).stem
         (out / f"{stem}.txt").write_text(text)
         (out / f"{stem}.flat.txt").write_text(re.sub(r"\s+", " ", text))
@@ -60,4 +52,7 @@ def main(cik, acc, out_dir="data/archive/edgar"):
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         raise SystemExit(__doc__)
-    main(*sys.argv[1:])
+    try:
+        main(*sys.argv[1:])
+    except RuntimeError as e:
+        raise SystemExit(str(e))
