@@ -53,8 +53,10 @@ h1 { font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
 .kpi .k { font-size: 11.5px; color: var(--ink-2); }
 .kpi .v { font-size: 19px; font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1.3; }
 .kpi .n { font-size: 11px; color: var(--ink-3); }
-.ratio .bar { height: 5px; border-radius: 3px; background: var(--hover); overflow: hidden; margin-top: 3px; }
-.ratio .bar i { display: block; height: 100%; background: var(--accent); }
+.kpi .pct { font-size: 12px; font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.kpi .small-v { font-size: 15px; }
+.kpi .bar { height: 5px; border-radius: 3px; background: var(--hover); overflow: hidden; margin-top: 3px; }
+.kpi .bar i { display: block; height: 100%; background: var(--accent); }
 .kpi .grp { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3); }
 details.fold { border: 1px solid var(--line); border-radius: 6px; }
 details.fold > summary { cursor: pointer; padding: 7px 12px; display: flex; gap: 10px; align-items: baseline; list-style: none; }
@@ -140,6 +142,27 @@ td.clauses { min-width: 230px; } td.clauses details summary { cursor: pointer; c
 .note p { margin: 0; }
 a { color: inherit; text-decoration-color: var(--ink-3); }
 [hidden] { display: none !important; }
+.wm-corner .short { display: none; }
+@media (max-width: 640px) {
+  body { font-size: 13px; padding-block: 14px 24px; }
+  h1 { font-size: 20px; }
+  .top { padding-top: 22px; }
+  .top .sub { flex-basis: 100%; order: 3; font-size: 12px; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi { border-left: 0; border-top: 1px solid var(--line); }
+  .kpi:nth-child(-n+2) { border-top: 0; } .kpi:nth-child(even) { border-left: 1px solid var(--line); }
+  .kpi:last-child { grid-column: 1 / -1; border-left: 0; }
+  .kpi .v { font-size: 17px; } .kpi .pct { display: block; white-space: normal; }
+  details.fold > summary { flex-wrap: wrap; } details.fold > summary span { white-space: normal; }
+  .toolbar .hint { display: none; }
+  .seg button { padding: 4px 8px; }
+  .site text { font-size: 21px; stroke-width: 5px; }
+  .legend { font-size: 11px; }
+  .conc .row { grid-template-columns: 80px minmax(0, 1fr) 105px; }
+  .pop { width: min(270px, 86vw); }
+  .wm-corner .full { display: none; } .wm-corner .short { display: inline; }
+  .kv { grid-template-columns: 96px minmax(0, 1fr); }
+}
 </style>
 
 <div class="page">
@@ -173,7 +196,6 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
       <span class="hint">Click campuses on the map to add or remove them; the panel totals your selection.</span>
     </div>
     <section class="kpis" id="kpis" aria-label="Group totals"></section>
-    <section class="kpis ratios" id="ratios" aria-label="Conversion ratios" style="margin-top:6px"></section>
     <div class="main" style="margin-top:10px">
       <div class="mapbox"><svg id="map" viewBox="0 0 960 470" role="img" aria-label="Map of Nscale campuses in the US and Europe"></svg><div class="legend" id="legend"></div></div>
       <aside class="panel" id="panel" aria-live="polite"></aside>
@@ -268,12 +290,14 @@ function totals(list) {
     mw: d3.sum(list, s => s.mw || 0), mwKnown: list.filter(s => s.mw != null).length,
     act: d3.sum(list, s => s.act || 0), actKnown: list.filter(s => s.act != null).length,
     debt: d3.sum(list, s => s.debtOwn) + d3.sum(Object.values(shared), f => num(f.amount_max) || 0), sharedN: Object.keys(shared).length,
-    value: d3.sum(list, s => s.value || 0), valueKnown: list.filter(s => s.value != null).length };
+    value: d3.sum(list, s => s.value || 0), valueKnown: list.filter(s => s.value != null).length,
+    both: list.filter(s => s.mw && s.act != null).length, mwBoth: d3.sum(list.filter(s => s.mw && s.act != null), s => s.mw),
+    actBoth: d3.sum(list.filter(s => s.mw && s.act != null), s => s.act) };
 }
 
 // ---- header, disclaimer, KPIs ----
 document.getElementById("asof").textContent = `Campuses, customers and debt · as of ${D.as_of}`;
-document.getElementById("wm-mark").textContent = D.disclaimer.short;
+document.getElementById("wm-mark").innerHTML = `<span class="full">${esc(D.disclaimer.short)}</span><span class="short">C. W. Lai · ${esc(D.as_of)} · AI-assisted</span>`;
 document.getElementById("wm-short").innerHTML = `<b>${esc(D.disclaimer.short)}.</b>`;
 document.getElementById("wm-detail").textContent = D.disclaimer.detail;
 function kpi(group, k, f, fmt, note) {
@@ -282,29 +306,28 @@ function kpi(group, k, f, fmt, note) {
   return `<div class="kpi"><div class="grp">${group}</div><div class="k">${k}</div><div class="v">${v}</div><div class="n">${note || ""}</div></div>`;
 }
 function renderKpis() {
-  const mw = v => esc(v.number >= 1000 ? (v.number / 1000).toFixed(2).replace(/\.?0+$/, "") + " GW" : (+v.number).toLocaleString() + " MW");
-  const m = v => esc(money(v.number));
-  const n = v => esc((+v.number).toLocaleString());
-  document.getElementById("kpis").innerHTML =
-    kpi("Capacity", "Active", G.mw_energized_total, mw, state.primary ? "S-1 gives no active MW" : "Press, citing the IPO filing") +
-    kpi("Capacity", "Active + contracted", G.mw_contracted_total, mw, "1 GW owned · 200 MW leased · 165 MW colocation") +
-    kpi("Capacity", "Potential (pipeline)", G.mw_potential, v => "~" + mw(v), "Line of sight, per the S-1") +
-    kpi("Contract value", "Active", G.tcv_active, m, "Revenue-generating today") +
-    kpi("Contract value", "Active + contracted", G.tcv_active_and_contracted, m, "Total backlog, 31 Aug 2026") +
-    "";
-  const ratio = (k, a, b, note) => {
-    const A = F(a), B = F(b);
-    if (!A.values || !B.values) return `<div class="kpi ratio"><div class="grp">Ratio</div><div class="k">${k}</div><div class="v"><span class="gap" style="font-size:13px;font-weight:400">${(!A.values && A.status === "hidden") || (!B.values && B.status === "hidden") ? "Needs news figures" : "Not disclosed"}</span></div><div class="n">${note}</div></div>`;
-    const pct = A.values[0].number / B.values[0].number * 100, g = [A.grade, B.grade].sort().pop();
-    return `<div class="kpi ratio"><div class="grp">Ratio</div><div class="k">${k}</div><div class="v">${pct < 10 ? pct.toFixed(1) : pct.toFixed(0)}%<span class="g ${g}" title="Weakest input grade">${g}</span></div>
-      <div class="bar" role="img" aria-label="${pct.toFixed(1)}%"><i style="width:${Math.min(100, pct)}%"></i></div><div class="n">${note}</div></div>`;
+  const mw = n => n >= 1000 ? (n / 1000).toFixed(2).replace(/\.?0+$/, "") + " GW" : (+n).toLocaleString() + " MW";
+  const pct = p => (p < 10 ? p.toFixed(1) : p.toFixed(0)) + "%";
+  // value (share of base), e.g. "55 MW (4.0% of contracted)"; share uses the weaker grade of the two inputs
+  const tile = (grp, k, f, fmt, base, baseLabel, note) => {
+    const A = F(f), B = base ? F(base) : null;
+    const val = A.values ? `${esc(fmt(A.values[0].number))}${grade(A.values[0])}` :
+      `<span class="gap" style="font-size:13px;font-weight:400">${A.status === "hidden" ? "News only" : "Not disclosed"}</span>`;
+    let share = "", bar = "";
+    if (A.values && B && B.values) {
+      const p = A.values[0].number / B.values[0].number * 100;
+      share = `<span class="pct">(${pct(p)} of ${baseLabel})</span>`;
+      bar = `<div class="bar" role="img" aria-label="${pct(p)} of ${baseLabel}"><i style="width:${Math.min(100, p)}%"></i></div>`;
+    } else if (A.values) share = `<span class="pct">(${baseLabel}: not disclosed)</span>`;
+    return `<div class="kpi"><div class="grp">${grp}</div><div class="k">${k}</div><div class="v">${val} ${share}</div>${bar}<div class="n">${note || ""}</div></div>`;
   };
-  document.getElementById("ratios").innerHTML =
-    ratio("Active revenue / contracted", G.tcv_active, G.tcv_active_and_contracted, "Active contract value as % of total backlog") +
-    ratio("Active capacity / contracted", G.mw_energized_total, G.mw_contracted_total, "Active MW as % of active + contracted MW") +
-    ratio("Contracted / planned capacity", G.mw_contracted_total, G.mw_potential, "Active + contracted MW as % of the ~10 GW pipeline") +
-    kpi("GPUs", "Active / contracted", G.gpus_active, v => n(v) + " / " + esc((num(G.gpus_active_and_contracted) / 1000).toFixed(0) + "k"), "") +
-    kpi("Sites", "Active / contracted", G.sites_active, v => n(v) + " / " + esc(num(G.sites_contracted)), "");
+  document.getElementById("kpis").innerHTML =
+    tile("Capacity", "Active MW", G.mw_energized_total, mw, G.mw_contracted_total, "contracted", state.primary ? "IPO filing gives no active MW" : "Press, citing the IPO filing") +
+    tile("Capacity", "Contracted MW (active + contracted)", G.mw_contracted_total, mw, G.mw_potential, "~10 GW planned", "Planned = pipeline with line of sight, per the S-1") +
+    tile("Revenue", "Active contract value", G.tcv_active, money, G.tcv_active_and_contracted, "contracted", "Revenue-generating today") +
+    tile("Revenue", "Contracted value (active + contracted)", G.tcv_active_and_contracted, money, null, "planned", "Total backlog, 31 Aug 2026; no planned figure disclosed") +
+    `<div class="kpi"><div class="grp">Scale</div><div class="k">GPUs · sites (active / contracted)</div><div class="v small-v">${show(G.gpus_active, v => esc((+v.number).toLocaleString()))} / ${esc((num(G.gpus_active_and_contracted) / 1000).toFixed(0))}k</div>
+      <div class="n">${show(G.sites_active, v => esc(v.number))} / ${esc(num(G.sites_contracted))} sites</div></div>`;
 }
 
 // ---- customers strip (top) ----
@@ -342,7 +365,7 @@ function renderCorp() {
 const svg = d3.select("#map"), W = 960, H = 470;
 const world = topojson.feature(D.geo.world, D.geo.world.objects.countries);
 const statesMesh = topojson.mesh(D.geo.us, D.geo.us.objects.states, (a, b) => a !== b);
-const EXTENT = { all: [[-108, 27], [30, 70]], us: [[-110, 26], [-70, 46]], eu: [[-26, 35], [28, 70]] };
+const EXTENT = { all: [[-108, 27], [40, 70]], us: [[-110, 26], [-70, 46]], eu: [[-26, 35], [28, 70]] };
 const LABEL = {   // label placement per campus: [dx, dy, anchor]
   site_ward_county: [10, 4, "start"], site_north_carolina: [10, 10, "start"], site_monarch: [10, -6, "start"],
   site_borealis: [-10, 4, "end"], site_loughton: [-10, 4, "end"], site_sin01: [-10, 12, "end"], site_sin02: [-10, -2, "end"],
@@ -419,12 +442,13 @@ const upOf = id => D.upstream.find(u => u.site === id) || {};
 function campusDetail(s) {
   const u = upOf(s.id), L = u.lease, cp = u.counterparty;
   const status = F(s.construction_status);
+  const actPct = s.mw && s.act != null ? ` <span class="small">(${(s.act / s.mw * 100).toFixed(0)}% of contracted)</span>` : "";
   const notes = [s.mw_contracted, s.mw_energized, s.ownership].map(F).filter(f => f && f.values).flatMap(f => f.values.map(v => v.note)).filter(Boolean);
   let h = `<h3>${esc(s.label)} ${riskTag(s.risk)}</h3><dl class="kv">
     <dt>Region</dt><dd>${REGIONS[s.region]}</dd>
     <dt>Ownership</dt><dd>${show(s.ownership, x => words(x.text))}</dd>
     <dt>Contracted</dt><dd>${show(s.mw_contracted, x => esc(fmtMW(x.number)))}</dd>
-    <dt>Active</dt><dd>${show(s.mw_energized, x => esc(fmtMW(x.number)))}</dd>
+    <dt>Active</dt><dd>${show(s.mw_energized, x => esc(fmtMW(x.number)))}${actPct}</dd>
     <dt>Build status</dt><dd>${status.values ? esc(status.values[0].text) + grade(status.values[0]) : show(s.construction_status)}</dd>
     ${notes.length ? `<dt>Notes</dt><dd class="small">${notes.map(esc).join("<br>")}</dd>` : ""}</dl>`;
   // Customer
@@ -476,7 +500,7 @@ function aggregate(list, title) {
   return `<h3>${title}</h3><dl class="kv">
     <dt>Campuses</dt><dd>${t.n} · ${[...mix].sort((a, b) => RISK[a[0]].order - RISK[b[0]].order).map(([k, n]) => `${riskTag(k)} ${n}`).join(" ")}</dd>
     <dt>Contracted</dt><dd>${t.mw.toLocaleString()} MW <span class="small">(${t.mwKnown} of ${t.n} disclose)</span></dd>
-    <dt>Active</dt><dd>${t.act.toLocaleString()} MW <span class="small">(${t.actKnown} of ${t.n} disclose)</span></dd>
+    <dt>Active</dt><dd>${t.act.toLocaleString()} MW ${t.both ? `<span class="small">(${(t.actBoth / t.mwBoth * 100).toFixed(t.actBoth / t.mwBoth < 0.1 ? 1 : 0)}% of contracted, where both disclosed)</span>` : ""} <span class="small">(${t.actKnown} of ${t.n} disclose)</span></dd>
     <dt>Campus debt</dt><dd>${money(t.debt) || "–"} <span class="small">committed${t.sharedN ? ", incl. shared Dell bridge" : ""}</span></dd>
     <dt>Contract value</dt><dd>${money(t.value) || "–"} <span class="small">(${t.valueKnown} of ${t.n} disclose)</span></dd></dl>
     <div class="db" style="margin-top:8px"><table><thead><tr><th>Campus</th><th>Risk</th><th>Contracted</th><th>Active</th><th>Debt</th>${state.sel.size ? "<th></th>" : ""}</tr></thead><tbody>${list.sort((a, b) => RISK[a.risk].order - RISK[b.risk].order).map(s =>
