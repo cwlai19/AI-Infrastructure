@@ -12,6 +12,10 @@ from openpyxl.utils import get_column_letter
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tracker.model import DATA_DIR, load, resolve  # noqa: E402
 from tracker.report import LEDGER_COLUMNS, _label, _value  # noqa: E402
+from tracker.disclaimer import AUTHOR, SHORT, TEXT  # noqa: E402
+
+COMPACT = "--compact" in sys.argv   # email copy: no monitor log, no per-cell styling, so it stays small
+sys.argv = [a for a in sys.argv if a != "--compact"]
 
 store = load()
 wb = Workbook()
@@ -34,6 +38,12 @@ def sheet(title, header, rows, widths=None):
 
 readme = wb.active
 readme.title = "README"
+readme.append([SHORT])
+readme["A1"].font = Font(bold=True, color="C00000")
+readme.append([TEXT])
+readme["A2"].alignment = Alignment(wrap_text=True, vertical="top")
+readme.row_dimensions[2].height = 75
+readme.append([""])
 for line in [
     "Nscale credit tracker: full data export (generated from the statement files in the GitHub repo)",
     "",
@@ -53,16 +63,23 @@ readme.column_dimensions["A"].width = 130
 
 sources = store.sources
 grade = {s.id: s.grade for s in store.statements}
-sheet("Statements",
-      ["id", "entity", "entity_type", "property", "value", "value_label", "unit", "grade", "method", "effective_date",
-       "observed_date", "source_id", "source_type", "source_title", "locator", "source_url", "note", "review_verdict",
-       "review_reason", "derived_from"],
-      [[s.id, _label(store, s.entity), store.entities[s.entity]["type"], s.property, s.value,
-        _value(store, s) if s.value else "", s.unit, s.grade, s.method, s.effective_date, s.observed_date, s.source,
-        sources[s.source]["type"], sources[s.source]["title"], s.locator, sources[s.source].get("url", ""), s.note,
-        store.reviews.get(s.id, {}).get("verdict", ""), store.reviews.get(s.id, {}).get("reason", ""),
-        ";".join(s.derived_from)] for s in store.statements],
-      [9, 34, 12, 24, 22, 30, 8, 6, 12, 12, 12, 22, 16, 40, 30, 40, 50, 10, 40, 14])
+if COMPACT:
+    sheet("Statements", ["id", "entity", "property", "value", "unit", "grade", "method", "effective_date", "source_id", "locator", "note",
+                         "review_verdict"],
+          [[s.id, _label(store, s.entity), s.property, _value(store, s) if s.value else "", s.unit, s.grade, s.method, s.effective_date,
+            s.source, s.locator, s.note, store.reviews.get(s.id, {}).get("verdict", "")] for s in store.statements],
+          [9, 34, 24, 40, 8, 6, 12, 12, 22, 30, 50, 10])
+else:
+    sheet("Statements",
+          ["id", "entity", "entity_type", "property", "value", "value_label", "unit", "grade", "method", "effective_date",
+           "observed_date", "source_id", "source_type", "source_title", "locator", "source_url", "note", "review_verdict",
+           "review_reason", "derived_from"],
+          [[s.id, _label(store, s.entity), store.entities[s.entity]["type"], s.property, s.value,
+            _value(store, s) if s.value else "", s.unit, s.grade, s.method, s.effective_date, s.observed_date, s.source,
+            sources[s.source]["type"], sources[s.source]["title"], s.locator, sources[s.source].get("url", ""), s.note,
+            store.reviews.get(s.id, {}).get("verdict", ""), store.reviews.get(s.id, {}).get("reason", ""),
+            ";".join(s.derived_from)] for s in store.statements],
+          [9, 34, 12, 24, 22, 30, 8, 6, 12, 12, 12, 22, 16, 40, 30, 40, 50, 10, 40, 14])
 
 ledger_rows = []
 for e, ent in store.entities.items():
@@ -128,15 +145,21 @@ sheet("Entity_links", ["entity_a", "relation", "entity_b", "judged_by", "judged_
 sheet("Reviews", ["statement_id", "verdict", "reason", "reviewer", "date"],
       [[r["statement_id"], r["verdict"], r["reason"], r["reviewer"], r["date"]] for r in store.reviews.values()],
       [12, 10, 100, 28, 12])
-events = list(csv.DictReader(open(DATA_DIR / "events.csv", encoding="utf-8"))) if (DATA_DIR / "events.csv").exists() else []
-sheet("Events", ["event_date", "status", "feed", "kind", "subject", "title", "url"],
-      [[e["event_date"], e["status"], e["feed"], e["kind"], _label(store, e["subject"]) if e["subject"] in store.entities else e["subject"],
-        e["title"], e["url"]] for e in sorted(events, key=lambda e: e["event_date"], reverse=True)],
-      [12, 10, 7, 14, 40, 70, 70])
-for ws in wb.worksheets[1:]:
-    for row in ws.iter_rows(min_row=2):
-        for c in row:
-            c.alignment = Alignment(vertical="top", wrap_text=False)
+events = [] if COMPACT else list(csv.DictReader(open(DATA_DIR / "events.csv", encoding="utf-8"))) if (DATA_DIR / "events.csv").exists() else []
+if not COMPACT:
+    sheet("Events", ["event_date", "status", "feed", "kind", "subject", "title", "url"],
+          [[e["event_date"], e["status"], e["feed"], e["kind"], _label(store, e["subject"]) if e["subject"] in store.entities else e["subject"],
+            e["title"], e["url"]] for e in sorted(events, key=lambda e: e["event_date"], reverse=True)],
+          [12, 10, 7, 14, 40, 70, 70])
+for ws in wb.worksheets:
+    ws.oddHeader.center.text = SHORT
+    ws.oddFooter.center.text = "AI-assisted; not advice; no liability accepted. See README."
+    if not COMPACT and ws is not readme:
+        for row in ws.iter_rows(min_row=2):
+            for c in row:
+                c.alignment = Alignment(vertical="top", wrap_text=False)
+wb.properties.creator = AUTHOR
+wb.properties.description = TEXT
 out = Path(sys.argv[1] if len(sys.argv) > 1 else "reports/Nscale_tracker_data.xlsx")
 wb.save(out)
 print(f"wrote {out}: {len(store.statements)} statements, {len(ledger_rows)} facilities, {len(events)} events")

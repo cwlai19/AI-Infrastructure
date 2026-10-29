@@ -136,6 +136,10 @@ tr.total td { font-weight: 600; cursor: default; } tr.total:hover td { backgroun
 .note p { margin: 0; }
 a { color: inherit; text-decoration-color: var(--ink-3); }
 .empty { color: var(--ink-3); }
+.wm-banner { border: 1px solid var(--tag-red-bg); background: var(--panel); border-radius: 4px; padding: 8px 12px; font-size: 12.5px; color: var(--ink-2); }
+.wm-banner b { color: var(--tag-red-fg); }
+.wm-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 40; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.wm-overlay span { transform: rotate(-30deg); font-size: clamp(20px, 3.6vw, 44px); font-weight: 700; color: var(--ink); opacity: 0.05; white-space: nowrap; }
 .sub-h { color: var(--ink-2); margin: -12px 0 0; max-width: 90ch; }
 .conc { display: flex; flex-direction: column; gap: 6px; max-width: 760px; }
 .conc .row { display: grid; grid-template-columns: 170px minmax(0, 1fr) 120px; gap: 12px; align-items: center; font-size: 13.5px; }
@@ -154,7 +158,9 @@ td .stack { display: flex; flex-direction: column; gap: 3px; }
 </style>
 
 <div class="page">
+  <div class="wm-overlay" aria-hidden="true"><span id="wm-mark"></span></div>
   <h1>Nscale Site Map</h1>
+  <div class="wm-banner" id="wm-banner"></div>
   <dl class="props" id="props"></dl>
   <p class="desc">Where Nscale's capacity, debt and customers sit, and how much construction risk each campus carries. Filter by region, campus or risk; click a campus to open it. Every figure links to its source and carries a grade.</p>
 
@@ -210,6 +216,16 @@ td .stack { display: flex; flex-direction: column; gap: 3px; }
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
 const D = /*__DATA__*/null;
+// Sources are stored once and referenced by index to keep the file small; put them back on each value.
+if (D._src) (function fix(o) {
+  if (Array.isArray(o)) o.forEach(fix);
+  else if (o && typeof o === "object") {
+    if ("sid" in o) { const s = D._src[o.sid]; o.source = s[0]; o.publisher = s[1]; o.url = s[2]; delete o.sid; }
+    Object.values(o).forEach(fix);
+  }
+})(D);
+document.getElementById("wm-mark").textContent = D.disclaimer.short;
+document.getElementById("wm-banner").innerHTML = `<b>${D.disclaimer.short}.</b> ${D.disclaimer.detail}`;
 const RISK = {
   critical:   { label: "Critical", tag: "red", order: 0 },
   high:       { label: "High", tag: "orange", order: 1 },

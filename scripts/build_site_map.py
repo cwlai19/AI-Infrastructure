@@ -150,6 +150,26 @@ data = {"as_of": "2026-10-29", "rated_by": overlay["rated_by"], "rated_date": ov
         "group": group, "asia": asia, "sites": sites, "corporate": corporate,
         "customers": customers, "upstream": upstream, "group_lease": group_lease,
         "rcf_cross_default": rcf_cross_default}
+from tracker.disclaimer import DETAIL, SHORT  # noqa: E402
+data["disclaimer"] = {"short": SHORT, "detail": DETAIL}
+src_index = {}
+
+
+def pack(o):
+    """Replace each value's repeated source fields with an index into data['_src']."""
+    if isinstance(o, list):
+        return [pack(x) for x in o]
+    if isinstance(o, dict):
+        o = {k: pack(v) for k, v in o.items()}
+        if "source" in o and "url" in o and "grade" in o:
+            key = (o.pop("source"), o.pop("publisher", ""), o.pop("url"))
+            o["sid"] = src_index.setdefault(key, len(src_index))
+        return o
+    return o
+
+
+data = pack(data)
+data["_src"] = [list(k) for k in src_index]
 template = (ROOT / "reports" / "site_map_template.html").read_text()
 # Email copy: map outlines load from the web when opened, so the file stays small.
 lite = ROOT / "reports" / "Nscale_Site_Map.html"
