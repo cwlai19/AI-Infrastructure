@@ -44,6 +44,7 @@ for line in [
     "review_verdict: 'rejected' = kept on file but not used (our misreading); 'explained' = known, understood disagreement.",
     "Debt_ledger: the value shown for each facility after applying the resolution rules (latest date, then strongest source).",
     "Customer_contracts / Leases / Sites / Counterparty_dependence: resolved values per contract, lease, campus and counterparty, with grade.",
+    "Debt_terms_if_late: per loan, the completion deadline, what happens if the customer walks, cash traps, reserves and parent support.",
     "Credit reads and construction-risk ratings are analyst judgement and live in the site map, not here.",
     "Events: the daily monitor's log of new SEC and Companies House filings naming Nscale (status new / baseline / ignored).",
 ]:
@@ -97,8 +98,14 @@ def table(etype, props):
 
 
 CONTRACT_PROPS = ["customer", "provider", "site", "status", "value_total", "take_or_pay", "start_date", "end_date", "term_months",
-                  "termination_rights", "extension_rights", "financing_status", "gpu_count", "gpu_type", "mw"]
+                  "termination_rights", "extension_rights", "financing_status", "gpu_count", "gpu_type", "mw",
+                  "payment_start", "delay_remedy", "delay_termination", "force_majeure", "financing_condition", "lender_step_in",
+                  "upfront_payment"]
 sheet("Customer_contracts", ["Contract"] + CONTRACT_PROPS, table("contract", CONTRACT_PROPS), [44] + [24] * len(CONTRACT_PROPS))
+DEBT_TERM_PROPS = ["borrower", "amount_max", "completion_test", "if_customer_terminates", "cash_trap", "reserves",
+                   "sponsor_support", "cost_overrun_funding", "cross_default", "financial_covenants", "mandatory_prepayment"]
+sheet("Debt_terms_if_late", ["Facility"] + DEBT_TERM_PROPS,
+      [r for r in table("facility", DEBT_TERM_PROPS) if any(r[3:10])], [40] + [30] * len(DEBT_TERM_PROPS))
 LEASE_PROPS = ["site", "landlord", "tenant", "lease_type", "mw", "start_date", "term_months", "guarantor", "guarantee_amount",
                "guarantee_term", "escrow_amount", "expansion_obligation", "landlord_revenue_6m"]
 sheet("Leases", ["Lease"] + LEASE_PROPS, table("lease", LEASE_PROPS), [40] + [24] * len(LEASE_PROPS))

@@ -37,6 +37,10 @@ sites:
                        drivers: ["Under construction; NVE threatens a coercive fine unless a waste-heat analysis is filed by 15 Nov 2026",
                                  "Reported local opposition in Narvik",
                                  "Project loan assumes completion by 5 Apr 2027 (VAT facility long-stop 30 Jun 2027)"]}
+  site_kvandal_north: {lat: 68.55, lon: 17.55, region: eu, label: "Kvandal North, Narvik", risk: unrated, label_dy: -14,
+                       facilities: [],
+                       drivers: ["Not rated: no construction status, MW or delivery dates disclosed",
+                                 "Microsoft SOW filed (Ex-10.19) with tranche sizes, prices and dates redacted"]}
   site_borealis:      {lat: 65.66, lon: -20.28, region: eu, label: "Borealis, Blönduós, Iceland", risk: medium,
                        facilities: [fac_macquarie_iceland],
                        drivers: ["Third-party colocation; no adverse reports found",
@@ -117,9 +121,67 @@ upstream:
   site_kvandal_south:
     read:
       - "Came in through the Aker JV, rolled up into Nscale in March 2026. No landlord disclosed; NVE fine notice pending (deadline 15 Nov 2026)."
+  site_kvandal_north:
+    read:
+      - "Microsoft site in Narvik held through Nscale's Kvandal North subsidiaries; no landlord, lease or loan filed."
   site_glomfjord:
     read:
       - "Owned. No landlord; the risk is delivery: about six months late, with delay penalties reportedly owed to the customer."
   site_loughton:
     read:
       - "Terminated: the grid connection was not expected until 2033."
+
+# If a campus is late: where its cash flow stands, and an analyst read of what lateness does to customer and lender.
+# Facts (contract and loan clauses) come from the tracker; this is judgement (pending review).
+if_late:
+  site_monarch:
+    stage: pre_revenue
+    read:
+      - "No Anthropic payment until each tranche is accepted. Lateness first costs fee-free months, then discounts, then Anthropic can cancel the tranche."
+      - "Financing is a condition: if it is not in place by the (redacted) longstop either side can walk, and until then Nscale cannot sell the capacity to anyone else."
+      - "No project loan yet, so a delay hits Nscale's own cash (the $792.6M land purchase and early works), not a lender."
+  site_ward_county:
+    stage: contracted
+    read:
+      - "If Microsoft's terms match the one filed SOW, it can cancel any tranche not accepted 60 days after its due date and take back that tranche's upfront payment."
+      - "The loan then needs that tranche's debt repaid within 60 days. Nscale's parent has first offer to buy the assets at loan value, so parent cash is the real backstop."
+      - "Cancelling the whole contract is a loan default; above $50M that appears to reach the group revolver."
+  site_north_carolina:
+    stage: earning
+    read:
+      - "Earning and ramping. The (redacted) customer ending its contract is an immediate loan default: no replacement window and no residual value guarantee."
+      - "Force majeure must last 45 days before either side can walk (amended at the lenders' request)."
+  site_kvandal_south:
+    stage: building
+    read:
+      - "Target completion 5 Apr 2027; the loan defaults if not complete by 5 Apr 2028, or if work stops for 60 days in a row."
+      - "Cost overruns must be paid in with equity or shareholder debt within 15 business days, so delays cost Nscale cash before they cost lenders."
+      - "If Microsoft walks, cash is trapped at once and the loan defaults after a year (18 months if a replacement is being negotiated). Nscale Limited guarantees it."
+  site_kvandal_north:
+    stage: building
+    read:
+      - "Microsoft gets a credit of a full day's bill for every day late, and can cancel any tranche 60 days late with its upfront payment refunded."
+      - "No project loan has been filed for this site."
+  site_glomfjord:
+    stage: earning
+    read:
+      - "Live but about six months late. The loan required service to start by 30 Nov 2025; whether that was met or waived is not filed."
+      - "If Spring walks, Nscale has two months to sign a replacement customer before it is a loan default."
+  site_borealis:
+    stage: contracted
+    read:
+      - "Nearest hard deadline in the book: service due 17 Nov 2026, and the Macquarie loan defaults if it has not started by 27 Jan 2027."
+      - "The customer's payments are guaranteed by two (redacted) guarantors; a lost customer must be replaced within 60 days."
+  site_sin01:
+    stage: earning
+    read:
+      - "Earning now (Portugal 52% of H1 2026 revenue). Microsoft can only end it for cause or insolvency."
+  site_sin02:
+    stage: contracted
+    read:
+      - "Due from late 2027. Lateness risk mirrors the Microsoft SOW: daily credits, then cancellation of tranches 60 days late."
+      - "$430.7M of the purchase price is still owed to the seller whether or not the building is delivered."
+  site_loughton:
+    stage: terminated
+    read:
+      - "Shows the mechanism in practice: Microsoft walked when the grid connection slipped to the 2030s."

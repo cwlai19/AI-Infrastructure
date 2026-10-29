@@ -59,6 +59,29 @@ def contracts_for(site_id):
     return out
 
 
+CUSTOMER_LATE = ("payment_start", "delay_remedy", "delay_termination", "financing_condition", "force_majeure")
+LENDER_LATE = ("completion_test", "if_customer_terminates", "cash_trap", "cost_overrun_funding", "sponsor_support", "reserves")
+FILED_MSFT_SOW = "ctr_msft_kvandal_north"
+
+
+def late_terms(sid, contracts, facilities):
+    """Customer-side and lender-side clauses for one campus. Microsoft SOWs other than Kvandal North are not filed,
+    so Microsoft campuses borrow the filed SOW's terms and say so."""
+    cust = []
+    for c in contracts:
+        if (c["status"].get("values") or [{}])[0].get("text") in ("terminated", "in_negotiation"):
+            continue
+        terms = {k: fact(c["id"], k) for k in CUSTOMER_LATE}
+        proxy = None
+        if not any(t.get("values") for t in terms.values()) and c["customer"].get("text") == _label(store, "le_microsoft"):
+            terms, proxy = {k: fact(FILED_MSFT_SOW, k) for k in CUSTOMER_LATE}, _label(store, FILED_MSFT_SOW)
+        if any(t.get("values") for t in terms.values()):
+            cust.append({"contract": c["name"], "customer": c["customer"].get("text"), "proxy": proxy, **terms})
+    lend = [{"facility": f["name"], **{k: fact(f["id"], k) for k in LENDER_LATE}} for f in facilities]
+    lend = [x for x in lend if any(x[k].get("values") for k in LENDER_LATE)]
+    return {"customer": cust, "lender": lend, **overlay["if_late"].get(sid, {"stage": None, "read": []})}
+
+
 sites = []
 for sid, ov in overlay["sites"].items():
     sites.append({
@@ -69,6 +92,7 @@ for sid, ov in overlay["sites"].items():
         "facilities": [facility(f) for f in ov.get("facilities", [])],
         "contracts": contracts_for(sid),
     })
+    sites[-1]["late"] = late_terms(sid, sites[-1]["contracts"], sites[-1]["facilities"])
 
 group = {k: fact(GROUP, k) for k in ("mw_contracted_total", "tcv_active", "tcv_active_and_contracted", "gpus_active",
                                      "gpus_active_and_contracted", "sites_active", "sites_contracted", "revenue_6m",
@@ -108,6 +132,7 @@ for e in ("le_kinrg",):
     for u in upstream:
         if u["site"] == "site_ward_county":
             u["supplier"] = {"id": e, "name": _label(store, e), "dependency": fact(e, "dependency")}
+rcf_cross_default = fact("fac_parent_rcf", "cross_default")
 group_lease = {k: fact(GROUP, k) for k in ("operating_lease_liabilities", "leases_not_commenced", "largest_customer_revenue_share",
                                           "deferred_revenue", "weighted_avg_contract_years")}
 
@@ -123,7 +148,8 @@ asia = {"entities": sum(apac.values()),
 geo_dir = Path(sys.argv[1])
 data = {"as_of": "2026-10-29", "rated_by": overlay["rated_by"], "rated_date": overlay["rated_date"],
         "group": group, "asia": asia, "sites": sites, "corporate": corporate,
-        "customers": customers, "upstream": upstream, "group_lease": group_lease}
+        "customers": customers, "upstream": upstream, "group_lease": group_lease,
+        "rcf_cross_default": rcf_cross_default}
 template = (ROOT / "reports" / "site_map_template.html").read_text()
 # Email copy: map outlines load from the web when opened, so the file stays small.
 lite = ROOT / "reports" / "Nscale_Site_Map.html"

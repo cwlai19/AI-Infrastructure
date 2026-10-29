@@ -129,6 +129,14 @@ entity_types:
       agent: {kind: entity, ref: [legal_entity], multi: true}
       financial_covenants: {kind: text, multi: true}
       mandatory_prepayment: {kind: text, multi: true}
+      # What the lenders get when a campus is late or a customer walks (read from the credit agreement itself).
+      if_customer_terminates: {kind: text, multi: true}
+      completion_test: {kind: text, multi: true}
+      cash_trap: {kind: text, multi: true}
+      reserves: {kind: text, multi: true}
+      sponsor_support: {kind: text, multi: true}
+      cost_overrun_funding: {kind: text}
+      cross_default: {kind: text, multi: true}
 
   contract:
     description: An offtake / compute supply contract between a provider and a customer.
@@ -152,6 +160,14 @@ entity_types:
       end_date: {kind: date}
       financing_status: {kind: enum, values: [not_required, secured, partly_secured, not_secured]}
       extension_rights: {kind: text, multi: true}
+      # Delivery risk: when the customer starts paying, what lateness costs, when it can walk.
+      payment_start: {kind: text}
+      delay_remedy: {kind: text, multi: true}
+      delay_termination: {kind: text, multi: true}
+      force_majeure: {kind: text, multi: true}
+      financing_condition: {kind: text}
+      lender_step_in: {kind: text}
+      upfront_payment: {kind: text}
 
   lease:
     description: A lease of space/power from a landlord to a tenant.

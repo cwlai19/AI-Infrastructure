@@ -21,7 +21,7 @@
   --tag-green-bg: #dbeddb; --tag-green-fg: #1c3829;
   --tag-gray-bg: #e3e2e0; --tag-gray-fg: #32302c;
   --tag-blue-bg: #d3e5ef; --tag-blue-fg: #183347;
-  --risk-low: #0ca30c; --risk-medium: #fab219; --risk-high: #ec835a; --risk-critical: #d03b3b; --risk-terminated: #9b9a97;
+  --risk-low: #0ca30c; --risk-medium: #fab219; --risk-high: #ec835a; --risk-critical: #d03b3b; --risk-terminated: #9b9a97; --risk-unrated: #b4b3af;
   --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
@@ -146,6 +146,9 @@ a { color: inherit; text-decoration-color: var(--ink-3); }
 @media (max-width: 640px) { .conc .row { grid-template-columns: 110px minmax(0, 1fr) 90px; } }
 td ul.read { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
 td .small { font-size: 12.5px; color: var(--ink-2); }
+td.clauses { font-size: 12.5px; min-width: 240px; } td.clauses .c { margin-bottom: 5px; } td.clauses .k { color: var(--ink-2); font-weight: 600; display: block; font-size: 11.5px; }
+td.clauses details summary { cursor: pointer; color: var(--ink-2); font-size: 11.5px; }
+td.clauses details[open] summary { margin-bottom: 4px; }
 td .stack { display: flex; flex-direction: column; gap: 3px; }
 .yes { color: var(--tag-green-fg); background: var(--tag-green-bg); } .no { color: var(--tag-red-fg); background: var(--tag-red-bg); }
 </style>
@@ -192,6 +195,10 @@ td .stack { display: flex; flex-direction: column; gap: 3px; }
   <p class="sub-h" id="up-sub"></p>
   <div class="db"><table id="ups"><thead></thead><tbody></tbody></table></div>
 
+  <h2>If a campus is late</h2>
+  <p class="sub-h" id="late-sub"></p>
+  <div class="db"><table id="late"><thead></thead><tbody></tbody></table></div>
+
   <h2>Group-level debt</h2>
   <p class="gap" style="margin:-12px 0 0">Facilities not tied to a single campus.</p>
   <div class="db"><table id="corp"><thead></thead><tbody></tbody></table></div>
@@ -208,7 +215,8 @@ const RISK = {
   high:       { label: "High", tag: "orange", order: 1 },
   medium:     { label: "Medium", tag: "yellow", order: 2 },
   low:        { label: "Low", tag: "green", order: 3 },
-  terminated: { label: "Terminated", tag: "gray", order: 4 },
+  unrated:    { label: "Not rated", tag: "gray", order: 4 },
+  terminated: { label: "Terminated", tag: "gray", order: 5 },
 };
 const REGIONS = { us: "United States", eu: "Europe", asia: "Asia-Pacific" };
 const riskVar = r => `var(--risk-${r})`;
@@ -474,6 +482,8 @@ function renderCampus() {
     <div class="block"><div class="t">Why this rating</div><div class="callout"><ul>${s.drivers.map(d => `<li>${esc(d)}</li>`).join("")}</ul>
       <div class="gap" style="font-size:12px">Analyst judgement (${esc(D.rated_by)}, ${esc(D.rated_date)}).</div></div></div>
     ${build ? `<div class="block"><div class="t">Build status</div><ul style="margin:0;padding-left:18px">${build}</ul></div>` : ""}
+    ${s.late.read.length ? `<div class="block"><div class="t">If it is late ${stageTag(s.late.stage)}</div><div class="callout"><ul>${s.late.read.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+      <div class="gap" style="font-size:12px">Analyst read; the clauses are in "If a campus is late" below.</div></div></div>` : ""}
     <div class="block"><div class="t">Customers</div>${ctrs}</div>
     <div class="block"><div class="t">Debt on this campus</div>${facs}</div>`;
 }
@@ -524,7 +534,46 @@ document.getElementById("method").innerHTML = `
   <p><b>How to read this.</b> Circles sit at approximate town-level locations. Construction-risk ratings are analyst judgements with their drivers shown on each campus;
   every other figure is a sourced statement from the tracker, with a grade that links to the document. "Not disclosed" means a source was checked and is silent; "not yet checked" is a research gap.</p>
   <p><b>Known gaps.</b> Nscale does not disclose MW, revenue or contract value by campus. Active MW is filled only where the press or a counterparty reports it; Microsoft's contract value (up to $43.8B, less Loughton) is disclosed only in aggregate; the Dell bridge is shared by Ward County and North Carolina in an undisclosed split. Asia-Pacific shows registered subsidiaries only.</p>
-  <p><b>Credit reads.</b> The "Credit read" column on the customer and lessor tables is analyst judgement (${esc(D.rated_by)}, ${esc(D.rated_date)}); every other cell is a sourced statement.</p>`;
+  <p><b>Credit reads.</b> The "Credit read" column on the customer, lessor and lateness tables is analyst judgement (${esc(D.rated_by)}, ${esc(D.rated_date)}); every other cell is a sourced statement.</p>`;
+
+// ---------- lateness ----------
+const STAGE = { pre_revenue: ["Pre-revenue, cancellable", "red"], building: ["Under construction", "yellow"], contracted: ["Contracted, not yet delivered", "blue"],
+                earning: ["Earning", "green"], terminated: ["Terminated", "gray"] };
+const stageTag = st => st && STAGE[st] ? `<span class="tag ${STAGE[st][1]}">${STAGE[st][0]}</span>` : "";
+const gv = v => esc(v.text) + grade({ values: [v], grade: v.grade });
+const clause = (label, f) => {
+  if (!f || !f.values) return "";
+  const [first, ...more] = f.values;
+  return `<div class="c">${label ? `<span class="k">${label}</span>` : ""}${gv(first)}${more.length ? `<details><summary>${more.length} more</summary>${more.map(gv).join("<br>")}</details>` : ""}</div>`;
+};
+function customerSide(L) {
+  if (!L.customer.length) return '<span class="gap">Customer contract not filed</span>';
+  return L.customer.map(c => {
+    const body = clause("Paid from", c.payment_start) + clause("If late", c.delay_remedy) + clause("Can walk if", c.delay_termination) + clause("Financing condition", c.financing_condition);
+    return c.proxy ? `<div class="small"><b>${esc(c.customer)}</b>: site contract not filed</div><details><summary>Terms of the one filed Microsoft SOW</summary>${body}</details>`
+                   : (L.customer.length > 1 ? `<div class="small"><b>${esc(c.customer || c.contract)}</b></div>` : "") + body;
+  }).join("");
+}
+function lenderSide(L) {
+  if (!L.lender.length) return '<span class="gap">No campus loan, or terms not filed</span>';
+  return L.lender.map(f => `<div class="small"><b>${esc(f.facility)}</b></div>` + clause("Deadline", f.completion_test) + clause("If the customer walks", f.if_customer_terminates) +
+    clause("Cash trap", f.cash_trap) + clause("Overruns", f.cost_overrun_funding) + clause("Backstops", f.sponsor_support) + clause("Reserves", f.reserves)).join("");
+}
+function renderLate() {
+  document.getElementById("late-sub").innerHTML = `For each campus: when the customer starts paying, what lateness costs, when the customer can walk, and what the campus lender can then do.
+    Facts are clauses from the filed contracts and loan agreements (click a grade to open the document); the read is analyst judgement.
+    Across the group: ${D.rcf_cross_default.values ? esc(D.rcf_cross_default.values[D.rcf_cross_default.values.length - 1].text) + grade({ values: [D.rcf_cross_default.values[D.rcf_cross_default.values.length - 1]], grade: D.rcf_cross_default.values[D.rcf_cross_default.values.length - 1].grade }) : ""}`;
+  const t = document.getElementById("late");
+  t.querySelector("thead").innerHTML = "<tr><th>Campus</th><th>Cash flow today</th><th>Credit read</th><th>Customer side</th><th>Lender side and backstops</th></tr>";
+  const rows = D.sites.filter(visible).sort((a, b) => RISK[a.risk].order - RISK[b.risk].order);
+  t.querySelector("tbody").innerHTML = rows.map(s => `<tr data-sites="${s.id}"><td style="min-width:140px"><a href="#map" data-site="${s.id}">${esc(s.label)}</a><div style="margin-top:4px">${riskTag(s.risk)}</div></td>
+      <td>${stageTag(s.late.stage)}</td>
+      <td style="min-width:260px"><ul class="read">${s.late.read.map(r => `<li>${esc(r)}</li>`).join("")}</ul></td>
+      <td class="clauses">${customerSide(s.late)}</td><td class="clauses">${lenderSide(s.late)}</td></tr>`).join("") ||
+    '<tr><td colspan="5" class="gap">No campuses match the filters.</td></tr>';
+  t.querySelectorAll("tbody tr[data-sites]").forEach(tr => tr.onclick = () => focusSites([tr.dataset.sites]));
+  wireSites(t);
+}
 
 // ---------- counterparties ----------
 const firstText = f => f && f.values ? f.values[0].text : null;
@@ -602,7 +651,7 @@ function renderUpstream() {
   wireSites(t);
 }
 
-function update() { syncToolbar(); renderStats(); renderRegions(); render(); renderTable(); }
+function update() { syncToolbar(); renderStats(); renderRegions(); render(); renderTable(); if (D.sites[0].late) renderLate(); }
 try { const saved = localStorage.getItem("nscale-map-site"); if (saved && D.sites.some(s => s.id === saved)) state.selected = saved; } catch (e) {}
 if (!state.selected) state.selected = "site_monarch";
 update(); renderCampus(); renderCorp(); renderCustomers(); renderUpstream();

@@ -262,3 +262,5 @@ ctr_spring_glomfjord,contract,Spring (SG): Glomfjord cloud services,
 ctr_msft_sin01,contract,"Microsoft: Sines first building (12,600 GB300)",
 ctr_msft_sin02,contract,"Microsoft: Sines SIN02 (66,000 Vera Rubin, from late 2027)",
 ctr_iceland_customer,contract,Iceland GPU contract (customer redacted),
+site_kvandal_north,site,"Kvandal North, Narvik (Norway)",Microsoft SOW site (Ex-10.19); separate from Kvandal South.
+ctr_msft_kvandal_north,contract,"Microsoft SOW: Kvandal North (VR200, 6 years)",Filed as Ex-10.19; tranche sizes and prices redacted.
