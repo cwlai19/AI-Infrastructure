@@ -3,6 +3,7 @@
     python -m tracker check              validate every data file against the vocabulary
     python -m tracker build              validate, then write build/tracker.db (SQLite) for querying
     python -m tracker report <group_id>  print a credit file, e.g. group_nscale
+    python -m tracker monitor [edgar|ch]  log new filings about watched groups to data/events.csv
 """
 
 import sqlite3
@@ -35,7 +36,7 @@ def build_db(store, path):
 
 
 def main(argv):
-    if not argv or argv[0] not in ("check", "build", "report"):
+    if not argv or argv[0] not in ("check", "build", "report", "monitor"):
         print(__doc__)
         return 2
     store = load()
@@ -51,6 +52,19 @@ def main(argv):
         path = ROOT / "build" / "tracker.db"
         build_db(store, path)
         print(f"Wrote {path}")
+    elif cmd == "monitor":
+        from .monitor import run
+        feeds = tuple(argv[1:]) or ("edgar", "ch")
+        new = run(store, feeds)
+        print(f"{len(new)} new event(s)")
+        out = ROOT / "build" / "new_events.md"
+        out.parent.mkdir(exist_ok=True)
+        lines = [f"{len(new)} new filing(s) to triage:", ""]
+        lines += [f"- {e['event_date']} [{e['feed']}] [{e['title']}]({e['url']})"
+                  for e in sorted(new, key=lambda e: e["event_date"], reverse=True)]
+        out.write_text("\n".join(lines) + "\n")
+        for e in sorted(new, key=lambda e: e["event_date"], reverse=True)[:40]:
+            print(f"  {e['event_date']}  [{e['feed']}] {e['title'][:110]}")
     elif cmd == "report":
         if len(argv) < 2 or argv[1] not in store.entities:
             print("usage: python -m tracker report <group_id>")

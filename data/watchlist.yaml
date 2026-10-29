@@ -1,0 +1,12 @@
+# What the monitor watches. One entry per group.
+# edgar_terms: exact phrases for SEC full-text search. Use the group name plus distinctive
+#   SPV or brand names; every filer who mentions them (lenders, landlords, suppliers) shows up.
+# UK entities are taken from the statements automatically (any legal entity of the group
+#   with a registry_id and a UK jurisdiction).
+groups:
+  group_nscale:
+    edgar_terms: ["Nscale"]
+
+# Filing types that mention a watched name but carry no credit information
+# (e.g. ETF registration statements listing holdings). Logged as 'ignored', not alerted.
+ignore_kinds: ["485BXT", "485BPOS", "485APOS", "497", "497K", "N-CEN"]

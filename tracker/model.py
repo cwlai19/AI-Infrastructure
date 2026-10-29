@@ -291,7 +291,10 @@ def _dates_overlap(a, b):
     return a.startswith(b) or b.startswith(a)
 
 
-def _same_value(a, b, kind):
+def _same_value(a, b, kind, canonical=None):
+    if kind == "entity" and canonical:
+        # References to entities judged the same (same_as) are the same value.
+        return canonical.get(a.value, a.value) == canonical.get(b.value, b.value)
     if kind in NUMERIC_KINDS:
         x, y = parse_number(a.value), parse_number(b.value)
         if x is None or y is None:
@@ -355,7 +358,7 @@ def resolve(store, entity_id, prop):
     if spec.get("multi"):
         distinct = []
         for s in sorted(vals, key=lambda s: _strength(store, s)):
-            if not any(_same_value(s, d, spec["kind"]) for d in distinct):
+            if not any(_same_value(s, d, spec["kind"], store.canonical) for d in distinct):
                 distinct.append(s)
         return Resolved(canon, prop, "multi", distinct, [], [], absent, [], rejected=rejected)
 
@@ -369,19 +372,19 @@ def resolve(store, entity_id, prop):
         same_moment = lambda s: _dates_overlap(s.effective_date, latest_st.effective_date)
         top = sorted([s for s in dated if same_moment(s)], key=lambda s: _strength(store, s))
         current = top[0]
-        conflicts = [s for s in top[1:] if not _same_value(s, current, spec["kind"])]
-        conflicts += [s for s in undated if not _same_value(s, current, spec["kind"])]
+        conflicts = [s for s in top[1:] if not _same_value(s, current, spec["kind"], store.canonical)]
+        conflicts += [s for s in undated if not _same_value(s, current, spec["kind"], store.canonical)]
         for s in sorted(dated, key=lambda s: (date_key(s.effective_date), _strength(store, s))):
-            if not same_moment(s) and date_key(s.effective_date) < latest and not _same_value(s, current, spec["kind"]):
+            if not same_moment(s) and date_key(s.effective_date) < latest and not _same_value(s, current, spec["kind"], store.canonical):
                 # Several sources stating the same earlier value are one step of history, not several.
-                if not history or not _same_value(history[-1], s, spec["kind"]):
+                if not history or not _same_value(history[-1], s, spec["kind"], store.canonical):
                     history.append(s)
     else:
         ranked = sorted(undated, key=lambda s: _strength(store, s))
         current = ranked[0]
-        conflicts = [s for s in ranked[1:] if not _same_value(s, current, spec["kind"])]
+        conflicts = [s for s in ranked[1:] if not _same_value(s, current, spec["kind"], store.canonical)]
     agreeing = [s for s in vals if s is not current and s not in conflicts and s not in history
-                and _same_value(s, current, spec["kind"])]
+                and _same_value(s, current, spec["kind"], store.canonical)]
     backing = sorted([current] + agreeing, key=lambda s: _strength(store, s))
     if history and _strength(store, backing[0])[:2] > min(_strength(store, s)[:2] for s in history):
         # The newer value is only supported by weaker sources than the value it replaces.

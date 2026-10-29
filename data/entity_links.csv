@@ -6,3 +6,8 @@ ctr_msft_narvik,part_of,ctr_msft_sows,claude (pending analyst review),2026-10-29
 ctr_msft_sow1_ward,part_of,ctr_msft_sows,claude (pending analyst review),2026-10-29,Named as the Customer Contract in the Ward County credit agreement.
 le_jpmorgan,same_as,le_jpmorgan_chase,claude (pending analyst review),2026-10-29,"'J.P. Morgan' in CCIR's lender list; the filings name JPMorgan Chase Bank, N.A. Treated as the same lender group for exposure purposes."
 le_goldman,same_as,le_goldman_bank_usa,claude (pending analyst review),2026-10-29,'Goldman Sachs' in CCIR's lender list; the filings name Goldman Sachs Bank USA (and Goldman Sachs International as arranger).
+le_ward_county_landlord,same_as,le_ionic,claude (pending analyst review),2026-10-29,Ionic's 10-Q describes a 126-month triple-net lease of its owned Ward County property to Nscale Ward County LLC; the S-1 calls this counterparty 'the Landlord'.
+le_obdc,part_of,le_blue_owl_bdc,claude (pending analyst review),2026-10-29,Individual Blue Owl fund within the Blue Owl BDC family.
+le_ocic,part_of,le_blue_owl_bdc,claude (pending analyst review),2026-10-29,As above.
+le_otf,part_of,le_blue_owl_bdc,claude (pending analyst review),2026-10-29,As above.
+le_enovum_nc1,part_of,le_whitefiber,claude (pending analyst review),2026-10-29,Wholly owned subsidiary per WhiteFiber 10-Q.

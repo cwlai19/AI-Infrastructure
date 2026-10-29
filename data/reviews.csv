@@ -7,3 +7,4 @@ st1216,rejected,"The S-1 summary names Nscale Global Holdings, but Companies Hou
 st1079,rejected,"The prospectus rounds the commitment to approximately $1.4B; the credit agreement (Ex-10.14, Section 2.01) states exactly $1,422,000,000, so the exact figure is used.",claude (pending analyst review),2026-10-29
 st0033,explained,"Rounded figure (""approximately $1.4 billion""); the credit agreement states exactly $1,422,000,000.",claude (pending analyst review),2026-10-29
 st0034,explained,"Rounded figure from a search excerpt of CCIR; the CCIR full page and Ex-10.14 give $1,422,000,000.",claude (pending analyst review),2026-10-29
+st3704,rejected,"Recorded the parent as the provider; Anthropic's S-1 says the agreements are with wholly owned subsidiaries of Nscale Global Holdings, consistent with Ex-10.25 naming Nscale GPU MCC B1.1 LLC.",claude (pending analyst review),2026-10-29

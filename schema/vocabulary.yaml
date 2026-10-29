@@ -65,6 +65,9 @@ entity_types:
       role: {kind: enum, multi: true, values: [holdco, opco, spv, borrower, lender, customer, landlord, guarantor, arranger, agent, investor, other]}
       incorporated_date: {kind: date}
       status: {kind: enum, values: [active, dissolved, in_administration, liquidation, other]}
+      largest_customer: {kind: entity, ref: [legal_entity]}
+      largest_customer_revenue_share: {kind: percent}
+      dependency: {kind: text, multi: true}   # what this counterparty depends on, in its own words
 
   site:
     description: A physical data centre campus or building.
@@ -162,6 +165,8 @@ entity_types:
       guarantee_amount: {kind: money}
       guarantee_term: {kind: text}
       escrow_amount: {kind: money}
+      expansion_obligation: {kind: text, multi: true}
+      landlord_revenue_6m: {kind: money}
 
   charge:
     description: A registered security interest (e.g. a Companies House MR01).
@@ -174,6 +179,28 @@ entity_types:
       description: {kind: text, multi: true}
       status: {kind: enum, values: [outstanding, satisfied, part_satisfied]}
       secures_facility: {kind: entity, ref: [facility]}
+
+  holding:
+    description: One lender's or investor's position in a facility or security, as the holder reports it (BDC 10-Q, N-PORT).
+    properties:
+      group: {kind: entity, ref: [group], key: true}
+      holder: {kind: entity, ref: [legal_entity], key: true}
+      facility: {kind: entity, ref: [facility]}
+      issuer: {kind: entity, ref: [legal_entity, group]}
+      instrument: {kind: text, multi: true}
+      borrower_as_named: {kind: text, multi: true}
+      par_funded: {kind: money, key: true}
+      unfunded_commitment: {kind: money}
+      units_held: {kind: number, unit: shares}
+      amortized_cost: {kind: money}
+      fair_value: {kind: money, key: true}
+      mark_pct_par: {kind: percent}
+      price_per_unit: {kind: money}
+      fair_value_level: {kind: text}
+      maturity_date: {kind: date}
+      rate: {kind: percent}
+      margin_bps: {kind: bps}
+      commitment_expiry: {kind: date}
 
 # How a value was obtained.
 methods:

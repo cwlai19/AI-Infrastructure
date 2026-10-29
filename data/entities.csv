@@ -232,3 +232,25 @@ site_borealis,site,"Borealis Data Centre, Blönduós, Iceland",Third-party coloc
 le_stonepeak,legal_entity,Stonepeak Infrastructure Credit Fund I,
 le_bofa,legal_entity,Bank of America,
 le_morgan_stanley_mufg,legal_entity,"Morgan Stanley MUFG Loan Partners, LLC",RCF syndication agent.
+le_ionic,legal_entity,Ionic Digital Inc.,"Owner of the Ward County, TX property; Nscale's landlord there."
+le_whitefiber,legal_entity,"WhiteFiber, Inc.",Parent of the NC-1 colocation provider (majority-owned by Bit Digital).
+le_enovum_nc1,legal_entity,"Enovum NC-1 Bidco, LLC",WhiteFiber subsidiary providing colocation at NC-1.
+le_kinrg,legal_entity,"KiNRG, Inc.",Supplier at Ward County; nature of service not yet read.
+le_obdc,legal_entity,Blue Owl Capital Corp (OBDC),
+le_ocic,legal_entity,Blue Owl Credit Income Corp. (OCIC),
+le_otf,legal_entity,Blue Owl Technology Finance Corp. (OTF),
+le_otic,legal_entity,Blue Owl Technology Income Corp. (OTIC),
+le_obdc2,legal_entity,Blue Owl Capital Corp II,
+le_pimco_pdi,legal_entity,PIMCO Dynamic Income Fund (PDI),
+le_fidelity_bcg,legal_entity,Fidelity Series Blue Chip Growth Fund,
+lease_nc1,lease,NC-1 colocation services agreement (WhiteFiber),
+hold_obdc_gpu_ddtl,holding,Blue Owl OBDC: NSCALE SERVICES UK LTD first-lien DDTL,
+hold_ocic_gpu_ddtl,holding,Blue Owl OCIC: NSCALE SERVICES UK LTD first-lien DDTL,
+hold_otf_gpu_ddtl,holding,Blue Owl OTF: NSCALE SERVICES UK LTD first-lien DDTL,
+hold_obdc_series_b,holding,OBDC: Nscale Limited Series B preferred shares,
+hold_ocic_series_b,holding,OCIC: Nscale Limited Series B preferred shares,
+hold_otf_series_b,holding,OTF: Nscale Limited Series B preferred shares,
+hold_otic_series_b,holding,OTIC: Nscale Limited Series B preferred shares,
+hold_obdc2_series_b,holding,OBDC2: Nscale Limited Series B preferred shares,
+hold_fidelity_bcg_series_b,holding,FIDELITY_BCG: Nscale Limited Series B preferred shares,
+hold_pimco_pdi_loan,holding,PIMCO PDI: 'Nscale AS' floating-rate loan,

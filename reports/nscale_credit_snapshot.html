@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nscale Credit Snapshot</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#d9dde3; --accent:#1f4e79; --warn:#9a3412; --bg:#f5f7fa; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.42; margin: 0; }
+  h1 { font-size: 19pt; margin: 0 0 2px; color: var(--accent); letter-spacing: -0.2px; }
+  h2 { font-size: 11.5pt; margin: 16px 0 6px; padding-bottom: 3px; border-bottom: 1.5px solid var(--accent); color: var(--accent); }
+  h3 { font-size: 10pt; margin: 10px 0 4px; }
+  p { margin: 4px 0 6px; }
+  .meta { color: var(--muted); font-size: 8.6pt; margin-bottom: 10px; }
+  .box { background: var(--bg); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0; }
+  .box ul { margin: 2px 0; padding-left: 16px; }
+  .box li { margin: 3px 0; }
+  ul { margin: 4px 0; padding-left: 16px; }
+  li { margin: 2px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 8px; font-size: 8.3pt; }
+  th { text-align: left; background: var(--accent); color: #fff; font-weight: 600; padding: 4px 5px; }
+  td { padding: 3.5px 5px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .num { text-align: right; white-space: nowrap; }
+  .tag { display: inline-block; font-size: 7.4pt; padding: 0 4px; border-radius: 2px; background: #e8eef5; color: var(--accent); }
+  .warn { color: var(--warn); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 8px 0; }
+  .kpi { border: 1px solid var(--line); padding: 6px 8px; }
+  .kpi b { display: block; font-size: 13pt; color: var(--accent); }
+  .kpi span { font-size: 7.8pt; color: var(--muted); }
+  .small { font-size: 8pt; color: var(--muted); }
+  .pb { page-break-before: always; }
+  .src { font-size: 7.6pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<h1>Nscale: Credit Snapshot</h1>
+<div class="meta">Facts as of 29 October 2026 · Built from public primary sources: Nscale S-1 and exhibits (filed 18 Sept 2026), lender and counterparty SEC filings, UK Companies House, Anthropic S-1 (26 Oct 2026), CCIR · Prepared with AI-assisted extraction; analyst review pending</div>
+
+<div class="box">
+<b>Bottom line</b>
+<ul>
+  <li><b>The credit risk is delivery, not leverage.</b> Borrowed debt on the balance sheet was only <b>$137M</b> at 30 June 2026. The real obligations are <b>$6.5B of customer prepayments</b> that must be repaid in delivered compute, <b>$2.6B of leases</b>, and <b>$24B of GPU orders</b> not yet delivered, against <b>$1.5B of cash</b>.</li>
+  <li><b>Borrowing has accelerated since June:</b> $830M drawn on the $900M revolver, a further $329M on the GPU loan, a $3.1B convertible (incl. $1.0B from NVIDIA), and $4.17B of new facilities.</li>
+  <li><b>Revenue is concentrated and largely future:</b> $103.4B of contracted value, but only $2.6B is active today. Microsoft (up to $43.8B) and Anthropic (up to $44.6B) are most of it.</li>
+  <li><b>Anthropic pays only on delivery, and the financing to deliver is not in place.</b> Nscale must fund the GPUs and the Monarch (West Virginia) campus first; Anthropic can drop late tranches.</li>
+  <li><b>Near-term refinancing point:</b> ~$2.54B of short Dell bridge financing (3–4 month terms from Aug/Sept 2026) is meant to be taken out by the Ward County and North Carolina loans, which can only be drawn once strict conditions are met.</li>
+</ul>
+</div>
+
+<div class="grid">
+  <div class="kpi"><b>$140.6M</b><span>Revenue, H1 2026 (FY25: $33.0M)</span></div>
+  <div class="kpi"><b>$(1,020)M</b><span>Net loss, H1 2026 (FY25: $(762)M)</span></div>
+  <div class="kpi"><b>25k / 461k</b><span>GPUs active / active + contracted</span></div>
+  <div class="kpi"><b>52%</b><span>Revenue from largest customer, H1 2026</span></div>
+</div>
+
+<h2>1. Capital structure</h2>
+<p>About <b>$6.6B of committed loan facilities</b>, plus the Dell bridge and the convertible. Most US and UK GPU debt sits in special-purpose borrowers and is repaid from a named customer contract.</p>
+<table>
+  <tr><th>Facility</th><th>Borrower</th><th class="num">Size</th><th>Drawn (latest)</th><th>Pricing</th><th>Maturity</th><th>Security / repaid from</th><th>Lenders</th></tr>
+  <tr><td>Ward County GPU DDTL</td><td>Nscale Ward County Borrower SPV</td><td class="num">$1.85B</td><td>Undrawn at signing</td><td>S+2.375%</td><td>Feb 2033</td><td>GPUs + Microsoft contract; Moody's Baa1 <span class="tag">per CCIR</span></td><td>JPM, GS + 8 banks</td></tr>
+  <tr><td>North Carolina GPU DDTL</td><td>Nscale NC Borrower SPV</td><td class="num">$1.20B</td><td>Undrawn at signing</td><td>S+2.375%</td><td>Dec 2031</td><td>GPUs + contract (customer redacted)</td><td>GS, JPM</td></tr>
+  <tr><td>GPU Financing Facility</td><td>Nscale Services UK Ltd</td><td class="num">$1.42B</td><td>~$388M (Aug)</td><td>S+5.00% (eff. 11.3%)</td><td class="warn">2031–32 (disputed)</td><td>All assets; investment-grade contracts only <span class="tag">per CCIR</span></td><td>PIMCO, Blue Owl, others</td></tr>
+  <tr><td>Revolving credit facility</td><td>NSCALE PLC (from Jul 2026)</td><td class="num">$0.90B</td><td class="warn">$830M</td><td>S+1.75%</td><td>~2029 <span class="tag">per CCIR</span></td><td>All personal property; net leverage ≤ 6.0x</td><td>12 banks incl. JPM, GS, MS</td></tr>
+  <tr><td>Kvandal South DC (Norway)</td><td>Nscale Norway DC DA</td><td class="num">$0.79B</td><td>$107M (Aug)</td><td>S+3.00–3.75%</td><td>Apr 2033</td><td>Data centre building; DSCR ≥ 1.05x</td><td>DNB, ABN, Nordea, SEB, Eksfin</td></tr>
+  <tr><td>Macquarie Iceland</td><td>Nscale Services Iceland III ehf</td><td class="num">$0.33B</td><td>n/d</td><td>S+5.50% + 1.18x return floor <span class="tag">per CCIR</span></td><td>46 months from first draw</td><td>GPUs at Borealis, Blönduós</td><td>Macquarie</td></tr>
+  <tr><td>Macquarie Glomfjord</td><td>Nscale Drift II Holdings Ltd</td><td class="num">$0.11B</td><td>$89M (carrying)</td><td>S+7.50% (eff. 22.7%)</td><td>Jun 2029</td><td>2,304 B200 GPUs <span class="tag">per CCIR</span>; customer Spring (SG)</td><td>Macquarie</td></tr>
+  <tr><td>Dell vendor financing</td><td>Ward County + NC SPVs</td><td class="num">$2.54B</td><td>40 schedules executed</td><td>~$35M financing charges</td><td class="warn">~Nov 2026 – early 2027</td><td>Equipment; Nscale Global Holdings guarantee</td><td>Dell Financial Services</td></tr>
+  <tr><td>Convertible loan notes</td><td>NSCALE PLC</td><td class="num">$3.10B</td><td>Signed 15 Sept 2026</td><td>n/d</td><td>Jun 2028 unless converted at IPO</td><td>Unsecured</td><td>Incl. NVIDIA $1.0B (~16 Nov)</td></tr>
+</table>
+<p class="small">Also: ~$2.35B of further bank commitments agreed in Aug 2026, subject to documentation. Sandton loans repaid (Oct 2025); Series A convertible converted (Oct 2025). n/d = not disclosed.</p>
+
+<h2>2. Customers (offtake)</h2>
+<table>
+  <tr><th>Customer</th><th class="num">Contract value</th><th>Term</th><th>Payment basis</th><th>Key terms / risk</th></tr>
+  <tr><td>Microsoft</td><td class="num">up to $43.8B</td><td>To Dec 2033; 5–6 yrs per tranche</td><td>Fixed price; customers have prepaid</td><td>Terminable for cause or insolvency. Backs the Ward County loan.</td></tr>
+  <tr><td>Anthropic</td><td class="num">up to $44.6B</td><td>Into 2033</td><td class="warn">Pays only on delivery and acceptance</td><td>Financing not secured. Tranches can be terminated if late or below uptime thresholds. Monarch campus, WV.</td></tr>
+  <tr><td>NVIDIA</td><td class="num">$1.2B</td><td>12–48 months</td><td>Reserved capacity</td><td>Iceland, UK, Norway. NVIDIA is also a shareholder, convertible holder and lease guarantor.</td></tr>
+  <tr><td>Figure</td><td class="num">n/d</td><td>From H2 2027</td><td>n/d</td><td>Up to 100,000 Vera Rubin GPUs; Nscale also investing in Figure.</td></tr>
+  <tr><td>Spring (SG) Pte. Ltd.</td><td class="num">n/d</td><td>n/d</td><td>Minimum fee per GPU-hour (redacted) <span class="tag">per CCIR</span></td><td>Glomfjord cluster; backs the Macquarie Glomfjord loan.</td></tr>
+</table>
+<p>The gap between contracted ($103.4B) and active ($2.6B) value is the delivery risk. Lenders have structured around it: most GPU loans can only be drawn once capacity is commissioned and the named customer's payments start.</p>
+
+<h2 class="pb">3. Upstream: landlords, suppliers and who depends on whom</h2>
+<table>
+  <tr><th>Counterparty</th><th>Role</th><th>What their own filings say</th><th>Credit read-across</th></tr>
+  <tr><td>Ionic Digital (IOND)</td><td>Ward County landlord</td><td>126-month triple-net lease to Nscale Ward County LLC; 234 MW leased, Nscale must take 89 MW more when available. $87.9M lease revenue in H1 2026.</td><td>Landlord's growth plan depends on Nscale. Rent is guaranteed by <b>NVIDIA up to $860M</b> for the first five years, backed by a <b>$470M escrow</b> from Nscale.</td></tr>
+  <tr><td>WhiteFiber (WYFI) / Enovum NC-1</td><td>North Carolina colocation</td><td>Nscale is the <b>sole contracted tenant</b> at NC-1; capacity delivery expected Q3 2026.</td><td>Two-way dependency: a delay at NC-1 hits both.</td></tr>
+  <tr><td>KiNRG</td><td>Supplier at Ward County</td><td>Nscale Ward County LLC = <b>86% of revenue</b>.</td><td>A concentrated counterparty; service type to be confirmed.</td></tr>
+  <tr><td>SIN02 seller (Portugal)</td><td>Site vendor</td><td>€377.8M ($430.7M) of purchase price still owed, mostly due H2 2026.</td><td>An unsecured near-term cash call not in "debt".</td></tr>
+</table>
+
+<h2>4. What lenders and investors are marking</h2>
+<ul>
+  <li><b>Loans at par.</b> PIMCO's Dynamic Income Fund carries $18.9M of a floating-rate Nscale loan at <b>100.02% of par</b> (8.66% coupon, 30 June). Blue Owl's three funds hold ~$397M of commitments to the GPU Financing Facility (only ~$14M funded at 30 June).</li>
+  <li><b>Equity marks diverge.</b> Blue Owl values Series B preferred at <b>$16.05/share</b> (30 June); Fidelity values the same class at <b>$20.94</b> (31 July). Series C was issued at $20.39 in March 2026.</li>
+  <li><b>Lenders are also shareholders.</b> Blue Owl funds hold both the GPU loan and Nscale preferred equity; NVIDIA is a customer, guarantor, shareholder and convertible holder. Relevant to behaviour in a restructuring.</li>
+  <li><b>Even the lenders disagree on the GPU loan's maturity:</b> Feb 2031 (Blue Owl), Aug 2032 (PIMCO), no later than Sept 2032 (S-1 terms).</li>
+</ul>
+
+<h2>5. Dates to watch</h2>
+<table>
+  <tr><th>When</th><th>Event</th><th>Why it matters</th></tr>
+  <tr><td>~16 Nov 2026</td><td>NVIDIA $1.0B convertible / share closing</td><td>Liquidity; ties NVIDIA in further</td></tr>
+  <tr><td>Nov 2026 – early 2027</td><td>Dell bridge schedules end (incl. extensions)</td><td>Must be refinanced by the Ward County / NC loans</td></tr>
+  <tr><td>H2 2026</td><td>SIN02 deferred consideration (~$431M)</td><td>Cash outflow</td></tr>
+  <tr><td>27 Jan 2027</td><td>Iceland service must commence (per CCIR reading of the facility)</td><td>Event-of-default trigger on the Macquarie loan</td></tr>
+  <tr><td>5 Apr / 30 Jun 2027</td><td>Kvandal South target completion / long-stop</td><td>Construction risk on the Norway project loan</td></tr>
+  <tr><td>30 Sept 2027</td><td>GPU Financing Facility availability ends</td><td>Undrawn commitments fall away</td></tr>
+  <tr><td>Ongoing</td><td>Anthropic financing "within a specified period"</td><td>Without it, the $44.6B contract cannot be performed</td></tr>
+</table>
+
+<h2>6. Recent primary-source events (ahead of the news)</h2>
+<ul>
+  <li><b>9 Oct 2026:</b> NSCALE Ltd re-registered as <b>NSCALE PLC</b> (Companies House), three weeks after the S-1.</li>
+  <li><b>11 Oct:</b> a GLAS (revolver collateral agent) charge over the plc was satisfied; one remains outstanding.</li>
+  <li><b>13 Oct:</b> changes of persons with significant control and a share allotment at Nscale Global Holdings.</li>
+  <li><b>19 &amp; 23 Oct:</b> share allotments at NSCALE PLC.</li>
+  <li><b>26 Oct:</b> Anthropic's S-1 confirms the $44.6B commitment and its pay-on-delivery terms.</li>
+</ul>
+
+<h2>7. Open questions</h2>
+<ul>
+  <li>Who is the redacted North Carolina customer, and what is the Iceland customer's credit?</li>
+  <li>How will the Anthropic build (Monarch, Vera Rubin GPUs) be financed, and by when?</li>
+  <li>Why does PIMCO book its loan to "Nscale AS" (a Norwegian entity) rather than Nscale Services UK Ltd?</li>
+  <li>What MW is actually energised today? The S-1 gives active GPUs (25k) and sites (5), not MW.</li>
+  <li>The S-1 reports material weaknesses in internal controls over financial reporting (FY2024–25).</li>
+</ul>
+
+<h2>How this was built</h2>
+<p class="small">Every figure is held as a separate sourced statement (value, source document, location, date, method) in a tracker that flags where sources disagree and keeps superseded values as history. Sources: Nscale S-1 and exhibits 10.12–10.25 and 21.1; Companies House profiles, charges and filing history for 32 UK entities; Blue Owl BDC 10-Qs (OBDC, OCIC, OTF, OTIC, OBDC II); PIMCO and Fidelity N-PORT filings; Ionic Digital, WhiteFiber and KiNRG 10-Qs; Anthropic S-1; CCIR (ccir.io) issuer page, used as a cross-check. A daily monitor logs new SEC and Companies House filings naming Nscale. Figures marked "per CCIR" have not been independently verified against the underlying document. This is research from public information, not investment advice.</p>
+
+</body>
+</html>

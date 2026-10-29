@@ -1020,3 +1020,247 @@ st2210,fac_parent_rcf,lender,le_bofa,,src_ccir_nscale_full,Instrument card: Revo
 st2211,fac_parent_rcf,lender,le_deutsche_ny,,src_ccir_nscale_full,Instrument card: Revolving Credit Facility,,2026-10-29,reported,,manual:claude-registry-and-ccir,
 st2212,fac_parent_rcf,lender,le_morgan_stanley_mufg,,src_s1_full,Description of Certain Indebtedness,,2026-10-29,disclosed,,manual:claude-registry-and-ccir,Syndication agent.
 st2213,fac_dell_vendor,maturity_date,2026-12-31,,src_ccir_nscale_full,Instrument card: Dell,,2026-10-29,estimated,,manual:claude-registry-and-ccir,CCIR's approximate date; schedules run 3-4 months from Aug/Sep 2026 plus 1-2 month extensions.
+st3000,hold_obdc_gpu_ddtl,group,group_nscale,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3001,hold_obdc_gpu_ddtl,holder,le_obdc,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3002,hold_obdc_gpu_ddtl,facility,fac_uk_gpu_ddtl,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,"Borrower 'NSCALE SERVICES UK LTD', S+5.00%, first lien DDTL: matches the GPU Financing Facility."
+st3003,hold_obdc_gpu_ddtl,borrower_as_named,NSCALE SERVICES UK LTD,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3004,hold_obdc_gpu_ddtl,instrument,First lien senior secured delayed draw term loan,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3005,hold_obdc_gpu_ddtl,margin_bps,500,bps,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3006,hold_obdc_gpu_ddtl,maturity_date,2031-02,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3007,hold_obdc_gpu_ddtl,par_funded,1397K,USD,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3008,hold_obdc_gpu_ddtl,amortized_cost,831K,USD,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,Below par because fees/discount on the large unfunded commitment are netted in; not a price signal.
+st3009,hold_obdc_gpu_ddtl,fair_value,900K,USD,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3010,hold_obdc_gpu_ddtl,unfunded_commitment,38344K,USD,src_obdc_10q,Unfunded commitments table,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3011,hold_obdc_gpu_ddtl,commitment_expiry,2027-08,,src_obdc_10q,Unfunded commitments table,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3012,fac_uk_gpu_ddtl,lender,le_obdc,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3013,fac_uk_gpu_ddtl,maturity_date,2031-02,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,Holder-reported maturity.
+st3014,hold_ocic_gpu_ddtl,group,group_nscale,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3015,hold_ocic_gpu_ddtl,holder,le_ocic,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3016,hold_ocic_gpu_ddtl,facility,fac_uk_gpu_ddtl,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,"Borrower 'NSCALE SERVICES UK LTD', S+5.00%, first lien DDTL: matches the GPU Financing Facility."
+st3017,hold_ocic_gpu_ddtl,borrower_as_named,NSCALE SERVICES UK LTD,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3018,hold_ocic_gpu_ddtl,instrument,First lien senior secured delayed draw term loan,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3019,hold_ocic_gpu_ddtl,margin_bps,500,bps,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3020,hold_ocic_gpu_ddtl,maturity_date,2031-02,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3021,hold_ocic_gpu_ddtl,par_funded,5587K,USD,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3022,hold_ocic_gpu_ddtl,amortized_cost,3325K,USD,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,Below par because fees/discount on the large unfunded commitment are netted in; not a price signal.
+st3023,hold_ocic_gpu_ddtl,fair_value,3600K,USD,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3024,hold_ocic_gpu_ddtl,unfunded_commitment,153377K,USD,src_ocic_10q,Unfunded commitments table,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3025,hold_ocic_gpu_ddtl,commitment_expiry,2027-08,,src_ocic_10q,Unfunded commitments table,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3026,fac_uk_gpu_ddtl,lender,le_ocic,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3027,fac_uk_gpu_ddtl,maturity_date,2031-02,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,Holder-reported maturity.
+st3028,hold_otf_gpu_ddtl,group,group_nscale,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3029,hold_otf_gpu_ddtl,holder,le_otf,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3030,hold_otf_gpu_ddtl,facility,fac_uk_gpu_ddtl,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,"Borrower 'NSCALE SERVICES UK LTD', S+5.00%, first lien DDTL: matches the GPU Financing Facility."
+st3031,hold_otf_gpu_ddtl,borrower_as_named,NSCALE SERVICES UK LTD,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3032,hold_otf_gpu_ddtl,instrument,First lien senior secured delayed draw term loan,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3033,hold_otf_gpu_ddtl,margin_bps,500,bps,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3034,hold_otf_gpu_ddtl,maturity_date,2031-02,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3035,hold_otf_gpu_ddtl,par_funded,6984K,USD,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3036,hold_otf_gpu_ddtl,amortized_cost,4003K,USD,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,Below par because fees/discount on the large unfunded commitment are netted in; not a price signal.
+st3037,hold_otf_gpu_ddtl,fair_value,4500K,USD,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3038,hold_otf_gpu_ddtl,unfunded_commitment,191722K,USD,src_otf_10q,Unfunded commitments table,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3039,hold_otf_gpu_ddtl,commitment_expiry,2027-08,,src_otf_10q,Unfunded commitments table,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3040,fac_uk_gpu_ddtl,lender,le_otf,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3041,fac_uk_gpu_ddtl,maturity_date,2031-02,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,Holder-reported maturity.
+st3042,hold_obdc_series_b,group,group_nscale,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3043,hold_obdc_series_b,holder,le_obdc,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3044,hold_obdc_series_b,issuer,le_nscale_ltd,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3045,hold_obdc_series_b,instrument,Series B Preferred Shares,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3046,hold_obdc_series_b,fair_value_level,3,,src_obdc_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3047,hold_obdc_series_b,units_held,579420,shares,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3048,hold_obdc_series_b,fair_value,9299K,USD,src_obdc_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3049,hold_obdc_series_b,price_per_unit,16.05,USD,src_internal,,2026-06-30,2026-10-29,derived,st3048;st3047,manual:claude-creditor-filings,Fair value / shares held.
+st3050,hold_ocic_series_b,group,group_nscale,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3051,hold_ocic_series_b,holder,le_ocic,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3052,hold_ocic_series_b,issuer,le_nscale_ltd,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3053,hold_ocic_series_b,instrument,Series B Preferred Shares,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3054,hold_ocic_series_b,fair_value_level,3,,src_ocic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3055,hold_ocic_series_b,units_held,1372740,shares,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3056,hold_ocic_series_b,fair_value,22031K,USD,src_ocic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3057,hold_ocic_series_b,price_per_unit,16.05,USD,src_internal,,2026-06-30,2026-10-29,derived,st3056;st3055,manual:claude-creditor-filings,Fair value / shares held.
+st3058,hold_otf_series_b,group,group_nscale,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3059,hold_otf_series_b,holder,le_otf,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3060,hold_otf_series_b,issuer,le_nscale_ltd,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3061,hold_otf_series_b,instrument,Series B Preferred Shares,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3062,hold_otf_series_b,fair_value_level,3,,src_otf_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3063,hold_otf_series_b,units_held,790440,shares,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3064,hold_otf_series_b,fair_value,12686K,USD,src_otf_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3065,hold_otf_series_b,price_per_unit,16.05,USD,src_internal,,2026-06-30,2026-10-29,derived,st3064;st3063,manual:claude-creditor-filings,Fair value / shares held.
+st3066,hold_otic_series_b,group,group_nscale,,src_otic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3067,hold_otic_series_b,holder,le_otic,,src_otic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3068,hold_otic_series_b,issuer,le_nscale_ltd,,src_otic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3069,hold_otic_series_b,instrument,Series B Preferred Shares,,src_otic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3070,hold_otic_series_b,fair_value_level,3,,src_otic_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3071,hold_otic_series_b,units_held,352260,shares,src_otic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3072,hold_otic_series_b,fair_value,5653K,USD,src_otic_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3073,hold_otic_series_b,price_per_unit,16.05,USD,src_internal,,2026-06-30,2026-10-29,derived,st3072;st3071,manual:claude-creditor-filings,Fair value / shares held.
+st3074,hold_obdc2_series_b,group,group_nscale,,src_obdc2_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3075,hold_obdc2_series_b,holder,le_obdc2,,src_obdc2_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3076,hold_obdc2_series_b,issuer,le_nscale_ltd,,src_obdc2_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3077,hold_obdc2_series_b,instrument,Series B Preferred Shares,,src_obdc2_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3078,hold_obdc2_series_b,fair_value_level,3,,src_obdc2_10q,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3079,hold_obdc2_series_b,units_held,64020,shares,src_obdc2_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3080,hold_obdc2_series_b,fair_value,1027K,USD,src_obdc2_10q,Consolidated schedule of investments,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3081,hold_obdc2_series_b,price_per_unit,16.04,USD,src_internal,,2026-06-30,2026-10-29,derived,st3080;st3079,manual:claude-creditor-filings,Fair value / shares held.
+st3082,hold_fidelity_bcg_series_b,group,group_nscale,,src_fidelity_bcg_nport,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3083,hold_fidelity_bcg_series_b,holder,le_fidelity_bcg,,src_fidelity_bcg_nport,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3084,hold_fidelity_bcg_series_b,issuer,le_nscale_ltd,,src_fidelity_bcg_nport,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3085,hold_fidelity_bcg_series_b,instrument,Series B Preferred Shares,,src_fidelity_bcg_nport,Consolidated schedule of investments,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3086,hold_fidelity_bcg_series_b,fair_value_level,3,,src_fidelity_bcg_nport,fairValLevel,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3087,hold_fidelity_bcg_series_b,units_held,60000,shares,src_fidelity_bcg_nport,Consolidated schedule of investments,2026-07-31,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3088,hold_fidelity_bcg_series_b,fair_value,1256400,USD,src_fidelity_bcg_nport,Consolidated schedule of investments,2026-07-31,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3089,hold_fidelity_bcg_series_b,price_per_unit,20.94,USD,src_internal,,2026-07-31,2026-10-29,derived,st3088;st3087,manual:claude-creditor-filings,Fair value / shares held.
+st3090,hold_pimco_pdi_loan,group,group_nscale,,src_pimco_pdi_nport,invstOrSec,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3091,hold_pimco_pdi_loan,holder,le_pimco_pdi,,src_pimco_pdi_nport,invstOrSec,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3092,hold_pimco_pdi_loan,borrower_as_named,Nscale AS,,src_pimco_pdi_nport,invstOrSec: title,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3093,hold_pimco_pdi_loan,instrument,"Loan (assetCat LON), floating",,src_pimco_pdi_nport,"invstOrSec: assetCat, couponKind",,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3094,hold_pimco_pdi_loan,facility,fac_uk_gpu_ddtl,,src_internal,,,2026-10-29,estimated,,manual:claude-creditor-filings,"8.66% is about SOFR + 5.00% and PIMCO funds sign the GPU Financing Facility amendments; but PIMCO labels the borrower 'Nscale AS' (a Norwegian entity), not Nscale Services UK Ltd. Confirm."
+st3095,hold_pimco_pdi_loan,par_funded,18877004.78,USD,src_pimco_pdi_nport,invstOrSec: balance,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3096,hold_pimco_pdi_loan,fair_value,18880339.97,USD,src_pimco_pdi_nport,invstOrSec: valUSD,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3097,hold_pimco_pdi_loan,mark_pct_par,100.02,pct,src_internal,,2026-06-30,2026-10-29,derived,st3096;st3095,manual:claude-creditor-filings,Fair value / par.
+st3098,hold_pimco_pdi_loan,rate,8.66,pct,src_pimco_pdi_nport,invstOrSec: annualizedRt,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3099,hold_pimco_pdi_loan,maturity_date,2032-08-23,,src_pimco_pdi_nport,invstOrSec: maturityDt,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3100,hold_pimco_pdi_loan,fair_value_level,3,,src_pimco_pdi_nport,invstOrSec: fairValLevel,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3101,le_ionic,name,Ionic Digital Inc.,,src_ionic_10q,Cover page,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3102,le_ionic,role,landlord,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3103,le_ionic,sec_cik,2007691,,src_ionic_10q,EDGAR,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3104,le_ionic,dependency,Digital infrastructure leasing revenue (from the Nscale lease) is its strategic growth business; seeking to expand Ward County to 700 MW,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3105,lease_ward_county,landlord,le_ionic,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,'126-month triple net lease with Nscale Ward County LLC'.
+st3106,lease_ward_county,tenant,le_nscale_ward_county_llc,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3107,lease_ward_county,term_months,126,months,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3108,lease_ward_county,lease_type,Triple net lease,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3109,lease_ward_county,mw,234,MW,src_ionic_10q,MD&A: overview and trends,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,'234 MW currently leased to Nscale'.
+st3110,lease_ward_county,expansion_obligation,Nscale contractually obliged to lease a further 89 MW when available; no penalty to Ionic if it cannot provide it,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3111,lease_ward_county,start_date,2025-10,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,Lease announced October 2025.
+st3112,lease_ward_county,landlord_revenue_6m,87.9M,USD,src_ionic_10q,Results: six months,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,"Ionic's digital infrastructure leasing revenue, H1 2026 (Q2: $43.8M)."
+st3113,site_ward_county,landlord,le_ionic,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3114,site_ward_county,ownership,leased,,src_ionic_10q,MD&A: overview and trends,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3115,le_whitefiber,name,"WhiteFiber, Inc.",,src_whitefiber_10q,Cover page,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3116,le_whitefiber,sec_cik,2042022,,src_whitefiber_10q,EDGAR,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3117,le_whitefiber,dependency,Nscale is the sole contracted tenant at its NC-1 campus (risk factor),,src_whitefiber_10q,Forward-looking statements / risk factors,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3118,le_enovum_nc1,name,"Enovum NC-1 Bidco, LLC",,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3119,le_enovum_nc1,role,landlord,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3120,lease_nc1,group,group_nscale,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3121,lease_nc1,landlord,le_enovum_nc1,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3122,lease_nc1,tenant,le_nscale_services_us,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,Counterparties: Nscale Services US Inc. and Nscale Global Holdings Limited.
+st3123,lease_nc1,guarantor,le_nscale_global_holdings,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,estimated,,manual:claude-creditor-filings,Named as a party with Nscale Services US; guarantee role not confirmed.
+st3124,lease_nc1,site,site_north_carolina,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3125,lease_nc1,lease_type,Colocation and related services agreement,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3126,lease_nc1,start_date,2025-11,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3127,lease_nc1,term_months,,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,checked_absent,,manual:claude-creditor-filings,
+st3128,site_north_carolina,name,NC-1 campus (WhiteFiber),,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3129,site_north_carolina,landlord,le_enovum_nc1,,src_whitefiber_10q,Nscale Services Agreement,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3130,site_north_carolina,energization_target_date,2026-09,,src_whitefiber_10q,MD&A: outlook,,2026-10-29,reported,,manual:claude-creditor-filings,'expects to begin delivering capacity to Nscale during the third quarter' of 2026; revenue starts 30 days after completion.
+st3131,le_kinrg,name,"KiNRG, Inc.",,src_kinrg_10q,Cover page,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3132,le_kinrg,largest_customer,le_nscale_ward_county_llc,,src_kinrg_10q,Note 19: Major customers,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3133,le_kinrg,largest_customer_revenue_share,86,pct,src_kinrg_10q,Note 19: Major customers,2026-06-30,2026-10-29,disclosed,,manual:claude-creditor-filings,86% of revenue in the three and six months to 30 June 2026.
+st3134,le_kinrg,dependency,One major customer (Nscale Ward County LLC) = 86% of revenue,,src_kinrg_10q,Note 19: Major customers,,2026-10-29,disclosed,,manual:claude-creditor-filings,
+st3500,le_sub_001,registry_id,17260936,,src_ch_17260936,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3501,le_sub_001,jurisdiction,England and Wales,,src_ch_17260936,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3502,le_sub_001,incorporated_date,2026-06-04,,src_ch_17260936,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3503,le_sub_001,status,active,,src_ch_17260936,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3504,le_sub_002,registry_id,17264857,,src_ch_17264857,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3505,le_sub_002,jurisdiction,England and Wales,,src_ch_17264857,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3506,le_sub_002,incorporated_date,2026-06-05,,src_ch_17264857,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3507,le_sub_002,status,active,,src_ch_17264857,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3508,le_sub_004,registry_id,17206699,,src_ch_17206699,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3509,le_sub_004,jurisdiction,England and Wales,,src_ch_17206699,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3510,le_sub_004,incorporated_date,2026-05-08,,src_ch_17206699,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3511,le_sub_004,status,active,,src_ch_17206699,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3512,le_sub_005,registry_id,17255841,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3513,le_sub_005,jurisdiction,England and Wales,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3514,le_sub_005,incorporated_date,2026-06-02,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3515,le_sub_005,status,active,,src_ch_17255841,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3516,le_sub_006,registry_id,16695398,,src_ch_16695398,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3517,le_sub_006,jurisdiction,England and Wales,,src_ch_16695398,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3518,le_sub_006,incorporated_date,2025-09-04,,src_ch_16695398,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3519,le_sub_006,status,active,,src_ch_16695398,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3520,le_sub_007,registry_id,16751831,,src_ch_16751831,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3521,le_sub_007,jurisdiction,England and Wales,,src_ch_16751831,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3522,le_sub_007,incorporated_date,2025-09-30,,src_ch_16751831,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3523,le_sub_007,status,active,,src_ch_16751831,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3524,le_sub_008,registry_id,16218318,,src_ch_16218318,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3525,le_sub_008,jurisdiction,England and Wales,,src_ch_16218318,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3526,le_sub_008,incorporated_date,2025-01-30,,src_ch_16218318,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3527,le_sub_008,status,active,,src_ch_16218318,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3528,le_sub_009,registry_id,02567648,,src_ch_02567648,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3529,le_sub_009,jurisdiction,England and Wales,,src_ch_02567648,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3530,le_sub_009,incorporated_date,1990-12-11,,src_ch_02567648,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3531,le_sub_009,status,active,,src_ch_02567648,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3532,le_sub_010,registry_id,16727516,,src_ch_16727516,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3533,le_sub_010,jurisdiction,England and Wales,,src_ch_16727516,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3534,le_sub_010,incorporated_date,2025-09-18,,src_ch_16727516,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3535,le_sub_010,status,active,,src_ch_16727516,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3536,le_sub_011,registry_id,17255841,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3537,le_sub_011,jurisdiction,England and Wales,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3538,le_sub_011,incorporated_date,2026-06-02,,src_ch_17255841,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3539,le_sub_011,status,active,,src_ch_17255841,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3540,le_sub_012,registry_id,17211001,,src_ch_17211001,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3541,le_sub_012,jurisdiction,England and Wales,,src_ch_17211001,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3542,le_sub_012,incorporated_date,2026-05-11,,src_ch_17211001,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3543,le_sub_012,status,active,,src_ch_17211001,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3544,le_sub_013,registry_id,17210805,,src_ch_17210805,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3545,le_sub_013,jurisdiction,England and Wales,,src_ch_17210805,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3546,le_sub_013,incorporated_date,2026-05-11,,src_ch_17210805,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3547,le_sub_013,status,active,,src_ch_17210805,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3548,le_sub_014,registry_id,16937091,,src_ch_16937091,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3549,le_sub_014,jurisdiction,England and Wales,,src_ch_16937091,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3550,le_sub_014,incorporated_date,2025-12-31,,src_ch_16937091,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3551,le_sub_014,status,active,,src_ch_16937091,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3552,le_sub_015,registry_id,16720383,,src_ch_16720383,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3553,le_sub_015,jurisdiction,England and Wales,,src_ch_16720383,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3554,le_sub_015,incorporated_date,2025-09-16,,src_ch_16720383,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3555,le_sub_015,status,active,,src_ch_16720383,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3556,le_sub_016,registry_id,16826005,,src_ch_16826005,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3557,le_sub_016,jurisdiction,England and Wales,,src_ch_16826005,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3558,le_sub_016,incorporated_date,2025-11-03,,src_ch_16826005,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3559,le_sub_016,status,active,,src_ch_16826005,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3560,le_sub_017,registry_id,17198086,,src_ch_17198086,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3561,le_sub_017,jurisdiction,England and Wales,,src_ch_17198086,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3562,le_sub_017,incorporated_date,2026-05-05,,src_ch_17198086,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3563,le_sub_017,status,active,,src_ch_17198086,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3564,le_sub_019,registry_id,16379783,,src_ch_16379783,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3565,le_sub_019,jurisdiction,England and Wales,,src_ch_16379783,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3566,le_sub_019,incorporated_date,2025-04-10,,src_ch_16379783,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3567,le_sub_019,status,active,,src_ch_16379783,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3568,le_sub_020,registry_id,16723313,,src_ch_16723313,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3569,le_sub_020,jurisdiction,England and Wales,,src_ch_16723313,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3570,le_sub_020,incorporated_date,2025-09-17,,src_ch_16723313,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3571,le_sub_020,status,active,,src_ch_16723313,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3572,le_sub_021,registry_id,16824613,,src_ch_16824613,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3573,le_sub_021,jurisdiction,England and Wales,,src_ch_16824613,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3574,le_sub_021,incorporated_date,2025-10-31,,src_ch_16824613,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3575,le_sub_021,status,active,,src_ch_16824613,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3576,le_sub_022,registry_id,16793881,,src_ch_16793881,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3577,le_sub_022,jurisdiction,England and Wales,,src_ch_16793881,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3578,le_sub_022,incorporated_date,2025-10-18,,src_ch_16793881,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3579,le_sub_022,status,active,,src_ch_16793881,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3580,le_sub_023,registry_id,16997502,,src_ch_16997502,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3581,le_sub_023,jurisdiction,England and Wales,,src_ch_16997502,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3582,le_sub_023,incorporated_date,2026-01-29,,src_ch_16997502,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3583,le_sub_023,status,active,,src_ch_16997502,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3584,le_sub_026,registry_id,16764149,,src_ch_16764149,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3585,le_sub_026,jurisdiction,England and Wales,,src_ch_16764149,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3586,le_sub_026,incorporated_date,2025-10-06,,src_ch_16764149,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3587,le_sub_026,status,active,,src_ch_16764149,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3588,le_sub_028,registry_id,16849870,,src_ch_16849870,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3589,le_sub_028,jurisdiction,England and Wales,,src_ch_16849870,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3590,le_sub_028,incorporated_date,2025-11-12,,src_ch_16849870,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3591,le_sub_028,status,active,,src_ch_16849870,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3592,le_sub_029,registry_id,16726057,,src_ch_16726057,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3593,le_sub_029,jurisdiction,England and Wales,,src_ch_16726057,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3594,le_sub_029,incorporated_date,2025-09-18,,src_ch_16726057,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3595,le_sub_029,status,active,,src_ch_16726057,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3596,le_sub_030,registry_id,16727786,,src_ch_16727786,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3597,le_sub_030,jurisdiction,England and Wales,,src_ch_16727786,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3598,le_sub_030,incorporated_date,2025-09-18,,src_ch_16727786,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3599,le_sub_030,status,active,,src_ch_16727786,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3600,le_sub_031,registry_id,16902033,,src_ch_16902033,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3601,le_sub_031,jurisdiction,England and Wales,,src_ch_16902033,Company search,,2026-10-29,disclosed,,auto:companies-house-search,Jurisdiction from the registry (England and Wales register).
+st3602,le_sub_031,incorporated_date,2025-12-10,,src_ch_16902033,Company search,,2026-10-29,disclosed,,auto:companies-house-search,
+st3603,le_sub_031,status,active,,src_ch_16902033,Company search,2026-10-29,2026-10-29,disclosed,,auto:companies-house-search,
+st3700,ctr_anthropic,value_total,44.6B,USD,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),2026-08,2026-10-29,disclosed,,manual:claude-monitor-triage,'agreed to spend an aggregate of up to approximately $44.6 billion' - customer's own disclosure matches Nscale's.
+st3701,ctr_anthropic,end_date,2033,,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,'over terms extending into 2033'.
+st3702,ctr_anthropic,take_or_pay,false,,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,"'fees accruing only as capacity is delivered to and accepted by us'. Non-cancelable otherwise, but nothing is owed before delivery and acceptance."
+st3703,ctr_anthropic,termination_rights,"Non-cancelable except in limited circumstances, including Nscale's failure to meet delivery or service availability requirements or an uncured material breach",,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,
+st3704,ctr_anthropic,provider,le_nscale_global_holdings,,src_anthropic_s1,MD&A: commitments (Nscale Services Agreements),,2026-10-29,disclosed,,manual:claude-monitor-triage,'wholly owned subsidiaries of Nscale Global Holdings Limited'.

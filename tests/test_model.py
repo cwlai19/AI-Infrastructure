@@ -130,6 +130,14 @@ class Resolution(unittest.TestCase):
         self.assertEqual([s.id for s in unmerged.current], ["a"])
 
 
+class EntityReferences(unittest.TestCase):
+    def test_references_to_merged_entities_agree(self):
+        statements = [st("a", "borrower", "bank"), st("b", "borrower", "bank2", source="news")]
+        link = {"entity_a": "bank", "relation": "same_as", "entity_b": "bank2"}
+        self.assertEqual(resolve(make_store(statements, links=[link]), "fac", "borrower").conflicts, [])
+        self.assertEqual(len(resolve(make_store(statements), "fac", "borrower").conflicts), 1)
+
+
 class RefinementsAndReviews(unittest.TestCase):
     def test_partial_date_agrees_with_full_date(self):
         r = resolve(make_store([st("a", "signing_date", "2026-02"), st("b", "signing_date", "2026-02-11", source="news")]),
