@@ -1,0 +1,21 @@
+id,type,label,note
+group_nscale,group,Nscale,
+le_nscale_ltd,legal_entity,NSCALE Ltd,S-1 registrant; plans to re-register as Nscale plc before the offering completes.
+le_nscale_services_uk,legal_entity,Nscale Services UK Ltd,Borrower of the UK GPU-backed DDTL per CCIR.
+le_ward_county_spv,legal_entity,Ward County GPU borrower SPV (name not yet seen),Placeholder until the credit agreement names it.
+le_microsoft,legal_entity,Microsoft Corporation,
+le_jpmorgan,legal_entity,J.P. Morgan,Which J.P. Morgan entity is not yet known.
+le_goldman,legal_entity,Goldman Sachs,Which Goldman Sachs entity is not yet known.
+le_morgan_stanley,legal_entity,Morgan Stanley,Which Morgan Stanley entity is not yet known.
+le_blue_owl_bdc,legal_entity,Blue Owl BDC vehicle(s) (fund not yet identified),Holder of the UK DDTL per CCIR reading of Blue Owl BDC Q1-2026 10-Qs.
+site_narvik,site,Narvik campus (Norway),
+site_ward_county,site,"Ward County, Texas",
+site_north_carolina,site,North Carolina site,
+fac_uk_gpu_ddtl,facility,UK GPU-backed delayed-draw term loan (~$1.4B),
+fac_ward_county,facility,Ward County GPU Facility,
+fac_north_carolina,facility,North Carolina GPU Facility,
+fac_parent_rcf,facility,Senior revolving credit facility,
+fac_norway_term_loan,facility,Senior term loan facility ($725M),As described in the S-1 excerpt.
+fac_norway_vat_rcf,facility,Revolving VAT credit facility ($65M),As described in the S-1 excerpt.
+fac_ccir_norway_pf,facility,Norway (Narvik) project financing ($790M),"As CCIR names it. Kept separate from the two S-1 facilities; see entity_links.csv."
+ctr_msft_narvik,contract,Microsoft – Nscale/Aker Narvik compute contract,

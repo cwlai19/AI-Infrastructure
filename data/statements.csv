@@ -1,0 +1,94 @@
+id,entity,property,value,unit,source,locator,effective_date,observed_date,method,derived_from,extractor,note
+st0001,group_nscale,name,Nscale,,src_nscale_pr_ipo,headline,,2026-10-29,disclosed,,manual:search-excerpt,
+st0002,group_nscale,listing_venue,NYSE (applied),,src_nscale_pr_ipo,body,2026-09-18,2026-10-29,disclosed,,manual:search-excerpt,Applied to list; not yet priced.
+st0003,group_nscale,ticker,NSCL,,src_nscale_pr_ipo,body,2026-09-18,2026-10-29,disclosed,,manual:search-excerpt,
+st0004,group_nscale,ipo_filing_date,2026-09-18,,src_s1,cover page,,2026-10-29,disclosed,,manual:search-excerpt,
+st0005,group_nscale,total_assets,17.25B,USD,src_search_ipo_coverage,,2026-06-30,2026-10-29,reported,,manual:search-excerpt,Search summary: 'one report says'. Outlet not identified.
+st0006,group_nscale,total_liabilities,12.36B,USD,src_search_ipo_coverage,,2026-06-30,2026-10-29,reported,,manual:search-excerpt,Same report as st0005; implies equity of 4.79B.
+st0007,group_nscale,total_debt,8B,USD,src_search_ipo_coverage,,,2026-10-29,reported,,manual:search-excerpt,"Reported as 'more than $8B of debt'. Treat as a lower bound, undated."
+st0008,group_nscale,net_loss_annual,1.02B,USD,src_dealroom_ipo,headline,,2026-10-29,reported,,manual:search-excerpt,Headline says net loss 'widens to $1.02B'; period not stated in excerpt.
+st0009,group_nscale,mw_contracted_total,1370,MW,src_mrkt30,ranking table,,2026-10-29,reported,,manual:search-excerpt,Blog says this comes from the IPO filing.
+st0010,group_nscale,mw_energized_total,55,MW,src_mrkt30,ranking table,,2026-10-29,reported,,manual:search-excerpt,Blog says this comes from the IPO filing.
+st0011,le_nscale_ltd,name,NSCALE Ltd,,src_s1,cover page,,2026-10-29,disclosed,,manual:search-excerpt,
+st0012,le_nscale_ltd,sec_cik,2110365,,src_s1,EDGAR path,,2026-10-29,disclosed,,manual:search-excerpt,
+st0013,le_nscale_ltd,group,group_nscale,,src_s1,cover page,,2026-10-29,disclosed,,manual:search-excerpt,
+st0014,le_nscale_ltd,role,holdco,,src_s1,cover page,,2026-10-29,disclosed,,manual:search-excerpt,Registrant; to re-register as Nscale plc.
+st0015,le_nscale_services_uk,name,Nscale Services UK Ltd,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0016,le_nscale_services_uk,group,group_nscale,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0017,le_nscale_services_uk,role,borrower,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0018,le_nscale_services_uk,jurisdiction,England and Wales,,src_internal,,,2026-10-29,estimated,,manual,"Assumed from the 'UK Ltd' name. Confirm on Companies House (could be Scotland or NI)."
+st0019,le_ward_county_spv,group,group_nscale,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0020,le_ward_county_spv,role,spv,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,CCIR: 'GPU-as-a-service SPV'.
+st0021,le_microsoft,name,Microsoft Corporation,,src_ccir_research_nscale,,,2026-10-29,reported,,manual:search-excerpt,
+st0022,le_blue_owl_bdc,role,lender,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0030,fac_uk_gpu_ddtl,group,group_nscale,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0031,fac_uk_gpu_ddtl,name,Senior secured delayed-draw term loan facility,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0032,fac_uk_gpu_ddtl,facility_type,delayed_draw_term_loan,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0033,fac_uk_gpu_ddtl,amount_max,1.4B,USD,src_s1,debt section,2026-02,2026-10-29,disclosed,,manual:search-excerpt,S-1 says 'approximately $1.4 billion'.
+st0034,fac_uk_gpu_ddtl,amount_max,1.4B,USD,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0035,fac_uk_gpu_ddtl,signing_date,2026-02,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0036,fac_uk_gpu_ddtl,borrower,le_nscale_services_uk,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0037,fac_uk_gpu_ddtl,base_rate,SOFR,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0038,fac_uk_gpu_ddtl,margin_bps,500,bps,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,CCIR: S+5.00%; terms taken from Blue Owl BDC Q1-2026 10-Qs.
+st0039,fac_uk_gpu_ddtl,collateral,gpus,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,
+st0040,fac_uk_gpu_ddtl,lender,le_blue_owl_bdc,,src_ccir_nscale,UK GPU DDTL row,,2026-10-29,reported,,manual:search-excerpt,Which Blue Owl fund(s) and what share is not yet known.
+st0050,fac_ward_county,group,group_nscale,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0051,fac_ward_county,name,Ward County GPU Facility,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0052,fac_ward_county,amount_max,1.85B,USD,src_s1,exhibits,2026-08-27,2026-10-29,disclosed,,manual:search-excerpt,'up to $1.85 billion'.
+st0053,fac_ward_county,amount_max,1.85B,USD,src_ccir_research_nscale,,2026-08-27,2026-10-29,reported,,manual:search-excerpt,
+st0054,fac_ward_county,amount_max,1.831B,USD,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,'up to $1.831B'. Differs from the S-1 figure: rounding? upsize? error?
+st0055,fac_ward_county,signing_date,2026-08-27,,src_ccir_research_nscale,,,2026-10-29,reported,,manual:search-excerpt,
+st0056,fac_ward_county,facility_type,delayed_draw_term_loan,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0057,fac_ward_county,borrower,le_ward_county_spv,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0058,fac_ward_county,named_customer,le_microsoft,,src_ccir_research_nscale,,,2026-10-29,reported,,manual:search-excerpt,CCIR: the credit agreement names Microsoft Corporation as the customer; repaid from Microsoft's contract payments.
+st0059,fac_ward_county,rating_moodys,Baa1,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,First-time rating; stable. Moody's release itself not yet seen.
+st0060,fac_ward_county,margin_bps,,,src_ccir_nscale,Ward County row,,2026-10-29,checked_absent,,manual:search-excerpt,CCIR lists the rate as Undisclosed.
+st0061,fac_ward_county,collateral,gpus,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0062,fac_ward_county,secured_on_site,site_ward_county,,src_internal,,,2026-10-29,estimated,,manual,Assumed from the facility name. Confirm from the credit agreement.
+st0070,fac_north_carolina,group,group_nscale,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0071,fac_north_carolina,name,North Carolina GPU Facility,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0072,fac_north_carolina,amount_max,1.2B,USD,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,'up to $1.2 billion'.
+st0080,fac_parent_rcf,group,group_nscale,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0081,fac_parent_rcf,name,Senior revolving credit facility,,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,
+st0082,fac_parent_rcf,facility_type,revolver,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0083,fac_parent_rcf,amount_max,770M,USD,src_s1,debt section,<2026-06,2026-10-29,disclosed,,manual:search-excerpt,Size before the June 2026 upsize.
+st0084,fac_parent_rcf,amount_max,900M,USD,src_s1,debt section,2026-06,2026-10-29,disclosed,,manual:search-excerpt,'upsized from $770.0 million to $900.0 million in June 2026'.
+st0085,fac_parent_rcf,amount_max,900M,USD,src_ccir_nscale,revolver row,2026-07-07,2026-10-29,reported,,manual:search-excerpt,CCIR says 'entered July 7 2026' - a month after the S-1's June upsize. Check which date is which.
+st0086,fac_parent_rcf,signing_date,2026-07-07,,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,May be the amendment date rather than the original signing.
+st0087,fac_parent_rcf,lender,le_jpmorgan,,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,'listed lenders include'.
+st0088,fac_parent_rcf,lender,le_goldman,,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,
+st0089,fac_parent_rcf,lender,le_morgan_stanley,,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,
+st0090,fac_parent_rcf,purpose,"Data-centre buildouts in the US, Europe and APAC",,src_ccir_nscale,revolver row,,2026-10-29,reported,,manual:search-excerpt,
+st0091,fac_parent_rcf,borrower,le_nscale_ltd,,src_internal,,,2026-10-29,estimated,,manual,CCIR calls it 'parent-level'; assumed to be the S-1 registrant until the agreement is read.
+st0100,fac_norway_term_loan,group,group_nscale,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0101,fac_norway_term_loan,facility_type,term_loan,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0102,fac_norway_term_loan,amount_max,725M,USD,src_s1,debt section,2026-07,2026-10-29,disclosed,,manual:search-excerpt,'senior facilities agreement ... senior term loan facility ... $725.0 million'.
+st0103,fac_norway_term_loan,signing_date,2026-07,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0110,fac_norway_vat_rcf,group,group_nscale,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0111,fac_norway_vat_rcf,facility_type,revolver,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0112,fac_norway_vat_rcf,amount_max,65M,USD,src_s1,debt section,2026-07,2026-10-29,disclosed,,manual:search-excerpt,'revolving VAT credit facility'.
+st0113,fac_norway_vat_rcf,purpose,VAT funding,,src_s1,debt section,,2026-10-29,disclosed,,manual:search-excerpt,
+st0120,fac_ccir_norway_pf,group,group_nscale,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0121,fac_ccir_norway_pf,facility_type,project_finance,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0122,fac_ccir_norway_pf,amount_max,790M,USD,src_ccir_nscale,Norway row,2026-05-11,2026-10-29,reported,,manual:search-excerpt,
+st0123,fac_ccir_norway_pf,signing_date,2026-05-11,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,S-1 excerpt dates the 725M + 65M facilities to July 2026.
+st0124,fac_ccir_norway_pf,collateral,site,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0125,fac_ccir_norway_pf,secured_on_site,site_narvik,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0126,fac_ccir_norway_pf,margin_bps,,,src_ccir_nscale,Norway row,,2026-10-29,checked_absent,,manual:search-excerpt,CCIR: pricing undisclosed.
+st0127,fac_ccir_norway_pf,maturity_date,,,src_ccir_nscale,Norway row,,2026-10-29,checked_absent,,manual:search-excerpt,CCIR: maturity undisclosed.
+st0140,site_narvik,group,group_nscale,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0141,site_narvik,country,Norway,,src_ccir_nscale,Norway row,,2026-10-29,reported,,manual:search-excerpt,
+st0142,site_ward_county,group,group_nscale,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0143,site_ward_county,country,United States,,src_ccir_nscale,Ward County row,,2026-10-29,reported,,manual:search-excerpt,
+st0144,site_north_carolina,group,group_nscale,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0145,site_north_carolina,country,United States,,src_s1,exhibits,,2026-10-29,disclosed,,manual:search-excerpt,
+st0160,ctr_msft_narvik,group,group_nscale,,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,
+st0161,ctr_msft_narvik,provider,group_nscale,,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,CCIR lists the counterparty as 'Nscale/Aker'; which legal entity contracts is not yet known.
+st0162,ctr_msft_narvik,customer,le_microsoft,,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,
+st0163,ctr_msft_narvik,site,site_narvik,,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,
+st0164,ctr_msft_narvik,value_total,6.2B,USD,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,Disclosed value per CCIR.
+st0165,ctr_msft_narvik,term_months,60,months,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,
+st0166,ctr_msft_narvik,gpu_count,52000,GPUs,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,'about 52000'.
+st0167,ctr_msft_narvik,gpu_type,GB300,,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,
+st0168,ctr_msft_narvik,implied_usd_per_gpu_hour,2.72,USD/GPU-hr,src_ccir_commitments,deal table,,2026-10-29,reported,,manual:search-excerpt,CCIR's own back-out; a floor (assumes ratable spend and 100% billed hours).
+st0169,ctr_msft_narvik,implied_usd_per_gpu_hour,2.72,USD/GPU-hr,src_internal,,,2026-10-29,derived,st0164;st0165;st0166,manual,6.2e9 / (52000 GPUs x 8760 h x 5 y) = 2.72. Same floor assumptions as CCIR.

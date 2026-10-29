@@ -1,0 +1,3 @@
+entity_a,relation,entity_b,judged_by,judged_date,note
+fac_norway_term_loan,part_of,fac_ccir_norway_pf,claude (pending analyst review),2026-10-29,"725M + 65M = 790M and both are senior facilities, so these look like CCIR's single 'project financing'. But dates differ (S-1 excerpt: July 2026; CCIR: 11 May 2026). Confirm from the S-1 text before merging."
+fac_norway_vat_rcf,part_of,fac_ccir_norway_pf,claude (pending analyst review),2026-10-29,See row above.

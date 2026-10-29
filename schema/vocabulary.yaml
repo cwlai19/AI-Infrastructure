@@ -1,0 +1,163 @@
+# The vocabulary: everything a statement is allowed to say.
+#
+# A statement is: <entity> has <property> = <value>, according to <source>.
+# This file fixes which entity types exist, which properties each type can have,
+# what kind of value each property takes, and how sources are ranked.
+# The validator rejects any statement that does not fit, so every source and
+# every future LLM extractor is forced to speak the same language.
+#
+# Property fields:
+#   kind:  money | number | percent | bps | date | text | enum | bool | entity
+#   unit:  for number kinds (e.g. MW, months, GPUs). Money takes its currency per statement.
+#   ref:   for kind=entity, which entity type(s) the value must point to
+#   values: for kind=enum, the allowed values
+#   multi: true if an entity can legitimately have several values at once
+#          (a facility has several lenders). Multi properties are listed, not conflicted.
+#   key:   true if a credit file is incomplete without it. Missing key properties
+#          show up in the gap list as "not yet checked".
+
+entity_types:
+
+  group:
+    description: A corporate group as the market knows it (e.g. "Nscale").
+    properties:
+      name: {kind: text, key: true}
+      hq_country: {kind: text}
+      listing_venue: {kind: text}
+      ticker: {kind: text}
+      ipo_filing_date: {kind: date}
+      mw_contracted_total: {kind: number, unit: MW, key: true}
+      mw_energized_total: {kind: number, unit: MW, key: true}
+      total_debt: {kind: money, key: true}
+      total_assets: {kind: money}
+      total_liabilities: {kind: money}
+      net_loss_annual: {kind: money}
+
+  legal_entity:
+    description: A registered company, SPV, lender or customer. Named as the source names it.
+    properties:
+      name: {kind: text, key: true}
+      group: {kind: entity, ref: [group]}
+      parent: {kind: entity, ref: [legal_entity]}
+      jurisdiction: {kind: text, key: true}
+      registry_id: {kind: text, key: true}
+      sec_cik: {kind: text}
+      role: {kind: enum, multi: true, values: [holdco, opco, spv, borrower, lender, customer, landlord, guarantor, arranger, agent, investor, other]}
+      incorporated_date: {kind: date}
+      status: {kind: enum, values: [active, dissolved, in_administration, liquidation, other]}
+
+  site:
+    description: A physical data centre campus or building.
+    properties:
+      group: {kind: entity, ref: [group], key: true}
+      name: {kind: text, key: true}
+      country: {kind: text, key: true}
+      operator: {kind: entity, ref: [legal_entity], key: true}
+      landlord: {kind: entity, ref: [legal_entity], key: true}
+      mw_contracted: {kind: number, unit: MW, key: true}
+      mw_energized: {kind: number, unit: MW, key: true}
+      energization_target_date: {kind: date}
+      grid_connection_date: {kind: date}
+      gpu_type: {kind: text, multi: true}
+
+  facility:
+    description: One debt instrument (loan, revolver, bond, project finance, vendor financing).
+    properties:
+      group: {kind: entity, ref: [group], key: true}
+      name: {kind: text, key: true}
+      borrower: {kind: entity, ref: [legal_entity], key: true}
+      facility_type: {kind: enum, key: true, values: [term_loan, delayed_draw_term_loan, revolver, project_finance, bond, abs, vendor_financing, lease_financing, other]}
+      amount_max: {kind: money, key: true}
+      amount_drawn: {kind: money}
+      base_rate: {kind: text}
+      margin_bps: {kind: bps, key: true}
+      coupon_pct: {kind: percent}
+      signing_date: {kind: date, key: true}
+      maturity_date: {kind: date, key: true}
+      amortization: {kind: text}
+      collateral: {kind: enum, multi: true, key: true, values: [gpus, site, lease, contract_receivables, shares, all_assets, cash_accounts, other]}
+      secured_on_site: {kind: entity, ref: [site], multi: true}
+      named_customer: {kind: entity, ref: [legal_entity], multi: true, key: true}
+      lender: {kind: entity, ref: [legal_entity], multi: true, key: true}
+      arranger: {kind: entity, ref: [legal_entity], multi: true}
+      guarantor: {kind: entity, ref: [legal_entity], multi: true}
+      rating_moodys: {kind: text}
+      rating_sp: {kind: text}
+      rating_fitch: {kind: text}
+      dscr_covenant: {kind: number, unit: x}
+      cash_sweep: {kind: text}
+      lender_mark_pct_par: {kind: percent}
+      purpose: {kind: text}
+
+  contract:
+    description: An offtake / compute supply contract between a provider and a customer.
+    properties:
+      group: {kind: entity, ref: [group], key: true}
+      name: {kind: text}
+      provider: {kind: entity, ref: [legal_entity, group], key: true}
+      customer: {kind: entity, ref: [legal_entity], key: true}
+      site: {kind: entity, ref: [site], multi: true}
+      value_total: {kind: money, key: true}
+      term_months: {kind: number, unit: months, key: true}
+      start_date: {kind: date}
+      gpu_count: {kind: number, unit: GPUs}
+      gpu_type: {kind: text}
+      mw: {kind: number, unit: MW}
+      take_or_pay: {kind: bool, key: true}
+      prepayment_pct: {kind: percent}
+      termination_rights: {kind: text}
+      implied_usd_per_gpu_hour: {kind: number, unit: USD/GPU-hr}
+
+  lease:
+    description: A lease of space/power from a landlord to a tenant.
+    properties:
+      group: {kind: entity, ref: [group], key: true}
+      landlord: {kind: entity, ref: [legal_entity], key: true}
+      tenant: {kind: entity, ref: [legal_entity], key: true}
+      site: {kind: entity, ref: [site], key: true}
+      term_months: {kind: number, unit: months, key: true}
+      mw: {kind: number, unit: MW}
+      rent_per_kw_month: {kind: money}
+      start_date: {kind: date}
+      guarantor: {kind: entity, ref: [legal_entity, group]}
+
+  charge:
+    description: A registered security interest (e.g. a Companies House MR01).
+    properties:
+      chargor: {kind: entity, ref: [legal_entity], key: true}
+      chargee: {kind: entity, ref: [legal_entity], multi: true, key: true}
+      registry_charge_id: {kind: text}
+      created_date: {kind: date, key: true}
+      registered_date: {kind: date}
+      description: {kind: text}
+      status: {kind: enum, values: [outstanding, satisfied, part_satisfied]}
+      secures_facility: {kind: entity, ref: [facility]}
+
+# How a value was obtained.
+methods:
+  disclosed: The source states the value directly.
+  derived: Calculated from other statements (list them in derived_from).
+  estimated: Our estimate from indirect evidence (state the basis in note).
+  reported: The source reports it second-hand (press, aggregator, rumour).
+  checked_absent: We read the source and it does not state the value (e.g. redacted). Value must be empty.
+
+# Source types, ranked. Lower rank wins when sources disagree on a value for the same date.
+# grade is the default reliability shown to readers.
+source_types:
+  filing:              {rank: 1, grade: A, description: Securities filing by the company (S-1, 10-Q, 8-K, exhibits, prospectus)}
+  registry:            {rank: 1, grade: A, description: Official company/charge/land registry record}
+  counterparty_filing: {rank: 2, grade: A, description: Filing by a lender, customer or landlord that describes the deal (e.g. BDC 10-Q)}
+  rating_agency:       {rank: 2, grade: A, description: Rating agency release or report}
+  company_release:     {rank: 3, grade: B, description: Press release or statement by the company itself}
+  counterparty_release: {rank: 3, grade: B, description: Press release by a lender, customer or landlord}
+  aggregator:          {rank: 4, grade: B, description: Third-party tracker that cites primary sources (e.g. CCIR)}
+  news:                {rank: 5, grade: C, description: News article}
+  analyst:             {rank: 5, grade: C, description: Analyst or research note}
+  expert_call:         {rank: 6, grade: C, description: Expert network or conversation}
+  internal:            {rank: 7, grade: C, description: Our own estimate or working assumption}
+
+# How we accessed the source. Seeing only an excerpt (e.g. a search snippet)
+# caps the grade at B, because we have not read the passage in context.
+access_levels:
+  full_document: Read the whole document.
+  excerpt: Saw only a quoted excerpt or summary (e.g. a search result). Verify against the full document.
