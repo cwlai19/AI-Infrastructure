@@ -1,0 +1,179 @@
+# Condensed write-up of Nscale's filed customer contracts. Each point is a plain-English summary of a clause;
+# `q` gives start/end anchors used to pull the exact wording from the archived exhibit text at build time
+# (the build fails if an anchor is not found, so quotes cannot drift from the filing).
+contracts:
+  - id: anthropic
+    title: "Anthropic: GPU Services Agreement (Monarch, tranche 1)"
+    exhibit: "Ex-10.25"
+    source: src_ex10_25
+    text: data/archive/ex10_25_anthropic_gpu_services.txt
+    url: "https://www.sec.gov/Archives/edgar/data/2110365/000119312526395475/ck0002110365-ex10_25.htm"
+    parties: "Anthropic PBC (customer) and Nscale GPU MCC B1.1 LLC (provider, a controlled affiliate of Nscale). One of four parallel agreements, one per tranche at the Monarch site."
+    sections:
+      - name: Parties and structure
+        points:
+          - t: "Four separate agreements, one per tranche, were split at Nscale's request to help it raise financing; all four tranches must be operated together and the whole site is dedicated to Anthropic."
+            q: ["(c) Provider agrees and acknowledges that, at Provider", "(the “Separation”)"]
+          - t: "Anthropic may terminate immediately if the provider stops being controlled by Nscale."
+            q: ["Anthropic may immediately terminate this Agreement if Provider ceases to be a Controlled Affiliate of Parent", "Terms of Service)."]
+      - name: Services
+        points:
+          - t: "Dedicated, single-tenant NVIDIA Vera Rubin NVL72 systems, with Nscale providing the data centre, power, cooling, network and operations. Anthropic controls the software stack."
+            q: ["The “GPU Services” means:", "attached hereto."]
+      - name: Term and extension
+        points:
+          - t: "Each tranche's term starts on acceptance, not signing. Anthropic may cut the term by any unexcused delay beyond a redacted threshold."
+            q: ["The “Tranche Term” for each Tranche will begin upon Acceptance", "after the Expected Delivery Date."]
+          - t: "Anthropic may extend each tranche to line up with the other agreements, on the same terms with a redacted price change."
+            q: ["Anthropic may, by written notice to Provider at least [***] prior to the end of the applicable Tranche Term", "as the then-current Tranche Term."]
+      - name: Price and payment
+        points:
+          - t: "All-in price per GPU-hour (redacted), with no other charges."
+            q: ["The all-in GPU per hour price set forth in the table below", "and no other charges will apply."]
+          - t: "Monthly payment = hours x GPUs x price, less service credits and late-delivery discounts. Nothing is payable until Anthropic accepts the tranche in writing."
+            q: ["To avoid doubt, no fees will be payable for a Tranche", "required to be credited to Anthropic under the Agreement)."]
+          - t: "Anthropic may not withhold payment of undisputed amounts; Nscale can suspend the affected service for non-payment after notice."
+            q: ["Anthropic may not withhold payment of amounts due hereunder.", "upon Anthropic’s payment of the applicable undisputed amounts."]
+      - name: Delivery and acceptance
+        points:
+          - t: "Nscale must deploy, commission and make each tranche available by its expected delivery date (redacted)."
+            q: ["3.1 Delivery. For each Tranche", "(“Expected Delivery Date”)."]
+          - t: "Anthropic tests each tranche against acceptance criteria; failures go back for correction until accepted or terminated. Silence through the acceptance period counts as acceptance. Payment starts only once the whole tranche is accepted."
+            q: ["3.2 Acceptance.", "in accordance with the Acceptance Criteria."]
+      - name: Late delivery
+        points:
+          - t: "A late tranche earns no fees for the delay. After a grace period, fees are also discounted (redacted %) for as many days as the delay."
+            q: ["(a) Grace Period.", "from the end of the Grace Period [***]."]
+          - t: "After a further redacted delay, Anthropic may terminate the tranche with no payment or liability."
+            q: ["(d) Further Delay.", "without any payment or other obligation or liability of any kind, [***]."]
+          - t: "Delays from component supply constraints, force majeure or Anthropic's own acts are excused, but supply delays count only if Nscale showed binding GPU orders early and gave timely notice, and only up to a redacted cap."
+            q: ["Excused Delays.", "after [***] following the applicable Expected Delivery Date)."]
+          - t: "The discounts are framed as partial compensation, not liquidated damages or a penalty."
+            q: ["Nature of Remedies.", "rather than liquidated damages or a penalty."]
+      - name: Financing condition
+        points:
+          - t: "Nscale must use best efforts to secure financing for the GPUs and for the data centre, on market terms for a customer of Anthropic's credit quality, by a redacted longstop date."
+            q: ["(a) Qualifying Financing.", "comparable to Anthropic’s."]
+          - t: "Until that financing is in place, Nscale may not offer the site's capacity to anyone else."
+            q: ["(c) Restrictions.", "GPU capacity at the [***] Site."]
+          - t: "If financing is not secured by the longstop, either party may terminate with no further liability."
+            q: ["(d) Termination Right.", "except for obligations that expressly survive termination."]
+      - name: Technology option
+        points:
+          - t: "Anthropic may switch tranches to the next NVIDIA (or other vendor) generation at a price set by a formula, with an independent check if the parties disagree; if no agreed price, it keeps Vera Rubin."
+            q: ["8. Next Generation GPU Option", "(the “Next-Generation GPU”)."]
+      - name: Termination and suspension
+        points:
+          - t: "Either party may terminate for uncured material breach, insolvency, loss of Nscale control of the provider, or a change of control to a disqualified person."
+            q: ["5.3 Termination For Cause.", "is a Disqualified Person."]
+          - t: "A government order suspending the service, or Nscale maintenance, also suspends Anthropic's payments for the affected services."
+            q: ["For any suspension other than pursuant to Section 5.2(a)", "for the duration of the suspension."]
+      - name: Force majeure
+        points:
+          - t: "Force majeure excuses performance (but not Anthropic's payment for services received) for events outside a party's control that standard disaster recovery could not have avoided."
+            q: ["12.7 Force Majeure.", "(the “Affected Party”)"]
+          - t: "If it lasts beyond a redacted period, the other party may terminate the affected services without cost; Anthropic stops paying for affected services, and the term is extended by the suspension (up to a cap)."
+            q: ["If any failure or delay of the Affected Party caused by a Force Majeure Event continues for", "but in no event by more than [***]."]
+      - name: Liability
+        points:
+          - t: "No consequential damages. A general liability cap applies (amount redacted), with certain claims uncapped. Anthropic's payment obligations sit outside the cap."
+            q: ["10. Limitation of Liability.", "WILL NOT BE LIMITED BY ANY MONETARY CAP."]
+          - t: "Service credits are Anthropic's sole monetary remedy for missed service levels, except for termination, indemnity, force majeure and wilful breach."
+            q: ["Service Credits, as applicable, are Anthropic’s sole and exclusive monetary remedy", "gross negligence, willful misconduct, or intentional or deliberate breach."]
+      - name: Assignment and change of control
+        points:
+          - t: "Anthropic may assign only to a party with at least Anthropic's credit rating, or must remain secondarily liable."
+            q: ["(b) Anthropic may, upon prior written notice to Provider, assign", "the assignee is not a direct competitor of Provider."]
+      - name: Lender rights
+        points:
+          - t: "Nscale may finance the GPUs and facility. Anthropic will cooperate and negotiate direct agreements with lenders, which may include notice, cure, standstill, step-in and payment direction, but only on mutually agreed terms."
+            q: ["12.18 Financing Parties; Direct Agreement.", "in each case only to the extent mutually agreed by Anthropic, Provider and the applicable Provider Financing Party."]
+      - name: Confidentiality and governing law
+        points:
+          - t: "Nscale needed Anthropic's approval to file or describe this agreement with the SEC, with a process for redactions."
+            q: ["(b) Notwithstanding anything to the contrary, Provider may not", "without Anthropic’s prior written approval"]
+          - t: "New York law."
+            q: ["12.9 Governing Law.", "the internal laws of the State of New York to the rights and obligations of the parties"]
+
+  - id: microsoft
+    title: "Microsoft: Partner Statement of Work (Kvandal North, Narvik)"
+    exhibit: "Ex-10.19"
+    source: src_ex10_19
+    text: data/archive/ex10_19_microsoft_sow_kvandal_north.txt
+    url: "https://www.sec.gov/Archives/edgar/data/2110365/000119312526395475/ck0002110365-ex10_19.htm"
+    parties: "Microsoft Ireland Operations Limited (customer) and Nscale Ventures Holdings Norway AS (partner/supplier), under Microsoft's Purchase Order Terms as amended by the SOW. The only Microsoft SOW filed; the Ward County, Kvandal South and Sines SOWs are not public."
+    sections:
+      - name: Parties and site
+        points:
+          - t: "Services are delivered at Kvandal North, Narvik, Norway."
+            q: ["The Data Center Location shall be", "8530 Bjerkvik, Narvik, Norway."]
+      - name: Services
+        points:
+          - t: "NVIDIA VR200 GPU services in three tranches. Each tranche's term runs from Microsoft's acceptance to its end date."
+            q: ["1.1 GPU Services.", "end on the Service End Date provided in Table 1."]
+          - t: "Nscale also provides 6 MW of air-cooled colocation space for Microsoft's CPU, storage and networking."
+            q: ["1.3 Colocation Space.", "equipped with 6MW of power"]
+          - t: "Two early-access racks must be delivered 60 days before the first tranche of each GPU type. If they are late, Microsoft may push back that tranche's delivery date day for day."
+            q: ["1.2 Early Access Capacity.", "Early Access Capacity”)"]
+      - name: Term and extension
+        points:
+          - t: "Six years per tranche. Microsoft may extend any tranche by up to six months at Year-6 pricing."
+            q: ["b. Microsoft may, in its sole discretion choose to extend", "shall be the Year 6 pricing under Section 3.1."]
+      - name: Fees and payment
+        points:
+          - t: "Total service fees are capped at a redacted amount, paid on a milestone schedule for GPUs and monthly for colocation. Prices are per GPU-hour, with a separate Year-6 price (redacted)."
+            q: ["3.2 Service Fees.", "for Colocation Fees ($[***])."]
+          - t: "Upfront payments equal to a redacted share of each tranche's value: part invoiced 15 days after signing, the rest up to 90 days before delivery. The example given dates Tranche 2 delivery to 28 Sep 2027. Microsoft pays these within 15 days."
+            q: ["Upfront Payment: Partner shall invoice", "within 15 days following the date of invoice."]
+          - t: "Other invoices are paid within 30 days after acceptance and a correct invoice."
+            q: ["After Microsoft accepts the Goods, Services, Deliverables or Cloud Services", "within 30 calendar days of receiving the applicable invoice."]
+      - name: Delivery and acceptance
+        points:
+          - t: "Microsoft tests each tranche against validation criteria and accepts or rejects it. Nscale has 15 business days to cure deficiencies and resubmit."
+            q: ["Acceptance or Rejection", "resubmit for acceptance testing."]
+      - name: Late delivery
+        points:
+          - t: "For each day a tranche is late, Nscale credits Microsoft 100% of a day's bill. Credits are set off against the first invoices after acceptance."
+            q: ["a. Late Delivery and Late Fees:", "completely set off against fees owed by Microsoft)."]
+          - t: "If a tranche is not accepted within 60 days of its delivery date, or will clearly miss that, Microsoft may terminate that tranche or set a new date. Missing the new date terminates it automatically."
+            q: ["b. GPU Service termination right:", "unless the Parties agree otherwise in writing."]
+          - t: "On such a termination Nscale refunds that tranche's share of the upfront payment within 60 days, which is Microsoft's sole remedy."
+            q: ["d. Upfront Payment on Termination:", "described in Section 3.3.b and 3.3.c."]
+          - t: "Delays caused directly by NVIDIA carry no delay credits and extend the 60-day window, if Nscale showed binding orders within 60 days of signing and gave notice."
+            q: ["h. Delays Caused Directly by Nvidia.", "provided that:"]
+      - name: Lender and operator step-in
+        points:
+          - t: "When financing or colocation closes, Nscale must arrange for lenders and the colocation provider to let Microsoft step in as replacement manager if Nscale becomes insolvent, provided Microsoft keeps paying."
+            q: ["in right: Supplier shall ensure", "Microsoft will not have any obligation to exercise this option."]
+          - t: "Nscale may pledge the SOW and its receivables to lenders."
+            q: ["d. In addition to clauses a. through c. above", "from one or more third‑party debt financing sources."]
+      - name: Termination
+        points:
+          - t: "Either party may terminate for material breach not cured within 60 days, or insolvency."
+            q: ["a. Termination by Either Party for Cause:", "within sixty (60) days after being notified in writing to do so"]
+          - t: "If Amazon, Google, Tencent or Alibaba gains control of Nscale, Microsoft may terminate within 30 days."
+            q: ["ii. Notwithstanding anything to the contrary in this Section 26.c", "(or any of their respective affiliates)."]
+      - name: Force majeure
+        points:
+          - t: "Neither party is liable during force majeure. Hardware failures and hardware-supplier delays are expressly not force majeure."
+            q: ["Clause 27A Force Majeure Neither party will be liable", "are not, in and of themselves, Force Majeure Events."]
+      - name: Liability
+        points:
+          - t: "No consequential damages. Total liability per SOW is capped at one fifth of the service fees."
+            q: ["b. General Limitation:", "as provided in Clause 3.2."]
+      - name: Assignment and governing law
+        points:
+          - t: "Nscale may assign to its lenders or affiliates with notice. Microsoft may assign to an investment-grade, adequately capitalised party or a Microsoft affiliate."
+            q: ["a. No right or obligation under these PO Terms will be assigned by Supplier", "will not cause a disruption to the provision of Services to Microsoft."]
+          - t: "English law."
+            q: ["This SOW shall be governed and construed in accordance with the laws of England and Wales.", "laws of England and Wales."]
+
+highlights:
+  - "**Neither customer pays before delivery.** Anthropic pays nothing until it accepts a tranche; Microsoft pays upfront instalments but gets them back if it cancels a late tranche, and monthly fees start only after acceptance."
+  - "**Lateness has a price, then an exit.** Microsoft: a day's bill credited per day late, and cancellation of a tranche 60 days late. Anthropic: no fees during delay, then discounts, then cancellation after a redacted period."
+  - "**Once delivered, revenue is sticky.** Both run for years from acceptance (Microsoft 6 years) and can be ended only for uncured breach, insolvency or specified changes of control."
+  - "**Anthropic's deal depends on Nscale's financing.** If GPU and data-centre financing is not in place by a redacted longstop, either side can walk; until then Nscale cannot sell the capacity elsewhere."
+  - "**Supplier risk sits with Nscale.** NVIDIA or component delays are excused only if Nscale proved binding orders early and gave notice; Microsoft excludes hardware-supplier delays from force majeure."
+  - "**Built for lenders.** Microsoft lets Nscale pledge the receivables and requires lender step-in arrangements; Anthropic will negotiate direct agreements with lenders, on terms it must agree."
+  - "**Liability is capped.** Microsoft caps each side at one fifth of the SOW's fees; Anthropic's cap is redacted, with payment obligations outside it."
+  - "**Most numbers are redacted** (prices, GPU counts, delivery dates, thresholds). The Microsoft SOW's own example dates Tranche 2 delivery to 28 Sep 2027."
