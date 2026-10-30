@@ -14,12 +14,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from tracker.disclaimer import AS_OF, DETAIL, SHORT  # noqa: E402
+from tracker.documents import taxonomy, validate_taxonomy  # noqa: E402
 from tracker.jurisdictions import ADAPTERS, UNTESTED, directory, validate_directory  # noqa: E402
 
-problems = validate_directory()
+problems = validate_directory() + validate_taxonomy()
 if problems:
     raise SystemExit("\n".join(problems))
 d = directory()
+t = taxonomy()
 for r in d["resources"]:
     r["live"] = "untested" if r.get("adapter") in UNTESTED else "yes" if r.get("adapter") in ADAPTERS else ""
 
@@ -33,7 +35,8 @@ with (ROOT / "reports" / "source_directory.csv").open("w", newline="", encoding=
                    | {"jurisdiction": d["jurisdictions"][r["jurisdiction"]]["name"]})
 
 payload = json.dumps({"jurisdictions": d["jurisdictions"], "channels": d["channels"], "access": d["access_levels"],
-                      "resources": d["resources"], "short": SHORT, "detail": DETAIL, "asOf": AS_OF},
+                      "resources": d["resources"], "needs": t["needs"], "documents": t["documents"],
+                      "short": SHORT, "detail": DETAIL, "asOf": AS_OF},
                      ensure_ascii=False).replace("</", "<\\/")
 
 page = """<title>European Credit Source Directory</title>
@@ -67,7 +70,8 @@ body { background: var(--bg); color: var(--ink); font: 14px/1.5 var(--body); mar
 .page { max-width: 1120px; margin: 0 auto; padding-block: 22px 48px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: grid; gap: 22px; }
-.page > * { min-width: 0; }
+.page > *, .panel > *, .filters > *, .needs > *, .dj > *, .doc > *, .src > *, .jur > * { min-width: 0; }
+.codes, .tip, .what, .notes { overflow-wrap: anywhere; }
 h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: 0.005em; }
 h1 { font-size: 28px; line-height: 1.15; }
 h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-2); }
@@ -135,6 +139,17 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
   text-decoration: none; white-space: nowrap; }
 .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
 .empty { color: var(--ink-2); padding: 20px 0; }
+.needs { display: grid; gap: 12px; }
+.needs .intro { color: var(--ink-2); margin: 0; max-width: 75ch; }
+.dj { display: grid; gap: 4px; }
+.dj h3 { font-size: 16px; color: var(--ink-2); }
+.doc { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding: 8px 0; border-top: 1px solid var(--line); }
+.doc .dn { font-weight: 600; }
+.doc .tip { color: var(--ink); min-width: 0; }
+.doc .where { color: var(--ink-2); font-size: 13px; }
+.doc .codes { font: 12px var(--mono); color: var(--ink-3); }
+.doc .act { grid-column: 2; grid-row: 1 / span 3; align-self: start; }
+@media (max-width: 640px) { .doc { grid-template-columns: minmax(0, 1fr); } .doc .act { grid-column: 1; grid-row: auto; } }
 .howto { display: grid; gap: 10px; }
 .howto p { margin: 0; color: var(--ink-2); max-width: 75ch; }
 .code { position: relative; }
@@ -190,6 +205,15 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
     </div>
   </section>
 
+  <section class="panel needs" aria-labelledby="need-h">
+    <h2 id="need-h">Find by need: which document answers the question</h2>
+    <p class="intro">Pick a question. Each row is a document type, where to get it, and what to read in it. Codes show how the
+      tracker recognises it in a feed, so <code>python -m tracker company</code> can sort a company's filings the same way.
+      The jurisdiction chips above narrow this list too.</p>
+    <div class="chips" id="need-chips" role="group" aria-label="Question"></div>
+    <div id="need-list"></div>
+  </section>
+
   <section id="list" aria-live="polite"></section>
 
   <section class="panel howto" aria-labelledby="cli-h">
@@ -199,6 +223,10 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
       it, no, se, dk, fi, eu, us) and can be combined with commas.</p>
     <div class="code"><pre id="cli1">python -m tracker search uk,lu "Nscale"</pre><button type="button" data-copy="cli1">Copy</button></div>
     <div class="code"><pre id="cli2">python -m tracker sources lu --paid</pre><button type="button" data-copy="cli2">Copy</button></div>
+    <p>One company's filings sorted by question (org chart, guarantors, debt documents, security, financials, restructuring,
+      lenders), by registry number, SEC CIK or LEI; and debt across a sector.</p>
+    <div class="code"><pre id="cli3">python -m tracker company uk 16925886</pre><button type="button" data-copy="cli3">Copy</button></div>
+    <div class="code"><pre id="cli4">python -m tracker sector data_centres --jur us,no,uk</pre><button type="button" data-copy="cli4">Copy</button></div>
   </section>
 </div>
 
@@ -214,7 +242,8 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
   const SHORT_CODE = { uk: "UK", ie: "IE", lu: "LU", nl: "NL", de: "DE", fr: "FR", es: "ES", it: "IT", no: "NO", se: "SE", dk: "DK",
     fi: "FI", eu: "EU", us: "US", global: "Paid & sector" };
   const jurKeys = Object.keys(D.jurisdictions);
-  const state = { jur: new Set(), access: "all", channel: "", text: "", name: "" };
+  const state = { jur: new Set(), access: "all", channel: "", text: "", name: "", need: "guarantors" };
+  const SRC = Object.fromEntries(D.resources.map((r) => [r.id, r]));
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const store = { get(k) { try { return localStorage.getItem(k) || ""; } catch { return ""; } },
@@ -248,7 +277,7 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
   $("filter").addEventListener("input", (e) => { state.text = e.target.value.trim().toLowerCase(); render(); });
   state.name = store.get("csd-name");
   $("name").value = state.name;
-  $("name").addEventListener("input", (e) => { state.name = e.target.value.trim(); store.set("csd-name", state.name); renderList(); hint(); });
+  $("name").addEventListener("input", (e) => { state.name = e.target.value.trim(); store.set("csd-name", state.name); renderList(); renderNeeds(); hint(); });
 
   const isPaid = (r) => !FREE.has(r.access);
   const pillClass = (r) => r.access === "subscription" ? "sub" : isPaid(r) ? "paid" : "free";
@@ -324,11 +353,35 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
     }).join("");
   }
 
+  $("need-chips").innerHTML = Object.entries(D.needs).map(([k, v]) =>
+    `<button type="button" class="chip" data-n="${k}" aria-pressed="false" title="${esc(v)}">${esc(v.split(" (")[0])}</button>`).join("");
+  $("need-chips").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    state.need = b.dataset.n; renderNeeds();
+  });
+
+  function renderNeeds() {
+    document.querySelectorAll("#need-chips .chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.n === state.need)));
+    const docs = D.documents.filter((d) => d.needs.includes(state.need) && (!state.jur.size || state.jur.has(d.jurisdiction)));
+    if (!docs.length) { $("need-list").innerHTML = `<p class="empty">No document type for this question in the chosen jurisdictions yet.</p>`; return; }
+    $("need-list").innerHTML = `<p class="intro">${esc(D.needs[state.need])}</p>` + jurKeys.filter((k) => docs.some((d) => d.jurisdiction === k)).map((k) =>
+      `<div class="dj"><h3>${esc(D.jurisdictions[k].name.split(" (")[0])}</h3>${docs.filter((d) => d.jurisdiction === k).map((d) => {
+        const r = SRC[d.source] || { name: d.source, url: "#", access: "" };
+        const s = searchUrl(r);
+        const codes = Object.entries(d.match || {}).map(([kk, v]) => `${kk.replace("_", " ")}: ${v.join(", ")}`).join(" · ");
+        return `<div class="doc"><div class="dn">${esc(d.name)}</div>
+          <div class="act"><a class="btn ${s ? "" : "ghost"}" href="${esc(s || r.url)}" target="_blank" rel="noopener">${s ? `Search “${esc(state.name)}”` : "Open"} ↗</a></div>
+          <div class="tip">${esc(d.tip)}</div>
+          <div class="where">From ${esc(r.name)} <span class="pill ${pillClass(r)}">${esc(ACCESS_LABEL[r.access] || "")}</span></div>
+          ${codes ? `<div class="codes">${esc(codes)}</div>` : ""}</div>`;
+      }).join("")}</div>`).join("");
+  }
+
   function render() {
     document.querySelectorAll("#jur-chips .chip").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.j ? state.jur.has(b.dataset.j) : state.jur.size === 0)));
     document.querySelectorAll("#access-seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state.access)));
-    renderMatrix(); renderList();
+    renderMatrix(); renderList(); renderNeeds();
   }
 
   document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => {

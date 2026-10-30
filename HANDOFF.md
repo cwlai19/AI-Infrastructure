@@ -93,6 +93,8 @@ Derived values take the grade of their weakest input.
 | `tracker/net.py` | Polite HTTP: per-host rate limits, retries with Retry-After, honest User-Agent |
 | `tracker/archive.py` | Archive manifest (hashes) and verbatim-quote checks |
 | `tracker/jurisdictions.py` | Live registry adapters by jurisdiction and the `search` / `sources` commands |
+| `tracker/documents.py` | Document classification by credit question; `company`, `sector` and `documents` commands |
+| `data/document_types.yaml` | Document types per jurisdiction, how to recognise them (CH filing codes, EDGAR form/exhibit types, 8-K items), Exhibit 10 title rules, sector presets |
 | `tracker/disclaimer.py` | Watermark text |
 | `tracker/__main__.py` | CLI: `check` / `build` / `report` / `monitor` / `search` / `sources` |
 | `scripts/build_source_directory.py` | Source directory page (artifact `claude.ai/artifact/MzG1cGgaNfnTSqN7PQtYsf`) and CSV |
@@ -105,7 +107,7 @@ Derived values take the grade of their weakest input.
 | `scripts/export_xlsx.py` (`--compact`) + `scripts/xlsx_compact.py` | Excel export, plus a small email-size copy |
 | `tools/*.js` | Playwright screenshot and PDF helpers for checking outputs |
 | `.github/workflows/monitor.yml` | Daily monitor (needs the `COMPANIES_HOUSE_API_KEY` secret and the `EDGAR_USER_AGENT` variable) |
-| `tests/` | 49 tests on the model, monitor, fetching, archive, quotes and directory |
+| `tests/` | 60 tests on the model, monitor, fetching, archive, quotes, directory and document classification |
 | `docs/decisions.md` | Design decisions D1–D13 with reasoning |
 
 ## 4. Run it
@@ -122,6 +124,8 @@ EDGAR_USER_AGENT="Name email" python scripts/fetch_edgar.py 2110365 0001193125-2
 COMPANIES_HOUSE_API_KEY=... python -m tracker monitor     # never commit the key
 python -m tracker search uk,lu,ie "Nscale"     # live registry search by jurisdiction
 python -m tracker sources de                   # every source for Germany, free and paid
+python -m tracker company us 2110365           # Nscale's SEC documents sorted by question
+python -m tracker sector data_centres --jur us,no,uk
 python scripts/build_source_directory.py       # reports/source_directory.html + .csv
 ```
 

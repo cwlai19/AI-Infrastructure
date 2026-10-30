@@ -254,3 +254,21 @@ link instead of scraping.
 - *Scrape every register.* Breaks site terms, the EU database right and GDPR for registers that list individuals.
 - *Rely on one paid aggregator (Orbis, North Data).* Good coverage, but it can't be cited as the primary record and
   it isn't in the public repo.
+
+## D17. Documents are sorted by the credit question they answer
+
+**Problem.** Sources were tagged by what kind of register they are, and search returned companies. An analyst asks
+questions instead: who are the guarantors, where are the debt documents, who holds security, what is the org chart.
+The same question is answered by different documents in each country (a UK s479A parent guarantee, a Dutch 403
+declaration, a German §264(3) declaration, a US Exhibit 22).
+
+**Choice.** `data/document_types.yaml` maps each document type to the questions it answers and to how a feed names
+it (Companies House filing codes, EDGAR form and exhibit types, 8-K item numbers). `company` sorts live filings with
+these rules and lists the remaining documents to read by hand. Exhibit 10 mixes credit agreements with customer
+contracts, so it is sorted by its title (first 20 KB of the exhibit).
+
+**Alternatives rejected.**
+- *Classify by reading every document with an LLM.* Slower, costly, and not reproducible; the codes registries
+  already assign are exact for most filings. An LLM pass can come later for the titles rules miss.
+- *Sector debt from industry codes alone.* Data-centre property SPVs are often coded as real estate, and NACE Rev. 2.1
+  moved hosting from 63.11 to 63.10; presets combine codes, name keywords and known groups.

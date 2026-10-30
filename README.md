@@ -21,6 +21,7 @@ See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and wh
 | `data/statements.csv` | The facts |
 | `data/quotes.csv` | Verbatim quotes behind statements; `check` fails if a quote is not in the archived document |
 | `data/source_directory.yaml` | Every free and paid source by jurisdiction (registers, security, insolvency, courts, markets, lenders) |
+| `data/document_types.yaml` | Which document answers which question (org chart, guarantors, debt documents, security, financials, restructuring, lenders, contracts), how to recognise it in each feed, and sector presets |
 | `data/archive/` | Downloaded documents, each folder with a `manifest.json` (URL, SHA-256, retrieval time) |
 | `tracker/` | Validator, resolution rules, report generator, monitor, archive checks, jurisdiction search |
 | `docs/decisions.md` | Design decisions with first-principles reasoning |
@@ -36,9 +37,23 @@ python -m tracker build                 # write build/tracker.db (SQLite) for qu
 python -m tracker search uk "Nscale"    # live registry search for one jurisdiction (uk, ie, lu, nl, de, fr, ...)
 python -m tracker search lu,ie "Nscale" # several at once; --links prints lookup links only
 python -m tracker sources lu --paid     # the source directory for a jurisdiction (--free, --channel security)
+python -m tracker company uk 16925886   # one company's filings sorted by question (registry no, SEC CIK or LEI)
+python -m tracker sector data_centres --jur us,no,uk   # debt documents and debt totals across a sector
+python -m tracker documents lu --need guarantors      # which document answers a question, and how to spot it
 python scripts/build_source_directory.py   # reports/source_directory.html (shareable page) + .csv
 python -m unittest discover -s tests -t .
 ```
+
+`company` sorts a company's filings into credit questions: org chart, guarantors, debt documents, security,
+financials, restructuring, lenders and contracts. It pulls GLEIF parents and subsidiaries for any country; Companies
+House filings, charges, corporate PSCs and insolvency cases (UK, needs a key); every SEC filing plus the exhibits of
+the filings that carry debt, with each Exhibit 10 sorted by its title (credit agreement vs customer contract);
+Norwegian accounts debt figures; French accounts summaries; Finnish and Irish status. Under each question it then
+lists the documents to read by hand in that jurisdiction, with what to look for in them.
+
+`sector` finds debt across a sector: SEC debt documents that mention the sector (credit agreements, indentures,
+8-Ks reporting new debt), Norwegian companies ranked by debt in their filed accounts, and UK lenders by registered
+charges (needs a Companies House key).
 
 `search` runs every source with a live adapter for that jurisdiction, plus GLEIF filtered to the country
 (the LEI record gives the registry number), and prints one-click lookup links for the rest. Search hits

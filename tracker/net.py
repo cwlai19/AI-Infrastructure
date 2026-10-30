@@ -43,14 +43,14 @@ def _throttle(url):
     _last[host] = time.monotonic()
 
 
-def get(url, headers=None, tries=4, timeout=60):
-    """Return (body bytes, content type), or (None, '') for a 404."""
+def get(url, headers=None, tries=4, timeout=60, max_bytes=None):
+    """Return (body bytes, content type), or (None, '') for a 404. max_bytes stops reading early (e.g. to get a title)."""
     hdrs = {"User-Agent": user_agent(), "Accept-Encoding": "identity", **(headers or {})}
     for attempt in range(tries):
         _throttle(url)
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=hdrs), timeout=timeout) as r:
-                return r.read(), r.headers.get("Content-Type", "")
+                return (r.read(max_bytes) if max_bytes else r.read()), r.headers.get("Content-Type", "")
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 return None, ""

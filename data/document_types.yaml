@@ -1,0 +1,458 @@
+# Document types: which documents answer which credit question, in each jurisdiction, and how to recognise them.
+#
+# The tracker uses this file three ways:
+#   python -m tracker company <jurisdiction> <id>   sorts a company's live filings into the needs below,
+#                                                   then lists the documents to look for by hand
+#   python -m tracker sector <preset>               finds debt documents across a sector (presets at the bottom)
+#   scripts/build_source_directory.py               the "Find by need" section of the directory page
+#
+# Document fields:
+#   jurisdiction  key from source_directory.yaml (eu = any EU country, global = paid)
+#   source        id of the source in source_directory.yaml where you get it
+#   needs         keys of `needs`
+#   match         optional: how to recognise it in a live feed
+#                   ch:    Companies House filing-history types (exact) or prefixes ending in '*'
+#                   edgar_forms / edgar_types: EDGAR form types or document types (prefixes ending in '*')
+#                   edgar_items: 8-K item numbers
+#   tip           what to read in it
+
+needs:
+  structure: Org chart (parents, subsidiaries, who owns whom)
+  guarantors: Guarantors (which group companies stand behind the debt)
+  debt_docs: Debt documents (loan agreements, indentures, bond terms, prospectuses)
+  security: Security (charges, pledges, mortgages and who holds them)
+  financials: Financials (accounts, debt totals, key figures)
+  restructuring: Distress and restructuring (insolvency, plans, court process)
+  lenders: Lenders (who holds the debt, at what mark)
+  contracts: "Contracts (customers, suppliers, leases: the cash flows behind the debt)"
+
+# Exhibit 10 holds credit agreements and also customer contracts, leases and employment terms. The tracker reads each
+# exhibit's title and sorts it with these rules (case-insensitive phrases); an exhibit matching none is a contract.
+title_rules:
+  debt_docs: [credit, loan, facility, facilities, indenture, "notes", note purchase, financing, bridge, commitment letter,
+              intercreditor, guarant, security agreement, pledge, collateral, debenture, fee letter, borrow, lender]
+  guarantors: [guarant]
+  security: [security agreement, pledge, collateral, debenture, share charge, mortgage, security trust]
+# When the title says nothing about debt (a party name, "Amendment and Restatement Agreement"), the opening text is
+# checked for these stricter phrases, which ordinary contracts do not use.
+body_rules:
+  debt_docs: [credit agreement, facility agreement, loan agreement, indenture, the lenders, the borrower, as borrower,
+              security agent, collateral agent, administrative agent, facility agent, noteholders]
+  guarantors: [guarantor, guaranty, guarantee and]
+  security: [security agent, collateral agent, debenture, share charge, security trustee]
+
+documents:
+
+  # ---------- United Kingdom (Companies House types are exact codes) ----------
+  - id: uk_accounts
+    jurisdiction: uk
+    source: uk_ch
+    name: Annual accounts (AA)
+    needs: [financials, structure, guarantors]
+    match: {ch: [AA]}
+    tip: "Creditors note splits bank loans, notes and intercompany debt by maturity; 'ultimate parent' note names the group top; contingent liabilities note shows guarantees given"
+  - id: uk_parent_guarantee
+    jurisdiction: uk
+    source: uk_ch
+    name: Parent guarantee for audit exemption (s479A)
+    needs: [guarantors, structure]
+    match: {ch: [PARENT_ACC, GUARANTEE2, AGREEMENT2]}
+    tip: "A statutory guarantee by the parent of all the subsidiary's liabilities at the year end; filed with the parent's group accounts"
+  - id: uk_charge
+    jurisdiction: uk
+    source: uk_ch
+    name: Charge registered (MR01, MR02)
+    needs: [security, debt_docs, lenders]
+    match: {ch: [MR01, MR02]}
+    tip: "Names the chargee (usually the security agent), the assets, any negative pledge; the PDF often attaches the whole debenture or share charge"
+  - id: uk_charge_satisfied
+    jurisdiction: uk
+    source: uk_ch
+    name: Charge satisfied or released (MR04, MR05)
+    needs: [security, debt_docs]
+    match: {ch: [MR04, MR05]}
+    tip: "A repayment or refinancing signal: compare dates with new MR01s"
+  - id: uk_psc
+    jurisdiction: uk
+    source: uk_ch
+    name: Persons with significant control (PSC filings)
+    needs: [structure]
+    match: {ch: ["PSC*"]}
+    tip: "A corporate PSC is the direct parent; follow it up the chain"
+  - id: uk_confirmation
+    jurisdiction: uk
+    source: uk_ch
+    name: Confirmation statement (CS01) and share allotments (SH01)
+    needs: [structure]
+    match: {ch: [CS01, SH01]}
+    tip: "Shareholder list and new equity; SH01 shows equity raised and at what price"
+  - id: uk_administration
+    jurisdiction: uk
+    source: uk_ch
+    name: Administration filings (AM forms)
+    needs: [restructuring, lenders]
+    match: {ch: ["AM*"]}
+    tip: "AM03 administrator's proposals and AM02 statement of affairs list every creditor with amounts, secured and unsecured"
+  - id: uk_liquidation
+    jurisdiction: uk
+    source: uk_ch
+    name: Liquidation and winding-up filings (LIQ, WU, COCOMP)
+    needs: [restructuring]
+    match: {ch: ["LIQ*", "WU*", COCOMP]}
+    tip: "Statement of affairs (LIQ02) lists creditors; progress reports show recoveries"
+  - id: uk_cva
+    jurisdiction: uk
+    source: uk_ch
+    name: Company voluntary arrangement (CVA forms)
+    needs: [restructuring]
+    match: {ch: ["CVA*"]}
+    tip: "Proposal and supervisor reports"
+  - id: uk_gazette_notice
+    jurisdiction: uk
+    source: uk_gazette
+    name: Gazette insolvency notice
+    needs: [restructuring]
+    tip: "Petitions, appointments, creditor meetings; the earliest public sign of a formal process"
+  - id: uk_sanction_judgment
+    jurisdiction: uk
+    source: uk_caselaw
+    name: Restructuring plan or scheme judgment (convening and sanction)
+    needs: [restructuring, debt_docs, lenders]
+    tip: "Describes the whole capital structure, classes, how each class voted and the cram-down reasoning"
+  - id: uk_prospectus
+    jurisdiction: uk
+    source: uk_nsm
+    name: Bond or listing prospectus
+    needs: [debt_docs, guarantors, financials, structure]
+    tip: "'Description of other indebtedness', guarantor list and guarantor coverage tests, group structure chart"
+
+  # ---------- United States (EDGAR document types are exact) ----------
+  - id: us_subsidiaries
+    jurisdiction: us
+    source: us_edgar_fts
+    name: List of subsidiaries (Exhibit 21)
+    needs: [structure]
+    match: {edgar_types: ["EX-21*"]}
+    tip: "Every significant subsidiary and its jurisdiction: the starting point for registry searches abroad"
+  - id: us_guarantors
+    jurisdiction: us
+    source: us_edgar_fts
+    name: Subsidiary guarantors and issuers (Exhibit 22)
+    needs: [guarantors, structure]
+    match: {edgar_types: ["EX-22*"]}
+    tip: "Required since 2021 for registered guaranteed debt: names each guarantor and the notes it guarantees"
+  - id: us_indentures
+    jurisdiction: us
+    source: us_edgar_fts
+    name: Indentures and note instruments (Exhibit 4)
+    needs: [debt_docs, guarantors]
+    match: {edgar_types: ["EX-4*"]}
+    tip: "Covenants, guarantor release, restricted payments, change of control"
+  - id: us_material_agreements
+    jurisdiction: us
+    source: us_edgar_fts
+    name: Material agreements (Exhibit 10)
+    needs: [debt_docs, guarantors, security]
+    match: {edgar_types: ["EX-10*"]}
+    tip: "Credit agreements, guarantee and collateral agreements; also customer contracts and leases, so check the title"
+  - id: us_contracts
+    jurisdiction: us
+    source: us_edgar_fts
+    name: Material contracts that are not debt (Exhibit 10)
+    needs: [contracts]
+    tip: "Customer (offtake) contracts, supplier and lease agreements: termination rights, take-or-pay, delivery dates"
+  - id: us_8k_debt
+    jurisdiction: us
+    source: us_edgar_fts
+    name: 8-K reporting new debt (items 1.01, 2.03)
+    needs: [debt_docs]
+    match: {edgar_items: ["1.01", "2.03"]}
+    tip: "Item 2.03 is the creation of a direct financial obligation: amount, rate, maturity; the agreement is often attached"
+  - id: us_8k_distress
+    jurisdiction: us
+    source: us_edgar_fts
+    name: 8-K reporting acceleration, default or bankruptcy (items 2.04, 1.03, 2.06)
+    needs: [restructuring]
+    match: {edgar_items: ["2.04", "1.03", "2.06"]}
+    tip: "2.04 triggering events that accelerate debt; 1.03 bankruptcy or receivership; 2.06 impairments"
+  - id: us_periodic
+    jurisdiction: us
+    source: us_edgar_api
+    name: Annual and quarterly reports, registration statements
+    needs: [financials, debt_docs]
+    match: {edgar_forms: [10-K, 10-Q, 20-F, 40-F, S-1, "S-1/A", F-1, "F-1/A", S-4, F-4]}
+    tip: "Debt footnote (every facility, rate, maturity, covenants) and 'Description of indebtedness' in registration statements"
+  - id: us_offering
+    jurisdiction: us
+    source: us_edgar_fts
+    name: Bond offering documents (424B prospectuses)
+    needs: [debt_docs, guarantors]
+    match: {edgar_forms: ["424B*"]}
+    tip: "Final terms of registered notes and the guarantor list"
+  - id: us_fund_holdings
+    jurisdiction: us
+    source: us_nport
+    name: Lender holdings (BDC schedules of investments, N-PORT)
+    needs: [lenders]
+    match: {edgar_forms: [NPORT-P, N-CSR, N-CSRS]}
+    tip: "Who holds the loan, at what spread, cost and fair value; marks below 90 are an early warning"
+
+  # ---------- Ireland ----------
+  - id: ie_accounts
+    jurisdiction: ie
+    source: ie_core
+    name: Financial statements filed with the annual return (B1)
+    needs: [financials, structure]
+    tip: "Section 110 and holdco accounts show notes issued, intercompany loans and the parent"
+  - id: ie_s357
+    jurisdiction: ie
+    source: ie_core
+    name: Section 357 parent guarantee (filing exemption)
+    needs: [guarantors]
+    tip: "Parent guarantees the subsidiary's liabilities so it can skip filing accounts: a public guarantee"
+  - id: ie_charges
+    jurisdiction: ie
+    source: ie_core
+    name: Charge particulars (C1)
+    needs: [security, lenders]
+    tip: "Chargee and secured assets"
+  - id: ie_examinership
+    jurisdiction: ie
+    source: ie_iris
+    name: Examinership and winding-up notices; examiner's scheme judgment
+    needs: [restructuring]
+    tip: "Pair the Iris Oifigiúil notice with the High Court judgment confirming the scheme"
+  - id: ie_listed_notes
+    jurisdiction: ie
+    source: ie_euronext_dublin
+    name: Listing particulars for notes (CLOs, private credit, SPVs)
+    needs: [debt_docs, lenders]
+    tip: "Many private credit and securitisation notes are listed here only for tax reasons; the listing document has the terms"
+
+  # ---------- Luxembourg ----------
+  - id: lu_accounts
+    jurisdiction: lu
+    source: lu_lbr
+    name: Annual accounts of holdcos, bidcos and SPVs (RCS)
+    needs: [financials, structure, debt_docs]
+    tip: "Shows notes issued, intercompany loans and participations; often the only public accounts of a European LBO TopCo"
+  - id: lu_resa
+    jurisdiction: lu
+    source: lu_lbr
+    name: RESA publications (incorporation, mergers, liquidation)
+    needs: [structure, restructuring]
+    tip: "Articles and corporate changes; judicial reorganisation and bankruptcy decisions"
+  - id: lu_prospectus
+    jurisdiction: lu
+    source: lu_luxse
+    name: Bond prospectus (Euro MTF or regulated market)
+    needs: [debt_docs, guarantors, security, structure]
+    tip: "Guarantor list and coverage tests, security package, intercreditor summary, group chart"
+
+  # ---------- Netherlands ----------
+  - id: nl_accounts
+    jurisdiction: nl
+    source: nl_kvk
+    name: Deposited annual accounts (deponering)
+    needs: [financials, structure]
+    tip: "Small companies file abridged accounts; group companies may file none if a 403 declaration exists"
+  - id: nl_403
+    jurisdiction: nl
+    source: nl_kvk
+    name: Article 2:403 declaration (parent liability)
+    needs: [guarantors, structure]
+    tip: "Parent declares itself jointly and severally liable for the subsidiary's debts: a public guarantee"
+  - id: nl_whoa
+    jurisdiction: nl
+    source: nl_rechtspraak
+    name: WHOA plan confirmation judgment
+    needs: [restructuring, lenders]
+    tip: "Classes, votes and cram-down; undisclosed WHOA cases surface only at confirmation"
+  - id: nl_insolvency
+    jurisdiction: nl
+    source: nl_cir
+    name: Bankruptcy or suspension of payments record and trustee reports
+    needs: [restructuring, lenders]
+    tip: "Trustee (curator) public reports list creditors and asset sales"
+
+  # ---------- Germany ----------
+  - id: de_accounts
+    jurisdiction: de
+    source: de_unternehmensregister
+    name: Annual accounts (Jahresabschluss)
+    needs: [financials, structure]
+    tip: "Verbindlichkeitenspiegel (liabilities by maturity, secured amounts) in the notes"
+  - id: de_264
+    jurisdiction: de
+    source: de_unternehmensregister
+    name: Parent loss-absorption declaration for exemption (§264(3) / §264b HGB)
+    needs: [guarantors, structure]
+    tip: "Subsidiary skips publishing accounts because the parent commits to absorb losses: look for the parent's declaration"
+  - id: de_shareholder_list
+    jurisdiction: de
+    source: de_handelsregister
+    name: Shareholder list (Gesellschafterliste) and register extract
+    needs: [structure]
+    tip: "Direct shareholders of a GmbH; browse by hand (60 views an hour)"
+  - id: de_insolvency
+    jurisdiction: de
+    source: de_insolvenz
+    name: Insolvency court notices
+    needs: [restructuring]
+    tip: "Opening, administrator, self-administration and plan confirmation"
+  - id: de_schvg
+    jurisdiction: de
+    source: de_bundesanzeiger
+    name: Bondholder votes under the Bond Act (SchVG)
+    needs: [restructuring, debt_docs]
+    tip: "Proposed amendments to bond terms: often the first public restructuring step for German bonds"
+
+  # ---------- France ----------
+  - id: fr_accounts
+    jurisdiction: fr
+    source: fr_rne
+    name: Annual accounts (comptes annuels)
+    needs: [financials, structure]
+    tip: "Annex lists subsidiaries and participations (tableau des filiales) and off-balance-sheet commitments (guarantees, pledges)"
+  - id: fr_procedures
+    jurisdiction: fr
+    source: fr_bodacc
+    name: Collective proceedings notices (BODACC A)
+    needs: [restructuring]
+    tip: "Sauvegarde, redressement, liquidation openings and plan adoptions; conciliation stays confidential"
+  - id: fr_suretes
+    jurisdiction: fr
+    source: fr_infogreffe
+    name: Security interests register (registre des sûretés mobilières)
+    needs: [security, lenders]
+    tip: "Pledges over business assets, equipment and receivables, with the beneficiary"
+
+  # ---------- Spain, Italy ----------
+  - id: es_accounts
+    jurisdiction: es
+    source: es_registradores
+    name: Deposited annual accounts (cuentas anuales)
+    needs: [financials, structure]
+    tip: "Debt by maturity and guarantees given in the notes"
+  - id: es_borme_acts
+    jurisdiction: es
+    source: es_borme
+    name: BORME registry acts
+    needs: [structure, restructuring]
+    tip: "Mergers, capital changes, director changes and insolvency entries, daily"
+  - id: es_plan
+    jurisdiction: es
+    source: es_rpc
+    name: Restructuring plan court approval (homologación) and concurso records
+    needs: [restructuring, lenders]
+    tip: "Affected classes and the court's approval or challenge"
+  - id: it_accounts
+    jurisdiction: it
+    source: it_registro_imprese
+    name: Filed accounts (bilancio) and company extract (visura)
+    needs: [financials, structure, restructuring]
+    tip: "Visura shows shareholders and any insolvency or concordato entry"
+
+  # ---------- Nordics ----------
+  - id: no_accounts
+    jurisdiction: "no"
+    source: no_regnskap
+    name: Annual accounts key figures (Regnskapsregisteret)
+    needs: [financials]
+    tip: "Total, long-term and short-term debt, equity and assets for every Norwegian AS (live in the tracker)"
+  - id: no_bond_terms
+    jurisdiction: "no"
+    source: no_stamdata
+    name: Nordic bond terms
+    needs: [debt_docs, guarantors, security]
+    tip: "'Guarantors' and 'Transaction Security' clauses; free copies often on the issuer's investor page"
+  - id: no_bond_notices
+    jurisdiction: "no"
+    source: no_nordic_trustee
+    name: Bond trustee notices (written procedures, defaults)
+    needs: [restructuring, debt_docs]
+    tip: "Standstills, waivers and amendments: the Nordic market's restructuring record"
+  - id: no_pledges
+    jurisdiction: "no"
+    source: no_losore
+    name: Pledges on movables (Løsøreregisteret)
+    needs: [security, lenders]
+    tip: "Operating-asset, receivables and inventory pledges with the pledgee"
+  - id: se_mortgages
+    jurisdiction: se
+    source: se_bolagsverket
+    name: Business mortgages (företagsinteckningar) and annual reports
+    needs: [security, financials]
+    tip: "Total business mortgage amount registered against the company"
+  - id: dk_reports
+    jurisdiction: dk
+    source: dk_cvr
+    name: Annual reports (årsrapporter, free XBRL) and company charges (Tinglysning)
+    needs: [financials, security]
+    tip: "Danish annual reports are free and machine-readable"
+  - id: fi_situations
+    jurisdiction: fi
+    source: fi_prh
+    name: Company situations (bankruptcy, restructuring, liquidation)
+    needs: [restructuring]
+    tip: "Live in the tracker"
+
+  # ---------- Any EU country ----------
+  - id: eu_lei_tree
+    jurisdiction: eu
+    source: eu_gleif
+    name: LEI parent and child relationships
+    needs: [structure]
+    tip: "Direct and ultimate parents and all children with LEIs (live in the tracker); a missing parent comes with a stated reason"
+  - id: eu_esef
+    jurisdiction: eu
+    source: eu_esef
+    name: ESEF annual report (listed issuers)
+    needs: [financials, structure]
+    tip: "Machine-readable consolidated accounts with the borrowings note"
+  - id: eu_bonds_by_lei
+    jurisdiction: eu
+    source: eu_firds
+    name: Listed bonds by issuer LEI (FIRDS)
+    needs: [debt_docs]
+    tip: "Every bond on an EU venue with maturity and coupon; then get the prospectus from the listing venue"
+  - id: eu_public_lenders
+    jurisdiction: eu
+    source: eu_eib
+    name: Public lender and export credit agency disclosures
+    needs: [lenders, debt_docs]
+    tip: "EIB, EBRD, NIB and ECA transaction lists name the borrower and amount"
+
+  # ---------- Paid ----------
+  - id: gl_doc_libraries
+    jurisdiction: global
+    source: gl_9fin
+    name: Credit agreement and bond document libraries (9fin, Octus, Bloomberg)
+    needs: [debt_docs, guarantors, security]
+    tip: "Private credit agreements that were never filed publicly; covenant and guarantor summaries"
+  - id: gl_loan_records
+    jurisdiction: global
+    source: gl_loanconnector
+    name: Loan deal records (LoanConnector, PitchBook LCD, IJGlobal)
+    needs: [debt_docs, lenders]
+    tip: "Syndicated, private and project-finance loans with lenders, tenor and pricing"
+
+# Sector presets for `python -m tracker sector <preset>`.
+#   terms        phrases searched in EDGAR full text alongside debt phrases
+#   uk_sic       UK SIC 2007 codes (Companies House advanced search; needs COMPANIES_HOUSE_API_KEY)
+#   no_nace      Norway NACE Rev. 2.1 codes (SN2025), as brreg writes them
+#   fr_naf       France NAF codes
+#   keywords     name keywords to add companies that industry codes miss (e.g. data-centre SPVs coded as real estate)
+#   groups       known groups to check by name
+sectors:
+  data_centres:
+    name: Data centres, neoclouds and GPU cloud
+    terms: ["data center", "data centre", "GPU", "colocation", "hyperscale"]
+    debt_phrases: ["credit agreement", "term loan", "indenture", "delayed draw", "senior secured notes"]
+    uk_sic: ["63110"]
+    no_nace: ["63.100"]
+    fr_naf: ["63.11Z"]
+    keywords: ["data center", "data centre", "datacenter", "datasenter", "GPU", "colocation"]
+    groups: [Nscale, Nebius, Fluidstack, Northern Data, atNorth, Green Mountain, Bulk Infrastructure, Start Campus,
+             Kao Data, Ark Data Centres, Pure DC, Yondr, Verda, Evroc, Data4, Global Switch, Virtus, NorthC, Digital Realty, Equinix]
+    note: "NACE Rev. 2.1 (2025) moved data processing and hosting from 63.11 to 63.10. Many data-centre property SPVs are coded as real estate (68.20), so add keywords and known groups."
