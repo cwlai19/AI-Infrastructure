@@ -1,0 +1,107 @@
+BDC holdings, from SEC monthly data sets 2026-09, 2026-08, 2026-07 (27 BDCs, 57 positions)
+
+## Vantage Data: 6 position(s) at 4 BDC(s), fair value 608.3m
+  - Retained Vantage Data Centers Intermediate Holdco, L..P, Delayed Draw Term Loan | ARES CORE INFRASTRUCTURE FUND [10-Q 2026-06-30]: Delayed Draw Term Loan (debt) principal 185.0m, cost -, fair value -
+  - Vantage Data Centers Europe S.a r.l. | ARES STRATEGIC INCOME FUND [10-Q 2026-06-30]: Unclassified (other) principal 2.7m, cost 2.6m, fair value 2.7m, mark 100.0 (of principal), rate 0.0893 spread 0.0675
+  - Vantage Data Centers Intermediate Holdco, L.P. | ARES CORE INFRASTRUCTURE FUND [10-Q 2026-06-30]: Unclassified (other) principal 185.0m, cost 182.1m, fair value 185.0m, mark 100.0 (of principal), rate 0.095 spread 0.095
+  - Vantage Data Centers Intermediate Holdco, LP and Retained Vantage Data Centers A | ARES STRATEGIC INCOME FUND [10-Q 2026-06-30]: Senior subordinated loan (debt) principal 203.5m, cost 200.3m, fair value 203.5m, mark 100.0 (of principal), rate 0.095
+  - Vantage Data Centers Intermediate Holdco, LP and Retained Vantage Data Centers A | ARES CAPITAL CORP [10-Q 2026-06-30]: Senior subordinated loan (debt) principal 195.9m, cost 195.9m, fair value 195.9m, mark 100.0 (of principal), rate 0.095
+  - Vantage Data Centers, LLC | BLACKSTONE PRIVATE CREDIT FUND [10-Q 2026-06-30]: Unclassified (other) principal 23.2m, cost 21.2m, fair value 21.2m, mark 91.4 (of principal), rate 0.0612 spread 0.025
+
+## EdgeConneX: 2 position(s) at 2 BDC(s), fair value 178.4m
+  - EdgeConneX MCN US Finance Co 1, LLC | ARES STRATEGIC INCOME FUND [10-Q 2026-06-30]: Senior subordinated loan (debt) principal 96.7m, cost 94.8m, fair value 94.7m, mark 98.0 (of principal), rate 0.0985 spread 0.06
+  - EdgeConneX MCN US Finance Co 1, LLC | ARES CAPITAL CORP [10-Q 2026-06-30]: Senior subordinated loan (debt) principal 85.4m, cost 85.4m, fair value 83.7m, mark 98.0 (of principal), rate 0.0985 spread 0.06
+
+## CyrusOne: 1 position(s) at 1 BDC(s), fair value 159.3m
+  - CyrusOne Revolving Warehouse | BLACKSTONE PRIVATE CREDIT FUND [10-Q 2026-06-30]: Unclassified (other) principal 159.3m, cost 159.0m, fair value 159.3m, mark 100.0 (of principal), rate 0.066 spread 0.0295
+
+## Nscale: 15 position(s) at 5 BDC(s), fair value 96.2m
+  - Nscale Global Holdings Limited | BLUE OWL CAPITAL CORP [10-Q 2026-06-30]: Series B Preferred Shares (equity) principal -, cost 3.7m, fair value 9.3m, mark 253.4 (of cost)
+  - Nscale Global Holdings Limited | BLUE OWL CAPITAL CORP [10-Q 2026-06-30]: Preferred equity (equity) principal -, cost 5.5m, fair value 6.7m, mark 121.8 (of cost)
+  - Nscale Limited | BLUE OWL CREDIT INCOME CORP. [10-Q 2026-06-30]: Series B Preferred Shares (equity) principal -, cost 8.7m, fair value 22.0m, mark 253.5 (of cost)
+  - Nscale Limited | BLUE OWL CREDIT INCOME CORP. [10-Q 2026-06-30]: Preferred equity (equity) principal -, cost 13.0m, fair value 15.9m, mark 121.8 (of cost)
+  - Nscale Limited | BLUE OWL TECHNOLOGY FINANCE CORP. [10-Q 2026-06-30]: Series B Preferred Shares (equity) principal -, cost 5.0m, fair value 12.7m, mark 253.5 (of cost)
+  - Nscale Limited | BLUE OWL TECHNOLOGY FINANCE CORP. [10-Q 2026-06-30]: Preferred equity (equity) principal -, cost 7.5m, fair value 9.1m, mark 121.8 (of cost)
+  - Nscale Limited | BLUE OWL TECHNOLOGY INCOME CORP. [10-Q 2026-06-30]: Series B Preferred Shares (equity) principal -, cost 2.2m, fair value 5.7m, mark 253.5 (of cost)
+  - Nscale Limited | BLUE OWL TECHNOLOGY INCOME CORP. [10-Q 2026-06-30]: Preferred equity (equity) principal -, cost 3.3m, fair value 4.1m, mark 121.8 (of cost)
+  - Nscale Limited | BLUE OWL CAPITAL CORP II [10-Q 2026-06-30]: Series B Preferred Shares (equity) principal -, cost 0.4m, fair value 1.0m, mark 253.6 (of cost)
+  - Nscale Limited | BLUE OWL CAPITAL CORP II [10-Q 2026-06-30]: Preferred equity (equity) principal -, cost 0.6m, fair value 0.7m, mark 121.9 (of cost)
+  - NSCALE SERVICES UK LTD | BLUE OWL TECHNOLOGY FINANCE CORP. [10-Q 2026-06-30]: First lien senior secured delayed draw term loan 2 (debt) principal 7.0m, cost 4.0m, fair value 4.5m, mark 112.4 (of cost; delayed draw, partly undrawn: principal includes the commitment), spread 0.05
+  - NSCALE SERVICES UK LTD | BLUE OWL CREDIT INCOME CORP. [10-Q 2026-06-30]: First lien senior secured delayed draw term loan (debt) principal 5.6m, cost 3.3m, fair value 3.6m, mark 108.3 (of cost; delayed draw, partly undrawn: principal includes the commitment), spread 0.05
+  - NSCALE SERVICES UK LTD | BLUE OWL CAPITAL CORP [10-Q 2026-06-30]: First lien senior secured delayed draw term loan (debt) principal 1.4m, cost 0.8m, fair value 0.9m, mark 108.3 (of cost; delayed draw, partly undrawn: principal includes the commitment), spread 0.05
+  - NSCALE SERVICES UK LTD | BLUE OWL CAPITAL CORP [10-Q 2026-06-30]: First lien senior secured delayed draw term loan (debt) principal -, cost -, fair value 0.0m
+  - NSCALE SERVICES UK LTD | BLUE OWL TECHNOLOGY FINANCE CORP. [10-Q 2026-06-30]: First lien senior secured delayed draw term loan (debt) principal -, cost -, fair value 0.0m
+
+## CoreWeave: 20 position(s) at 14 BDC(s), fair value 89.3m
+  - CoreWeave | MSD INVESTMENT CORP. [10-Q 2026-06-30]: Delayed Draw Term Loan (debt) principal 26.9m, cost 26.7m, fair value 26.9m, mark 100.0 (of principal), rate 0.0961 spread 0.06
+  - Coreweave Compute Acquisition Co. II, LLC | GREAT ELM CAPITAL CORP. [10-Q 2026-06-30]: 1st Lien, Secured Loan (debt) principal 9.9m, cost 9.9m, fair value 10.2m, mark 103.5 (of principal), rate 0.1329 spread 0.0962
+  - CoreWeave Compute Acquisition Co. II, LLC | CARLYLE SECURED LENDING, INC. [10-Q 2026-06-30]: First Lien Debt (debt) principal 1.8m, cost 1.8m, fair value 1.9m, mark 101.0 (of principal), rate 0.1335 spread 0.0962
+  - CoreWeave Compute Acquisition Co. II, LLC | CARLYLE CREDIT SOLUTIONS, INC. [10-Q 2026-06-30]: First Lien Debt (debt) principal 1.1m, cost 1.1m, fair value 1.2m, mark 101.0 (of principal), rate 0.1335 spread 0.0962
+  - CoreWeave Compute Acquisition Co. IV, LLC | CARLYLE SECURED LENDING, INC. [10-Q 2026-06-30]: First Lien Debt (debt) principal 16.7m, cost 16.6m, fair value 16.6m, mark 99.0 (of principal), rate 0.0973 spread 0.06
+  - CoreWeave Compute Acquisition Co. IV, LLC | CARLYLE CREDIT SOLUTIONS, INC. [10-Q 2026-06-30]: First Lien Debt (debt) principal 12.6m, cost 12.4m, fair value 12.4m, mark 99.0 (of principal), rate 0.0973 spread 0.06
+  - Coreweave Compute Acquisition Co. IV, LLC | GREAT ELM CAPITAL CORP. [10-Q 2026-06-30]: 1st Lien, Secured Loan (debt) principal 2.1m, cost 2.1m, fair value 2.1m, mark 102.5 (of principal), rate 0.0968 spread 0.06
+  - CoreWeave Compute Acquisition Co. IV, LLC Initial Term Loan | PIMCO CAPITAL SOLUTIONS BDC CORP. [10-Q 2026-06-30]: First Lien Senior Secured (debt) principal 2.1m, cost 2.1m, fair value 2.2m, mark 103.1 (of principal), rate 0.097
+  - CoreWeave Financing DDTL V LLC | PALMER SQUARE CAPITAL BDC INC. [10-Q 2026-06-30]: Delayed Draw (debt) principal 1.8m, cost 1.8m, fair value 1.9m, mark 106.0 (of principal), rate 0.0812 spread 0.045
+  - Coreweave Financing DDTL V LLC | BLACKROCK PRIVATE CREDIT FUND [10-Q 2026-06-30]: Delayed Draw Term Loan (debt) principal 0.8m, cost 0.8m, fair value 0.9m, mark 106.0 (of principal), rate 0.0812 spread 0.045
+  - CoreWeave Financing DDTL V LLC CoreWeave Financing DDTL V LLC | APOLLO DEBT SOLUTIONS BDC [10-Q 2026-06-30]: First Lien Secured Debt - Delayed Draw (debt) principal 0.6m, cost 0.6m, fair value 0.6m, mark 102.2 (of principal), spread 0.045
+  - CoreWeave Financing DDTL V, LLC | GREAT ELM CAPITAL CORP. [10-Q 2026-06-30]: 1st Lien, Delayed Draw Term Loan (debt) principal 2.7m, cost 2.6m, fair value 2.8m, mark 105.6 (of principal), rate 0.0812 spread 0.045
+  - CoreWeave Financing DDTL V, LLC | HPS CORPORATE LENDING FUND [10-Q 2026-06-30]: Unclassified (other) principal 2.5m, cost 0.9m, fair value 0.9m, mark 109.2 (of cost; delayed draw, partly undrawn: principal includes the commitment), rate 0.0818 spread 0.045
+  - Coreweave Financing DDTL V, LLC | FRANKLIN BSP CAPITAL CORP [10-Q 2026-06-30]: Unclassified (other) principal 479.5m, cost 0.5m, fair value 0.5m, mark 108.6 (of cost; delayed draw, partly undrawn: principal includes the commitment), rate 0.0812 spread 0.045
+  - Coreweave Financing DDTL V, LLC | NUVEEN CHURCHILL PRIVATE CAPITAL INCOME FUND [10-Q 2026-06-30]: First Lien Debt (debt) principal 0.3m, cost 0.1m, fair value 0.1m, mark 109.8 (of cost; delayed draw, partly undrawn: principal includes the commitment), rate 0.0812 spread 0.045
+  - CoreWeave Financing DDTL V, LLC | AB PRIVATE LENDING FUND [10-Q 2026-06-30]: Term Loan (debt) principal 0.0m, cost 0.0m, fair value 0.0m, mark 105.6 (of principal), rate 0.0815 spread 0.045
+  - Coreweave Financing DDTL V, LLC - Delayed Draw Term Loan | THIRD POINT PRIVATE CAPITAL PARTNERS [10-Q 2026-06-30]: Delayed Draw Term Loan (debt) principal 0.4m, cost 0.4m, fair value 0.4m, mark 105.6 (of principal), rate 0.0812 spread 0.045
+  - Coreweave Financing DDTL V, LLC, Delayed Draw Term Loan | ARES CORE INFRASTRUCTURE FUND [10-Q 2026-06-30]: Delayed Draw Term Loan (debt) principal 15.0m, cost -, fair value -
+  - Coreweave Financing DDTL V, LLC, First lien senior secured loans | ARES CORE INFRASTRUCTURE FUND [10-Q 2026-06-30]: Unclassified (other) principal 5.3m, cost 5.6m, fair value 5.6m, mark 105.6 (of principal), rate 0.0812 spread 0.045
+  - CoreWeave Inc. | GREAT ELM CAPITAL CORP. [10-Q 2026-06-30]: Unsecured Bond (debt) principal 2.0m, cost 2.0m, fair value 2.0m, mark 98.7 (of principal), rate 0.0963
+
+## QTS: 1 position(s) at 1 BDC(s), fair value 46.7m
+  - QTS Project Ram | APOLLO DEBT SOLUTIONS BDC [10-Q 2026-06-30]: First Lien Secured Debt - Mortgage Loan (DD) (debt) principal 47.0m, cost 46.5m, fair value 46.7m, mark 99.2 (of principal), spread 0.0225
+
+## data center: 8 position(s) at 2 BDC(s), fair value 37.1m
+  - Data Center / Other Commercial Services Portfolio Company C3 AcquisitionCo, LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 11.9m, cost 8.4m, fair value 8.4m, mark 99.1 (of cost; delayed draw, partly undrawn: principal includes the commitment), rate 0.0889
+  - Data Center / Other Commercial Services Portfolio Company C3 AcquisitionCo, LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 4.3m, cost 4.2m, fair value 4.2m, mark 98.7 (of principal), rate 0.0889 spread 0.0525
+  - Data Center / Other Commercial Services Portfolio Company C3 AcquisitionCo, LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 0.7m, cost 0.7m, fair value 0.7m, mark 98.7 (of principal), rate 0.0889 spread 0.0525
+  - Data Center / Other Commercial Services Portfolio Company C3 AcquisitionCo, LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 0.6m, cost 0.6m, fair value 0.6m, mark 98.8 (of principal), rate 0.0889 spread 0.0525
+  - Data Center / Other Commercial Services Portfolio Company C3 AcquisitionCo, LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 0.5m, cost 0.3m, fair value 0.3m, mark 58.7 (of principal), rate 0.0892
+  - Data Center / Other Commercial Services Portfolio Company Salute Mission Critical Holdings LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 10.3m, cost 10.3m, fair value 10.3m, mark 100.0 (of principal), rate 0.0878 spread 0.0514
+  - Data Center / Other Commercial Services Portfolio Company Salute Mission Critical Holdings LLC | SOUND POINT DIRECT LENDING BDC [10-Q 2026-06-30]: First Lien Debt (debt) principal 6.7m, cost -0.0m, fair value 0.0m, mark -0.0 (of cost; delayed draw, partly undrawn: principal includes the commitment), rate 0 spread 0.0514
+  - Data Center Acquisition LLC | FORTRESS PRIVATE LENDING FUND [10-Q 2026-06-30]: Equity (equity) principal 0.0m, cost 12.6m, fair value 12.6m, mark 99503.2 (of principal; check units), rate 0.087 spread 0.05
+
+## Crusoe: 4 position(s) at 3 BDC(s), fair value 4.8m
+  - Crusoe Energy Systems LLC | TRINITY CAPITAL INC. [10-Q 2026-06-30]: Equity - Preferred Series D-1 (equity) principal -, cost 0.3m, fair value 0.6m, mark 179.4 (of cost)
+  - Crusoe Energy Systems LLC | EAGLE POINT TRINITY SENIOR SECURED LENDING CO [10-Q 2026-06-30]: Equity (equity) principal -, cost 0.1m, fair value 0.1m, mark 180.0 (of cost)
+  - Crusoe Energy Systems LLC 1 | MONROE CAPITAL INCOME PLUS CORP [10-Q 2026-06-30]: Unclassified (other) principal 2.3m, cost 2.3m, fair value 2.3m, mark 101.2 (of principal), rate 0.1625
+  - Crusoe Energy Systems LLC 2 | MONROE CAPITAL INCOME PLUS CORP [10-Q 2026-06-30]: Unclassified (other) principal 1.9m, cost 1.9m, fair value 1.9m, mark 98.5 (of principal), rate 0.1425
+
+## Reconciliation: parsed rows against each BDC's reported total investments at fair value
+  - AB PRIVATE LENDING FUND 2026-06-30: 378 positions, summed 376.0m, reported 376.0m, gap +0.0% -> ok
+  - APOLLO DEBT SOLUTIONS BDC 2026-06-30: 820 positions, summed 25,367.5m, reported 25,367.2m, gap +0.0% -> ok
+  - ARES CAPITAL CORP 2026-06-30: 1447 positions, summed 29,349.3m, reported 29,349.3m, gap +0.0% -> ok
+  - ARES CORE INFRASTRUCTURE FUND 2026-06-30: 80 positions, summed 14,375.1m, reported 7,330.1m, gap +96.1% -> CHECK: rows sum above the total (holdings tagged twice)
+  - ARES STRATEGIC INCOME FUND 2026-06-30: 1283 positions, summed 21,994.8m, reported 21,838.7m, gap +0.7% -> ok
+  - BLACKROCK PRIVATE CREDIT FUND 2026-06-30: 480 positions, summed 2,514.7m, reported 2,514.7m, gap +0.0% -> ok
+  - BLACKSTONE PRIVATE CREDIT FUND 2026-06-30: 1906 positions, summed 86,836.9m, reported 77,649.1m, gap +11.8% -> CHECK: rows sum above the total (holdings tagged twice)
+  - BLUE OWL CAPITAL CORP 2026-06-30: 587 positions, summed 16,202.6m, reported 14,955.0m, gap +8.3% -> CHECK: rows sum above the total (holdings tagged twice)
+  - BLUE OWL CAPITAL CORP II 2026-06-30: 237 positions, summed 726.2m, reported 691.0m, gap +5.1% -> CHECK: rows sum above the total (holdings tagged twice)
+  - BLUE OWL CREDIT INCOME CORP. 2026-06-30: 524 positions, summed 37,309.2m, reported 35,690.1m, gap +4.5% -> CHECK: rows sum above the total (holdings tagged twice)
+  - BLUE OWL TECHNOLOGY FINANCE CORP. 2026-06-30: 484 positions, summed 15,170.0m, reported 14,680.5m, gap +3.3% -> CHECK: rows sum above the total (holdings tagged twice)
+  - BLUE OWL TECHNOLOGY INCOME CORP. 2026-06-30: 411 positions, summed 6,346.1m, reported 5,056.9m, gap +25.5% -> CHECK: rows sum above the total (holdings tagged twice)
+  - CARLYLE CREDIT SOLUTIONS, INC. 2026-06-30: 292 positions, summed 2,749.7m, reported 2,749.7m, gap +0.0% -> ok
+  - CARLYLE SECURED LENDING, INC. 2026-06-30: 343 positions, summed 3,536.0m, reported 2,360.0m, gap +49.8% -> CHECK: rows sum above the total (holdings tagged twice)
+  - EAGLE POINT TRINITY SENIOR SECURED LENDING CO 2026-06-30: 224 positions, summed 140.0m, reported 140.0m, gap +0.0% -> ok
+  - FORTRESS PRIVATE LENDING FUND 2026-06-30: 142 positions, summed 1,969.7m, reported 1,919.1m, gap +2.6% -> CHECK: rows sum above the total (holdings tagged twice)
+  - FRANKLIN BSP CAPITAL CORP 2026-06-30: 555 positions, summed 4,759.2m, reported 4,079.4m, gap +16.7% -> CHECK: rows sum above the total (holdings tagged twice)
+  - GREAT ELM CAPITAL CORP. 2026-06-30: 89 positions, summed 272.3m, reported 272.3m, gap +0.0% -> ok
+  - HPS CORPORATE LENDING FUND 2026-06-30: 817 positions, summed 25,751.2m, reported 24,178.0m, gap +6.5% -> CHECK: rows sum above the total (holdings tagged twice)
+  - LAGO EVERGREEN CREDIT 2026-06-30: 54 positions, summed 138.0m, reported 235.5m, gap -41.4% -> CHECK: rows sum below the total (holdings missing from the parse)
+  - MONROE CAPITAL INCOME PLUS CORP 2026-06-30: 954 positions, summed 5,956.4m, reported 5,956.4m, gap +0.0% -> ok
+  - MSD INVESTMENT CORP. 2026-06-30: 219 positions, summed 6,857.9m, reported 6,857.8m, gap +0.0% -> ok
+  - NUVEEN CHURCHILL PRIVATE CAPITAL INCOME FUND 2026-06-30: 720 positions, summed 3,255.9m, reported 3,255.9m, gap +0.0% -> ok
+  - PALMER SQUARE CAPITAL BDC INC. 2026-06-30: 282 positions, summed 1,113.4m, reported 1,113.4m, gap +0.0% -> ok
+  - PIMCO CAPITAL SOLUTIONS BDC CORP. 2026-06-30: 86 positions, summed 197.7m, reported 197.7m, gap +0.0% -> ok
+  - SOUND POINT DIRECT LENDING BDC 2026-06-30: 126 positions, summed 340.3m, reported 340.3m, gap +0.0% -> ok
+  - THIRD POINT PRIVATE CAPITAL PARTNERS 2026-06-30: 37 positions, summed 178.5m, reported 178.5m, gap +0.0% -> ok
+  - TRINITY CAPITAL INC. 2026-06-30: 526 positions, summed 2,731.6m, reported 2,732.3m, gap -0.0% -> ok
+  Above the total: some holdings are tagged twice; positions stand, but totals and shares from that filing do not. Below: some holdings were not parsed, so a missing name there is not proof the BDC has no position.
+
+wrote reports/lender_positions_data_centres.csv

@@ -1,0 +1,139 @@
+=== group_bulk
+
+## New LEI registered for an SPV, with the group as parent [new_lei, pre]: 2
+   why it matters: Hedging the loan's interest rate needs an LEI for derivatives reporting, and banks ask for one at onboarding
+  - 2026-08-21  BULK DATA CENTERS N01 DCM102 AS (6367005ZKTWXQII05K35): NO-03; parent: N01 FINANCING AS; financing-style name
+      https://search.gleif.org/#/record/6367005ZKTWXQII05K35
+  - 2026-08-20  BULK DATA CENTERS N01 DCM401 AS (636700Z6C471GO1EJP55): NO-03; no parent reported yet; financing-style name
+      https://search.gleif.org/#/record/636700Z6C471GO1EJP55
+
+=== group_nebius
+
+## New financing-style SPVs incorporated (HoldCo, MidCo, BidCo, PropCo, FinCo, "DC Holdings", "GPU Holdings") [spv_incorporated, pre]: 2
+   why it matters: Lenders want a ring-fenced borrower and a holding company whose shares they can take as security
+  - 2026-09-03  THE NEBIUS CORPARATION LTD (17436623): name match only: confirm it belongs to the group
+      https://find-and-update.company-information.service.gov.uk/company/17436623
+  - 2026-08-28  THE NEBIUS CORP LTD (17427690): name match only: confirm it belongs to the group
+      https://find-and-update.company-information.service.gov.uk/company/17427690
+
+=== group_nscale
+
+## Likely financings: charges created at several companies within 3 days
+  - 2026-08-28: 2 companies charged: NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED, NSCALE SERVICES UK LTD
+  - 2026-08-06: 4 companies charged: NSCALE GPU HOLDINGS LIMITED, NSCALE HOLDINGS LIMITED, NSCALE MIDCO 1 LIMITED, NSCALE MIDCO 2 LIMITED
+      articles or resolutions changed at 4 of them within 60 days (lenders taking share security need transfer restrictions removed)
+
+## New articles or resolutions removing share-transfer restrictions (UK MA, RES01) [articles_changed, pre]: 14
+   why it matters: Lenders taking a share charge need to be free to enforce by transferring the shares
+  - 2026-10-14  NSCALE PLC (16925886): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/16925886/filing-history/WUZDN0tUWkxhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-10-09  NSCALE PLC (16925886): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/16925886/filing-history/QUZDN0hHMzZhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-25  NSCALE MIDCO 2 LIMITED (17264857): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/17264857/filing-history/MzUzOTA5ODIxMWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-25  NSCALE MIDCO 2 LIMITED (17264857): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/17264857/filing-history/WUY4T0FLRVFhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-25  NSCALE MIDCO 1 LIMITED (17260936): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/17260936/filing-history/MzUzOTA5NzQ0MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-25  NSCALE MIDCO 1 LIMITED (17260936): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/17260936/filing-history/WUY4T0FGUkxhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-25  NSCALE GPU HOLDINGS LIMITED (17255841): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/17255841/filing-history/WUY4T0FMSVdhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-25  NSCALE GPU HOLDINGS LIMITED (17255841): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/17255841/filing-history/MzUzOTA5ODQyN2FkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-25  NSCALE HOLDINGS LIMITED (17206699): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/17206699/filing-history/MzUzOTA5ODIxMmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-25  NSCALE HOLDINGS LIMITED (17206699): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/17206699/filing-history/WUY4T0FLWk5hZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-10  NSCALE SERVICES INTERMEDIATE HOLDINGS III LIMITED (16890339): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/16890339/filing-history/MzUzNjA3NjE3NWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE SERVICES INTERMEDIATE HOLDINGS III LIMITED (16890339): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/16890339/filing-history/WUY3RE05RkNhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-10  NSCALE SERVICES UK III LIMITED (16890967): RESOLUTIONS: resolution
+      https://find-and-update.company-information.service.gov.uk/company/16890967/filing-history/WUY3REwzMUNhZGlxemtjeA/document?format=pdf&download=0
+  - 2026-08-10  NSCALE SERVICES UK III LIMITED (16890967): MA: memorandum articles
+      https://find-and-update.company-information.service.gov.uk/company/16890967/filing-history/MzUzNjA2NjQ5MGFkaXF6a2N4/document?format=pdf&download=0
+
+## New LEI registered for an SPV, with the group as parent [new_lei, pre]: 2
+   why it matters: Hedging the loan's interest rate needs an LEI for derivatives reporting, and banks ask for one at onboarding
+  - 2026-10-10  NSCALE PLC (529900OXO42KU2FDBO50): GB-LND; no parent reported yet
+      https://search.gleif.org/#/record/529900OXO42KU2FDBO50
+  - 2026-08-06  NSCALE DC KVANDAL NORTH AS (636700GJB409HW291283): NO-18; no parent reported yet; financing-style name
+      https://search.gleif.org/#/record/636700GJB409HW291283
+
+## New corporate parent link (PSC notification) placing the SPV under the group [psc_link, pre]: 1
+   why it matters: Shows the SPV belongs to the group before any financing filing
+  - 2026-08-11  NSCALE HOLDINGS APAC II LIMITED (17393104): parent: Nscale Midco 2 Limited
+      https://find-and-update.company-information.service.gov.uk/company/17393104/persons-with-significant-control
+
+## New financing-style SPVs incorporated (HoldCo, MidCo, BidCo, PropCo, FinCo, "DC Holdings", "GPU Holdings") [spv_incorporated, pre]: 1
+   why it matters: Lenders want a ring-fenced borrower and a holding company whose shares they can take as security
+  - 2026-08-11  NSCALE HOLDINGS APAC II LIMITED (17393104): financing-style name; same postcode as 29 other 'Nscale' companies (W1S 2HX)
+      https://find-and-update.company-information.service.gov.uk/company/17393104
+
+## Charge registered (UK MR01, Irish C1, Nordic pledge registers, US UCC-1) [charge_registered, closing]: 11
+   why it matters: Security must be registered to be effective against insolvency officers; the strongest free proof that a secured financing closed
+  - 2026-10-07  NSCALE MIDCO 2 LIMITED (17264857): MR01: charge 172648570002 created 2026-10-02
+      https://find-and-update.company-information.service.gov.uk/company/17264857/filing-history/MzU0OTc3NDA3OGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-16  NSCALE SERVICES UK III LIMITED (16890967): MR01: charge 168909670002 created 2026-09-14
+      https://find-and-update.company-information.service.gov.uk/company/16890967/filing-history/MzU0NTE5MTA3NGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-01  NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED (16793881): MR01: charge 167938810002 created 2026-08-28
+      https://find-and-update.company-information.service.gov.uk/company/16793881/filing-history/MzU0MTg2Njk0MmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-01  NSCALE SERVICES UK LTD (16445102): MR01: charge 164451020007 created 2026-08-28
+      https://find-and-update.company-information.service.gov.uk/company/16445102/filing-history/MzU0MTg2ODk4NmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-11  NSCALE DRIFT II HOLDINGS LTD (16408148): MR01: charge 164081480003 created 2026-08-10
+      https://find-and-update.company-information.service.gov.uk/company/16408148/filing-history/MzUzODAxMTY5MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE MIDCO 2 LIMITED (17264857): MR01: charge 172648570001 created 2026-08-06
+      https://find-and-update.company-information.service.gov.uk/company/17264857/filing-history/MzUzNzgzNzMwMmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE MIDCO 1 LIMITED (17260936): MR01: charge 172609360001 created 2026-08-06
+      https://find-and-update.company-information.service.gov.uk/company/17260936/filing-history/MzUzNzgzNTI2MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE GPU HOLDINGS LIMITED (17255841): MR01: charge 172558410001 created 2026-08-06
+      https://find-and-update.company-information.service.gov.uk/company/17255841/filing-history/MzUzNzg0NDkwN2FkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE GPU HOLDINGS LIMITED (17255841): MR01: charge 172558410002 created 2026-08-06
+      https://find-and-update.company-information.service.gov.uk/company/17255841/filing-history/MzUzNzg0NjE0MGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-10  NSCALE HOLDINGS LIMITED (17206699): MR01: charge 172066990001 created 2026-08-06
+      https://find-and-update.company-information.service.gov.uk/company/17206699/filing-history/MzUzNzg0MjM3NGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-08-05  NSCALE SERVICES UK III LIMITED (16890967): MR01: charge 168909670001 created 2026-07-29
+      https://find-and-update.company-information.service.gov.uk/company/16890967/filing-history/MzUzNzE4MjI5MmFkaXF6a2N4/document?format=pdf&download=0
+
+## Charge satisfied or released (UK MR04, MR05) [charge_released, closing]: 1
+   why it matters: A repayment or refinancing: a new charge around the same date usually means the debt was refinanced
+  - 2026-10-11  NSCALE PLC (16925886): MR04: charge 169258860002 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/16925886/filing-history/MzU1MDI2NzQ3OGFkaXF6a2N4/document?format=pdf&download=0
+
+=== group_virtus
+
+## Charge registered (UK MR01, Irish C1, Nordic pledge registers, US UCC-1) [charge_registered, closing]: 1
+   why it matters: Security must be registered to be effective against insolvency officers; the strongest free proof that a secured financing closed
+  - 2026-09-14  VIRTUS DATA CENTRES PROPERTIES 2 LIMITED (15421451): MR01: charge 154214510001 created 2026-09-11
+      https://find-and-update.company-information.service.gov.uk/company/15421451/filing-history/MzU0NDU2MDY5NmFkaXF6a2N4/document?format=pdf&download=0
+
+## Charge satisfied or released (UK MR04, MR05) [charge_released, closing]: 10
+   why it matters: A repayment or refinancing: a new charge around the same date usually means the debt was refinanced
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650020 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1NzA2OGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650014 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg2MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650013 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg2NGFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650015 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg2MmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650011 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg2OWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650016 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg3MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650012 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1Njg3MmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650017 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1NzA2MWFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650019 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1NzA2NmFkaXF6a2N4/document?format=pdf&download=0
+  - 2026-09-25  VIRTUS DATA CENTRES PROPERTIES LIMITED (09840065): MR04: charge 098400650018 fully satisfied
+      https://find-and-update.company-information.service.gov.uk/company/09840065/filing-history/MzU0NzY1NzA2N2FkaXF6a2N4/document?format=pdf&download=0
+
+=== group_yondr
+
+## New LEI registered for an SPV, with the group as parent [new_lei, pre]: 1
+   why it matters: Hedging the loan's interest rate needs an LEI for derivatives reporting, and banks ask for one at onboarding
+  - 2026-09-03  Yondr JK 1, LLC. (636700ENH6RTBXI62Q35): US-DE; no parent reported yet
+      https://search.gleif.org/#/record/636700ENH6RTBXI62Q35
