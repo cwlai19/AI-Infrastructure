@@ -1,0 +1,445 @@
+<meta name="dash-one-writer">
+<style>
+  .nf { display: grid; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); }
+  .nf-head { display: grid; gap: var(--cds-gap-xs); }
+  .nf-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+  .nf-take { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 72ch; }
+  .nf .nf-take b, .nf .nf-tile b { font-weight: var(--cds-font-weight-medium); color: var(--color-fg); }
+  .nf-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .nf-filters select, .nf-filters button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg);
+    background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius);
+    padding: var(--cds-pad-xs) var(--cds-pad-sm); min-width: 0; }
+  .nf-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
+  .nf-seg button { border: 0; border-radius: 0; background: transparent; cursor: pointer; }
+  .nf-seg button + button { border-left: 1px solid var(--color-border-line); }
+  .nf-seg button[aria-pressed="true"] { background: var(--color-panel); color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .nf-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .nf-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .nf-tile, .nf-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .nf-tile { display: grid; gap: var(--cds-gap-xs); }
+  .nf-tile .nf-num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; }
+  .nf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+  .nf-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .nf-card .nf-note { margin: var(--cds-gap-xs) 0 var(--cds-gap-sm); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .nf-chart { position: relative; min-height: 18rem; }
+  .nf-bars { position: relative; min-height: 10rem; }
+  .nf-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); min-height: 1.2rem; }
+  .nf-legend span { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
+  .nf-legend i { width: 0.65rem; height: 0.65rem; border-radius: 2px; display: inline-block; }
+  .nf-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border);
+    border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm);
+    font-size: var(--cds-font-size-caption); max-width: 18rem; z-index: 2; }
+  .nf-tip .nf-tip-h { color: var(--cds-text-secondary); }
+  .nf-profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-md); min-height: 6rem; }
+  .nf-profile { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-caption); }
+  .nf-profile h3 { margin: 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+  .nf-profile .nf-big { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-heading); font-variant-numeric: tabular-nums; }
+  .nf-profile .nf-muted { color: var(--color-fg-muted); }
+  .nf-tablebox { max-height: 26rem; overflow: auto; }
+  .nf table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .nf th { position: sticky; top: 0; background: var(--color-panel); text-align: left; color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium);
+    border-bottom: 1px solid var(--color-border-line); padding: var(--cds-pad-xs) var(--cds-pad-sm); white-space: nowrap; }
+  .nf td { border-bottom: 1px solid var(--color-border-line); padding: var(--cds-pad-xs) var(--cds-pad-sm); vertical-align: top; }
+  .nf td.nf-r, .nf th.nf-r { text-align: right; }
+  .nf td a { color: inherit; }
+  .nf-method { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: grid; gap: var(--cds-gap-xs); max-width: 80ch; }
+  .nf-method p { margin: 0; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  [data-dash-source-state=empty] { color: transparent; }
+</style>
+
+<div class="nf">
+  <header class="nf-head" id="overview">
+    <h1>Neocloud financing tracker</h1>
+    <p class="nf-take">USD <b data-draw="kpi-total" data-source="totals" data-field="total_usd_bn">—</b>bn of committed financing in
+      <b data-draw="kpi-facilities" data-source="totals" data-field="facilities">—</b> recorded facilities for the selection, plus
+      <b data-draw="kpi-waves" data-source="wave_totals" data-field="waves">—</b> financings detected from charge registrations whose terms are not yet known.</p>
+  </header>
+
+  <div class="nf-filters" id="filters">
+    <span class="nf-label">Group</span>
+    <select data-draw="f-group" aria-label="Group" data-source="financings waves"></select>
+    <span class="nf-label">Region</span>
+    <select data-draw="f-region" aria-label="Region" data-source="financings"></select>
+    <span class="nf-label">Instrument</span>
+    <select data-draw="f-instrument" aria-label="Instrument" data-source="financings"></select>
+    <span class="nf-label">Stack by</span>
+    <span class="nf-seg" role="group" aria-label="Stack by">
+      <button type="button" class="nf-stack" data-stack="instrument" aria-pressed="true">Instrument</button>
+      <button type="button" class="nf-stack" data-stack="region" aria-pressed="false">Region</button>
+      <button type="button" class="nf-stack" data-stack="group_name" aria-pressed="false">Group</button>
+    </span>
+    <button type="button" class="nf-reset">Reset</button>
+  </div>
+
+  <div class="nf-tiles" id="tiles">
+    <div class="nf-tile"><span class="nf-label">Committed financing</span>
+      <span class="nf-num">USD <b data-draw="kpi-total" data-source="totals" data-field="total_usd_bn">—</b>bn</span>
+      <span class="nf-label">Sum of facility sizes, counted once</span></div>
+    <div class="nf-tile"><span class="nf-label">Facilities</span>
+      <span class="nf-num"><b data-draw="kpi-facilities" data-source="totals" data-field="facilities">—</b></span>
+      <span class="nf-label"><b data-draw="kpi-undated" data-source="totals" data-field="undated">—</b> without a signing date</span></div>
+    <div class="nf-tile"><span class="nf-label">Lenders named</span>
+      <span class="nf-num"><b data-draw="kpi-lenders" data-source="totals" data-field="lenders">—</b></span>
+      <span class="nf-label">Distinct lenders across the facilities</span></div>
+    <div class="nf-tile"><span class="nf-label">Detected financings</span>
+      <span class="nf-num"><b data-draw="kpi-waves" data-source="wave_totals" data-field="waves">—</b></span>
+      <span class="nf-label">Charge waves at several companies; terms unknown</span></div>
+  </div>
+
+  <section class="nf-card" id="timeline">
+    <h2>Financing waves over time</h2>
+    <p class="nf-note">Committed amount by signing quarter, stacked. Dots under the bars are financings detected from charges registered at several group companies within three days (number of companies inside); their size is unknown.</p>
+    <div class="nf-legend" data-draw="legend" data-source="financings"></div>
+    <div class="nf-chart" data-draw="timeline" data-source="financings waves"></div>
+  </section>
+
+  <div class="nf-grid">
+    <section class="nf-card" id="by-instrument">
+      <h2>By instrument</h2>
+      <p class="nf-note">Committed amount, USD bn, for the selection.</p>
+      <div class="nf-bars" data-draw="bars-instrument" data-source="financings"></div>
+    </section>
+    <section class="nf-card" id="by-region">
+      <h2>By region</h2>
+      <p class="nf-note">Where the financed asset is, else the borrower's country.</p>
+      <div class="nf-bars" data-draw="bars-region" data-source="financings"></div>
+    </section>
+  </div>
+
+  <section class="nf-card" id="profiles">
+    <h2>Group profiles</h2>
+    <p class="nf-note">One card per group in the selection: recorded financing, first and latest signing, main lenders, detected waves, and BDC funds that hold the group's debt or equity.</p>
+    <div class="nf-profiles" data-draw="profiles" data-source="financings waves holdings"></div>
+  </section>
+
+  <section class="nf-card" id="facilities">
+    <h2>Facilities</h2>
+    <p class="nf-note">Every recorded financing in the selection, newest first. Grade A: filings and registers; B: company releases and aggregators; C: news and estimates.</p>
+    <div class="nf-tablebox">
+      <table data-source="financings" data-row-key="id">
+        <thead><tr>
+          <th data-field="date">Signed</th><th data-field="group_name">Group</th><th data-field="name">Facility</th>
+          <th data-field="instrument">Instrument</th><th data-field="amount_usd_m" class="nf-r">USD m</th>
+          <th data-field="region">Region</th><th data-field="lenders">Lenders</th><th data-field="grade">Grade</th>
+          <th data-field="note">Note</th><th data-field="source">Source</th>
+        </tr></thead>
+        <tbody data-draw="fin-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="nf-grid">
+    <section class="nf-card" id="waves">
+      <h2>Detected financings</h2>
+      <p class="nf-note">Charges created at several companies of a group within three days, from Companies House. Articles changed: how many of those companies changed their articles within 60 days, as lenders taking share security require. Recorded facility: one signed within three days (a date match only); unmatched waves are leads for financings not yet recorded.</p>
+      <div class="nf-tablebox">
+        <table data-source="waves" data-row-key="id">
+          <thead><tr><th data-field="date">Charges created</th><th data-field="group_name">Group</th>
+            <th data-field="companies" class="nf-r">Companies</th><th data-field="articles_changed" class="nf-r">Articles changed</th>
+            <th data-field="matched">Recorded facility</th><th data-field="company_names">Companies charged</th></tr></thead>
+          <tbody data-draw="wave-rows"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="nf-card" id="holdings">
+      <h2>BDC holdings</h2>
+      <p class="nf-note">Positions in BDC schedules of investments that name the group or sector, from each fund's latest 10-Q. Mark: fair value per 100 of principal, or of cost.</p>
+      <div class="nf-tablebox">
+        <table data-source="holdings" data-row-key="id">
+          <thead><tr><th data-field="term">Name</th><th data-field="bdc">Fund</th><th data-field="instrument">Instrument</th>
+            <th data-field="fair_value_m" class="nf-r">Fair value USD m</th><th data-field="mark">Mark</th><th data-field="period">Period</th></tr></thead>
+          <tbody data-draw="hold-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="nf-method" id="method">
+    <p><b>How the numbers are built.</b> Each facility is resolved from sourced statements in the tracker (latest date, then strongest source). A facility that others are part of is listed but not summed, so the same debt is not counted twice. Amounts are commitments, converted to USD at ECB reference rates dated in the tracker's fx file. Region is the financed asset's country where the facility is secured on a site, else the borrower's, else the group's headquarters. Facilities without a signing date count in the totals but not on the timeline.</p>
+    <p><b>What is missing.</b> Private loans that are neither filed nor registered do not appear until they are added from another source; detected financings show that a deal happened, not its size or lenders.</p>
+  </section>
+</div>
+
+<script>
+  dash.calc('totals', {
+    inputs: ['financings', 'waves'],
+    title: 'Totals by group, region, instrument',
+    description: 'Committed USD bn (counted facilities only), facility count, undated count and distinct lenders for every combination of group, region and instrument, with All for each; groups known only from detected waves get zeros.',
+    fn: (financings, waves) => {
+      const yes = (v) => v === true || v === 'true';
+      const rows = financings.filter((r) => yes(r.counted));
+      const vals = (k) => ['All', ...new Set(financings.map((r) => r[k]).filter(Boolean))];
+      const groups = ['All', ...new Set([...financings, ...waves].map((r) => r.group_name).filter(Boolean))];
+      const out = [];
+      for (const g of groups) for (const rg of vals('region')) for (const ins of vals('instrument')) {
+        const sel = rows.filter((r) => (g === 'All' || r.group_name === g) && (rg === 'All' || r.region === rg) && (ins === 'All' || r.instrument === ins));
+        const lenders = new Set(sel.flatMap((r) => String(r.lenders || '').split('; ').filter(Boolean)));
+        const usd = sel.reduce((a, r) => a + (Number(r.amount_usd_m) || 0), 0);
+        out.push({ group: g, region: rg, instrument: ins, total_usd_bn: Math.round(usd / 10) / 100, facilities: sel.length,
+          undated: sel.filter((r) => !yes(r.dated)).length, lenders: lenders.size });
+      }
+      return out;
+    },
+  });
+  dash.calc('wave_totals', {
+    inputs: ['waves'],
+    title: 'Detected financings by group',
+    description: 'Number of detected charge waves per group, with All.',
+    fn: (waves) => {
+      const groups = ['All', ...new Set(waves.map((w) => w.group_name).filter(Boolean))];
+      return groups.map((g) => ({ group: g, waves: waves.filter((w) => g === 'All' || w.group_name === g).length }));
+    },
+  });
+
+  window.nf = (() => {
+    const yes = (v) => v === true || v === 'true';
+    const params = () => ({ group: dash.params().group || 'All', region: dash.params().region || 'All',
+      instrument: dash.params().instrument || 'All', stack: dash.params().stack || 'instrument' });
+    const enc = (v) => encodeURIComponent(v);
+    const rowsOk = (id) => { const d = dash.data(id); return d.status === 'ok' ? d.data : null; };
+    const fin = () => {
+      const rows = rowsOk('financings'); if (!rows) return null;
+      const p = params();
+      return rows.filter((r) => (p.group === 'All' || r.group_name === p.group) && (p.region === 'All' || r.region === p.region)
+        && (p.instrument === 'All' || r.instrument === p.instrument));
+    };
+    const waves = () => {
+      const rows = rowsOk('waves'); if (!rows) return null;
+      const p = params();
+      return rows.filter((w) => p.group === 'All' || w.group_name === p.group);
+    };
+    const bn = d3.format(',.2f');
+    const m = d3.format(',.1f');
+    const color = (keys) => { const c = dash.colors; return (k) => (keys.indexOf(k) < c.length ? c[keys.indexOf(k)] : 'var(--cds-chart-muted)'); };
+    const quarters = (a, b) => {
+      const out = []; let [y, q] = a.split('-Q').map(Number); const [y2, q2] = b.split('-Q').map(Number);
+      while (y < y2 || (y === y2 && q <= q2)) { out.push(`${y}-Q${q}`); q += 1; if (q > 4) { q = 1; y += 1; } }
+      return out;
+    };
+    const tip = (host) => {
+      let t = host.querySelector('.nf-tip');
+      if (!t) { t = document.createElement('div'); t.className = 'nf-tip'; t.hidden = true; host.appendChild(t); }
+      return t;
+    };
+    const placeTip = (t, host, event) => {
+      const box = host.getBoundingClientRect();
+      const x = event.clientX - box.left + 12; const y = event.clientY - box.top + 12;
+      t.hidden = false;
+      t.style.left = `${Math.min(x, box.width - t.offsetWidth - 4)}px`;
+      t.style.top = `${Math.min(y, box.height - t.offsetHeight - 4)}px`;
+    };
+    return { yes, params, enc, rowsOk, fin, waves, bn, m, color, quarters, tip, placeTip, yesVal: yes };
+  })();
+
+  // Filters
+  const fillSelect = (sel, key, label, sources) => {
+    const values = new Set();
+    for (const id of sources) { const rows = nf.rowsOk(id); (rows || []).forEach((r) => r[key] && values.add(r[key])); }
+    sel.replaceChildren(new Option(label, ''), ...[...values].sort().map((v) => new Option(v, v)));
+    sel.value = dash.params()[sel.dataset.param] || '';
+  };
+  dash.draw('f-group', (sel) => { sel.dataset.param = 'group'; fillSelect(sel, 'group_name', 'All groups', ['financings', 'waves']);
+    sel.onchange = () => dash.setParams({ group: sel.value || null }); });
+  dash.draw('f-region', (sel) => { sel.dataset.param = 'region'; fillSelect(sel, 'region', 'All regions', ['financings']);
+    sel.onchange = () => dash.setParams({ region: sel.value || null }); });
+  dash.draw('f-instrument', (sel) => { sel.dataset.param = 'instrument'; fillSelect(sel, 'instrument', 'All instruments', ['financings']);
+    sel.onchange = () => dash.setParams({ instrument: sel.value || null }); });
+  document.querySelectorAll('.nf-stack').forEach((b) => b.addEventListener('click', () => dash.setParams({ stack: b.dataset.stack })));
+  document.querySelectorAll('.nf-reset').forEach((b) => b.addEventListener('click', () => dash.resetParams()));
+  dash.onData(() => {
+    const stack = dash.params().stack || 'instrument';
+    document.querySelectorAll('.nf-stack').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.stack === stack)));
+  });
+
+  // Headline figures: the row of the totals calc that matches the filters
+  const totalsRow = () => {
+    const t = dash.data('totals'); if (t.status !== 'ok') return null;
+    const p = nf.params();
+    return t.data.find((r) => r.group === p.group && r.region === p.region && r.instrument === p.instrument) || null;
+  };
+  const kpi = (field, fmt) => (el) => {
+    const p = nf.params(); const row = totalsRow();
+    el.dataset.where = `group=${nf.enc(p.group)}&region=${nf.enc(p.region)}&instrument=${nf.enc(p.instrument)}`;
+    el.textContent = row ? fmt(row[field]) : '—';
+  };
+  dash.draw('kpi-total', kpi('total_usd_bn', nf.bn));
+  dash.draw('kpi-facilities', kpi('facilities', d3.format(',')));
+  dash.draw('kpi-undated', kpi('undated', d3.format(',')));
+  dash.draw('kpi-lenders', kpi('lenders', d3.format(',')));
+  dash.draw('kpi-waves', (el) => {
+    const t = dash.data('wave_totals'); const g = nf.params().group;
+    el.dataset.where = `group=${nf.enc(g)}`;
+    const row = t.status === 'ok' ? t.data.find((r) => r.group === g) : null;
+    el.textContent = t.status === 'ok' ? d3.format(',')(row ? row.waves : 0) : '—';
+  });
+
+  // Timeline: stacked bars by signing quarter, detected waves as dots under the axis
+  const stackKeys = (rows, key) => {
+    const totals = d3.rollup(rows, (v) => d3.sum(v, (r) => Number(r.amount_usd_m) || 0), (r) => r[key] || 'Unknown');
+    return [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([k]) => k);
+  };
+  dash.draw('legend', (el) => {
+    const rows = nf.fin(); el.replaceChildren();
+    if (!rows) { el.textContent = '—'; return; }
+    const key = nf.params().stack;
+    const counted = rows.filter((r) => nf.yes(r.counted) && nf.yes(r.dated));
+    const keys = stackKeys(counted, key); const col = nf.color(keys);
+    keys.forEach((k) => { const s = document.createElement('span'); const i = document.createElement('i'); i.style.background = col(k);
+      s.append(i, document.createTextNode(k)); el.appendChild(s); });
+  });
+  dash.draw('timeline', (el) => {
+    const rows = nf.fin(); const ws = nf.waves();
+    el.replaceChildren();
+    if (!rows || !ws) { el.textContent = '—'; return; }
+    const key = nf.params().stack;
+    const counted = rows.filter((r) => nf.yes(r.counted) && nf.yes(r.dated) && r.quarter);
+    const qs = [...counted.map((r) => r.quarter), ...ws.map((w) => w.quarter)].filter(Boolean).sort();
+    if (!qs.length) { const p = document.createElement('p'); p.className = 'nf-note'; p.textContent = 'No dated financings or detected waves for this selection.'; el.appendChild(p); return; }
+    const domain = nf.quarters(qs[0], qs[qs.length - 1]);
+    const keys = stackKeys(counted, key); const col = nf.color(keys);
+    const table = domain.map((q) => { const o = { quarter: q }; keys.forEach((k) => { o[k] = 0; }); return o; });
+    const byQ = new Map(table.map((o) => [o.quarter, o]));
+    counted.forEach((r) => { byQ.get(r.quarter)[r[key] || 'Unknown'] += (Number(r.amount_usd_m) || 0) / 1000; });
+    const series = d3.stack().keys(keys)(table);
+    const width = Math.max(el.clientWidth, 280); const height = 288;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${width} ${height}`).attr('role', 'img')
+      .attr('aria-label', 'Committed financing by quarter, stacked');
+    const maxY = d3.max(table, (o) => keys.reduce((a, k) => a + o[k], 0)) || 1;
+    const y = d3.scaleLinear([0, maxY], [height - 70, 12]).nice();
+    const yAxis = svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat((v) => `${d3.format(',')(v)}bn`)).attr('font-size', null).attr('font-family', null);
+    const left = Math.ceil(d3.max(yAxis.selectAll('text').nodes(), (n) => n.getComputedTextLength()) || 30) + 14;
+    yAxis.attr('transform', `translate(${left},0)`);
+    yAxis.selectAll('text').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)');
+    yAxis.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)');
+    svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('x1', left).attr('x2', width - 8)
+      .attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+    const x = d3.scaleBand(domain, [left, width - 8]).padding(0.25);
+    const t = nf.tip(el);
+    svg.append('g').selectAll('g').data(series).join('g').attr('fill', (s) => col(s.key))
+      .selectAll('rect').data((s) => s.map((d) => Object.assign(d, { key: s.key }))).join('rect')
+      .attr('x', (d) => x(d.data.quarter)).attr('width', Math.min(32, x.bandwidth()))
+      .attr('y', (d) => y(d[1])).attr('height', (d) => Math.max(0, y(d[0]) - y(d[1]))).attr('rx', 2)
+      .on('mousemove', (event, d) => {
+        const names = counted.filter((r) => r.quarter === d.data.quarter && (r[key] || 'Unknown') === d.key).map((r) => `${r.group_name}: ${r.name}`);
+        t.replaceChildren();
+        const h = document.createElement('div'); h.className = 'nf-tip-h'; h.textContent = `${d.data.quarter} · ${d.key}`;
+        const v = document.createElement('div'); v.textContent = `USD ${nf.bn(d[1] - d[0])}bn`;
+        t.append(h, v, ...names.slice(0, 6).map((n) => { const e = document.createElement('div'); e.textContent = n; return e; }));
+        nf.placeTip(t, el, event);
+      })
+      .on('mouseleave', () => { t.hidden = true; });
+    const every = Math.ceil(domain.length / Math.max(1, Math.floor((width - left) / 64)));
+    const xAxis = svg.append('g').attr('transform', `translate(0,${height - 70})`)
+      .call(d3.axisBottom(x).tickValues(domain.filter((_, i) => i % every === 0))).attr('font-size', null).attr('font-family', null);
+    xAxis.selectAll('text').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)');
+    xAxis.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)');
+    const wq = d3.rollup(ws, (v) => v, (w) => w.quarter);
+    const dots = svg.append('g').attr('transform', `translate(0,${height - 26})`);
+    dots.selectAll('circle').data([...wq.entries()]).join('circle')
+      .attr('cx', ([q]) => x(q) + Math.min(32, x.bandwidth()) / 2).attr('r', 9)
+      .attr('fill', 'var(--color-panel)').attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5)
+      .on('mousemove', (event, [q, list]) => {
+        t.replaceChildren();
+        const h = document.createElement('div'); h.className = 'nf-tip-h'; h.textContent = `${q} · detected financings`;
+        t.append(h, ...list.slice(0, 6).map((w) => { const e = document.createElement('div'); e.textContent = `${w.date} ${w.group_name}: ${w.companies} companies charged`; return e; }));
+        nf.placeTip(t, el, event);
+      })
+      .on('mouseleave', () => { t.hidden = true; });
+    dots.selectAll('text').data([...wq.entries()]).join('text')
+      .attr('x', ([q]) => x(q) + Math.min(32, x.bandwidth()) / 2).attr('y', 4).attr('text-anchor', 'middle')
+      .attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('pointer-events', 'none')
+      .text(([, list]) => d3.sum(list, (w) => Number(w.companies) || 0));
+    svg.append('text').attr('x', left).attr('y', height - 4).attr('fill', 'var(--color-fg-muted)')
+      .style('font-size', 'var(--cds-font-size-caption)').text('Detected financings (companies charged)');
+  });
+
+  // Breakdown bars
+  const barsBy = (key) => (el) => {
+    const rows = nf.fin(); el.replaceChildren();
+    if (!rows) { el.textContent = '—'; return; }
+    const data = [...d3.rollup(rows.filter((r) => nf.yes(r.counted)), (v) => d3.sum(v, (r) => Number(r.amount_usd_m) || 0) / 1000, (r) => r[key] || 'Unknown')]
+      .sort((a, b) => b[1] - a[1]);
+    if (!data.length) { const p = document.createElement('p'); p.className = 'nf-note'; p.textContent = 'Nothing recorded for this selection.'; el.appendChild(p); return; }
+    const width = Math.max(el.clientWidth, 260); const rowH = 26; const height = data.length * rowH + 8;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${width} ${height}`);
+    const labels = svg.append('g').selectAll('text').data(data).join('text').text(([k]) => k)
+      .attr('y', (_, i) => i * rowH + 17).attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)');
+    const labelW = Math.min(width * 0.45, (d3.max(labels.nodes(), (n) => n.getComputedTextLength()) || 60) + 10);
+    const valueW = 64;
+    const x = d3.scaleLinear([0, d3.max(data, (d) => d[1]) || 1], [labelW, width - valueW]);
+    const col = nf.color(data.map((d) => d[0]));
+    svg.append('g').selectAll('rect').data(data).join('rect').attr('x', labelW).attr('y', (_, i) => i * rowH + 5)
+      .attr('width', ([, v]) => Math.max(1, x(v) - labelW)).attr('height', 16).attr('rx', 2).attr('fill', ([k]) => col(k));
+    svg.append('g').selectAll('text').data(data).join('text').attr('x', ([, v]) => x(v) + 6).attr('y', (_, i) => i * rowH + 17)
+      .attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(([, v]) => `${nf.bn(v)}bn`);
+  };
+  dash.draw('bars-instrument', barsBy('instrument'));
+  dash.draw('bars-region', barsBy('region'));
+
+  // Group profiles
+  dash.draw('profiles', (el) => {
+    const rows = nf.fin(); const ws = nf.waves(); const hold = nf.rowsOk('holdings');
+    el.replaceChildren();
+    if (!rows || !ws || !hold) { el.textContent = '—'; return; }
+    const groups = [...new Set([...rows.map((r) => r.group_name), ...ws.map((w) => w.group_name)])].filter(Boolean).sort();
+    const line = (cls, text) => { const e = document.createElement('div'); if (cls) e.className = cls; e.textContent = text; return e; };
+    groups.forEach((g) => {
+      const mine = rows.filter((r) => r.group_name === g); const counted = mine.filter((r) => nf.yes(r.counted));
+      const dated = mine.filter((r) => r.date).map((r) => r.date).sort();
+      const lenderCount = d3.rollup(counted.flatMap((r) => String(r.lenders || '').split('; ').filter(Boolean)), (v) => v.length, (l) => l);
+      const top = [...lenderCount].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([l]) => l);
+      const gw = ws.filter((w) => w.group_name === g);
+      const gl = g.toLowerCase();
+      const gh = hold.filter((h) => String(h.term || '').toLowerCase() === gl || String(h.borrower || '').toLowerCase().includes(gl));
+      const card = document.createElement('div'); card.className = 'nf-profile';
+      const h = document.createElement('h3'); h.textContent = g;
+      card.append(h,
+        line('nf-big', counted.length ? `USD ${nf.bn(d3.sum(counted, (r) => Number(r.amount_usd_m) || 0) / 1000)}bn` : 'No facilities recorded yet'),
+        line('nf-muted', `${mine.length} facilit${mine.length === 1 ? 'y' : 'ies'}` + (dated.length ? `, signed ${dated[0]} to ${dated[dated.length - 1]}` : '')),
+        line('', top.length ? `Main lenders: ${top.join('; ')}` : 'Lenders: none recorded'),
+        line('nf-muted', gw.length ? `${gw.length} detected financing${gw.length === 1 ? '' : 's'}, latest ${gw.map((w) => w.date).sort().pop()}` : 'No detected financings'),
+        line('nf-muted', gh.length ? `${new Set(gh.map((x) => x.bdc)).size} BDC fund(s) hold ${gh.length} position(s)` : 'No BDC positions found'));
+      el.appendChild(card);
+    });
+    if (!groups.length) el.appendChild(line('nf-note', 'No group matches this selection.'));
+  });
+
+  // Tables
+  const cell = (tr, text, cls, href) => {
+    const td = document.createElement('td'); if (cls) td.className = cls;
+    if (href) { const a = document.createElement('a'); a.href = href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = text; td.appendChild(a); }
+    else td.textContent = text;
+    tr.appendChild(td);
+  };
+  dash.draw('fin-rows', (tb) => {
+    const rows = nf.fin(); tb.replaceChildren(); if (!rows) return;
+    rows.slice().sort((a, b) => String(b.date || '').localeCompare(String(a.date || ''))).forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = r.id;
+      cell(tr, r.date || ''); cell(tr, r.group_name); cell(tr, r.name); cell(tr, r.instrument);
+      cell(tr, r.amount_usd_m == null ? '' : nf.m(r.amount_usd_m), 'nf-r'); cell(tr, r.region); cell(tr, r.lenders || '');
+      cell(tr, r.grade || ''); cell(tr, r.note || ''); cell(tr, r.source || '', '', r.source_url || null);
+      tb.appendChild(tr);
+    });
+  });
+  dash.draw('wave-rows', (tb) => {
+    const ws = nf.waves(); tb.replaceChildren(); if (!ws) return;
+    ws.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))).forEach((w) => {
+      const tr = document.createElement('tr'); tr.dataset.key = w.id;
+      cell(tr, w.date); cell(tr, w.group_name); cell(tr, String(w.companies), 'nf-r'); cell(tr, String(w.articles_changed), 'nf-r'); cell(tr, w.matched || ''); cell(tr, w.company_names);
+      tb.appendChild(tr);
+    });
+  });
+  dash.draw('hold-rows', (tb) => {
+    const hold = nf.rowsOk('holdings'); tb.replaceChildren(); if (!hold) return;
+    const g = nf.params().group;
+    const gl = g.toLowerCase();
+    const rows = g === 'All' ? hold : hold.filter((h) => String(h.term || '').toLowerCase() === gl || String(h.borrower || '').toLowerCase().includes(gl));
+    rows.slice().sort((a, b) => (Number(b.fair_value_m) || 0) - (Number(a.fair_value_m) || 0)).forEach((h) => {
+      const tr = document.createElement('tr'); tr.dataset.key = h.id;
+      cell(tr, h.term); cell(tr, h.bdc, '', h.url || null); cell(tr, h.instrument || '');
+      cell(tr, h.fair_value_m == null ? '' : nf.m(h.fair_value_m), 'nf-r'); cell(tr, h.mark || ''); cell(tr, h.period || '');
+      tb.appendChild(tr);
+    });
+  });
+</script>

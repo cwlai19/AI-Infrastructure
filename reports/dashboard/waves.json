@@ -1,0 +1,98 @@
+[
+ {
+  "id": "group_nscale:2025-05-12",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2025-05-12",
+  "quarter": "2025-Q2",
+  "companies": 2,
+  "company_names": "NSCALE GLOBAL HOLDINGS LIMITED; NSCALE OPERATIONS (UK) LIMITED",
+  "articles_changed": 2,
+  "matched": "unmatched",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2025-06-12",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2025-06-12",
+  "quarter": "2025-Q2",
+  "companies": 2,
+  "company_names": "NSCALE DRIFT II HOLDINGS LTD; NSCALE GLOBAL HOLDINGS LIMITED",
+  "articles_changed": 2,
+  "matched": "date match: Macquarie Senior Facility",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2025-08-01",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2025-08-01",
+  "quarter": "2025-Q3",
+  "companies": 2,
+  "company_names": "NSCALE DRIFT II HOLDINGS LTD; NSCALE GLOBAL HOLDINGS LIMITED",
+  "articles_changed": 1,
+  "matched": "unmatched",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2026-03-31",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2026-03-31",
+  "quarter": "2026-Q1",
+  "companies": 2,
+  "company_names": "NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED; NSCALE SERVICES UK LTD",
+  "articles_changed": 1,
+  "matched": "unmatched",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2026-05-08",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2026-05-08",
+  "quarter": "2026-Q2",
+  "companies": 9,
+  "company_names": "NSCALE DC HOLDINGS FINLAND LIMITED; NSCALE DC HOLDINGS II LIMITED; NSCALE GLOBAL DC HOLDINGS LIMITED; NSCALE GLOBAL HOLDINGS LIMITED; NSCALE INTERMEDIATE HOLDINGS APAC LIMITED; NSCALE OPERATIONS (AUST) LIMITED; NSCALE OPERATIONS (UK) LIMITED; NSCALE OPERATIONS HOLDINGS LIMITED; NSCALE SERVICES HOLDINGS LIMITED",
+  "articles_changed": 8,
+  "matched": "date match: Revolving Credit Facility",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2026-07-29",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2026-07-29",
+  "quarter": "2026-Q3",
+  "companies": 2,
+  "company_names": "NSCALE SERVICES INTERMEDIATE HOLDINGS III LIMITED; NSCALE SERVICES UK III LIMITED",
+  "articles_changed": 2,
+  "matched": "date match: Macquarie Iceland Facility",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2026-08-06",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2026-08-06",
+  "quarter": "2026-Q3",
+  "companies": 4,
+  "company_names": "NSCALE GPU HOLDINGS LIMITED; NSCALE HOLDINGS LIMITED; NSCALE MIDCO 1 LIMITED; NSCALE MIDCO 2 LIMITED",
+  "articles_changed": 4,
+  "matched": "unmatched",
+  "source": "Companies House charges (python -m tracker watch)"
+ },
+ {
+  "id": "group_nscale:2026-08-28",
+  "group": "group_nscale",
+  "group_name": "Nscale",
+  "date": "2026-08-28",
+  "quarter": "2026-Q3",
+  "companies": 2,
+  "company_names": "NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED; NSCALE SERVICES UK LTD",
+  "articles_changed": 0,
+  "matched": "date match: North Carolina GPU Facility; Ward County GPU Facility",
+  "source": "Companies House charges (python -m tracker watch)"
+ }
+]

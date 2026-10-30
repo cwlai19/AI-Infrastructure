@@ -1,0 +1,16 @@
+# Exchange rates used to put every financing in one currency (USD) for charts. Original amounts and currencies are
+# always kept and shown; only chart totals use these. Rates are units of each currency per 1 EUR.
+# Source: ECB euro foreign exchange reference rates (series EXR.D.<CCY>.EUR.SP00.A).
+# Update: curl "https://data-api.ecb.europa.eu/service/data/EXR/D.USD+GBP+NOK+SEK+DKK+ISK+CHF+JPY.EUR.SP00.A?lastNObservations=1&format=csvdata"
+source: https://data-api.ecb.europa.eu/service/data/EXR/D.USD+GBP+NOK+SEK+DKK+ISK+CHF+JPY.EUR.SP00.A?lastNObservations=1&format=csvdata
+as_of: 2026-10-29
+per_eur:
+  EUR: 1.0
+  USD: 1.113
+  GBP: 0.83578
+  NOK: 10.3315
+  SEK: 10.9995
+  DKK: 7.4736
+  ISK: 135.8
+  CHF: 0.9222
+  JPY: 175.92

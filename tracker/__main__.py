@@ -25,16 +25,21 @@
     python -m tracker lenders [<preset>] [--terms "A,B"] [--months 3] [--no-reconcile] [--csv <path>]
                                          which BDCs hold a group's or sector's debt or equity, cost and mark,
                                          checked against each BDC's reported total (needs edgartools)
-    python -m tracker watch [--names "A,B"] [--since <days>]
+    python -m tracker watch [--names "A,B"] [--since <days>] [--record]
                                          pre-financing signals: new SPVs, parent links, LEIs, articles, charges
     python -m tracker stream [--seconds 300]  Companies House charges stream (needs a stream key)
+    python -m tracker financings [--group <id>] [--csv <path>] [--json <path>] [--dashboard <dir>]
+                                         financing table and timeline data (facilities, detected waves, lender holdings)
+    python -m tracker intake <file.csv> [--dry-run]
+                                         add financings from a simple CSV (template: data/intake/financings_template.csv)
 """
 
 import sqlite3
+from pathlib import Path
 import sys
 from dataclasses import asdict
 
-from . import archive, disclosure, documents, jurisdictions, lenders, watch
+from . import archive, disclosure, documents, financings, intake, jurisdictions, lenders, watch
 from .model import ROOT, load, validate
 from .report import credit_file
 
@@ -207,6 +212,10 @@ def watch_cmd(argv):
               if _option(argv, "--names") else watch.watch_groups())
     signals, failures = watch.watch(groups, int(_option(argv, "--since") or 90))
     print(watch.format_watch(signals, failures))
+    if "--record" in argv:
+        from .monitor import append_new
+        new = append_new(watch.to_events(signals))
+        print(f"\nrecorded {len(new)} new signal(s) in data/events.csv (older ones are marked baseline on a first run)")
     return 0
 
 
@@ -223,9 +232,49 @@ def stream_cmd(store, argv):
     return 0
 
 
+def financings_cmd(argv):
+    data = financings.build()
+    print(financings.format_table(data, _option(argv, "--group")))
+    if _option(argv, "--csv"):
+        financings.write_csv(data["financings"], _option(argv, "--csv"))
+        print(f"wrote {_option(argv, '--csv')}")
+    if _option(argv, "--dashboard"):
+        import json
+        out = Path(_option(argv, "--dashboard"))
+        out.mkdir(parents=True, exist_ok=True)
+        for name, rows in financings.dashboard_rows(data).items():
+            (out / f"{name}.json").write_text(json.dumps(rows, indent=1, default=str))
+        print(f"wrote financings.json, waves.json, holdings.json to {out}")
+    if _option(argv, "--json"):
+        import json
+        Path(_option(argv, "--json")).parent.mkdir(parents=True, exist_ok=True)
+        Path(_option(argv, "--json")).write_text(json.dumps(data, indent=1, default=str))
+        print(f"wrote {_option(argv, '--json')}")
+    return 0
+
+
+def intake_cmd(argv):
+    path = next((a for a in argv if not a.startswith("--")), None)
+    if not path:
+        print("usage: python -m tracker intake <file.csv> [--dry-run]   (template: data/intake/financings_template.csv)")
+        return 2
+    try:
+        counts, problems = intake.run(path, dry_run="--dry-run" in argv)
+    except ValueError as e:
+        print(e)
+        return 2
+    if problems:
+        print(f"Nothing written: {len(problems)} problem(s):")
+        print("\n".join(f"  - {p}" for p in problems))
+        return 1
+    verb = "Would add" if "--dry-run" in argv else "Added"
+    print(f"{verb} {counts['statements']} statements, {counts['entities']} entities, {counts['sources']} sources.")
+    return 0
+
+
 def main(argv):
     commands = ("check", "build", "report", "monitor", "search", "sources", "company", "sector", "documents",
-                "where", "signals", "refs", "lenders", "watch", "stream")
+                "where", "signals", "refs", "lenders", "watch", "stream", "financings", "intake")
     if not argv or argv[0] not in commands:
         print(__doc__)
         return 2
@@ -233,9 +282,11 @@ def main(argv):
         return search_cmd(argv[1:])
     if argv[0] == "sources":
         return sources_cmd(argv[1:])
-    if argv[0] in ("company", "sector", "documents", "where", "signals", "refs", "lenders", "watch"):
-        return {"company": company_cmd, "sector": sector_cmd, "documents": documents_cmd, "where": where_cmd,
-                "signals": signals_cmd, "refs": refs_cmd, "lenders": lenders_cmd, "watch": watch_cmd}[argv[0]](argv[1:])
+    handlers = {"company": company_cmd, "sector": sector_cmd, "documents": documents_cmd, "where": where_cmd,
+                "signals": signals_cmd, "refs": refs_cmd, "lenders": lenders_cmd, "watch": watch_cmd,
+                "financings": financings_cmd, "intake": intake_cmd}
+    if argv[0] in handlers:
+        return handlers[argv[0]](argv[1:])
     store = load()
     errors = validate(store)
     if argv[0] == "check":

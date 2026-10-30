@@ -311,3 +311,18 @@ names and the group's usual address, and groups charges created at several compa
 likely financing. Every signal links to its reasoning in the disclosure map.
 
 **Alternative rejected.** *Report charges one by one.* A dozen MR01s on one day are one facility, not twelve deals.
+
+## D21. The financing timeline is a view over statements, not a second store
+
+**Problem.** A timeline of financings across the sector needs one row per deal with instrument, size, date, region
+and lenders, and must grow as deals are found. A separate spreadsheet would drift from the sourced statements.
+
+**Choice.** `tracker/financings.py` computes the table from facility statements with fixed rules (umbrellas not summed,
+dated FX, region from asset then borrower then headquarters). New deals enter through `intake`, which writes ordinary
+sourced statements and runs every check first. Detected charge waves sit beside the table, matched to recorded
+facilities by date only, so a wave without a match is a visible lead rather than an invented deal. The vocabulary gained
+convertible_notes, private_placement, holdco_pik and preferred_equity; statements typed "other" for lack of them were
+superseded by new statements and rejected in reviews, not edited.
+
+**Alternative rejected.** *A hand-maintained deals sheet for the dashboard.* Faster to start, but every number would
+lose its source and grade, and corrections would not flow through.

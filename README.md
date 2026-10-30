@@ -48,6 +48,8 @@ python -m tracker signals --stage pre                 # signs a financing is com
 python -m tracker refs                                # every citation behind the disclosure map
 python -m tracker lenders data_centres --csv reports/lender_positions.csv   # BDC holdings, reconciled (pip install edgartools)
 python -m tracker watch --since 90                    # new SPVs, LEIs, articles changes, charges; likely financings
+python -m tracker financings --dashboard reports/dashboard   # financing timeline data (facilities, waves, holdings)
+python -m tracker intake data/intake/<deals>.csv      # add financings from a CSV (template in data/intake/)
 python scripts/build_source_directory.py   # reports/source_directory.html (shareable page) + .csv
 python -m unittest discover -s tests -t .
 ```

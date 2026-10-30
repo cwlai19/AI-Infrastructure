@@ -9,3 +9,5 @@ st0033,explained,"Rounded figure (""approximately $1.4 billion""); the credit ag
 st0034,explained,"Rounded figure from a search excerpt of CCIR; the CCIR full page and Ex-10.14 give $1,422,000,000.",claude (pending analyst review),2026-10-29
 st3704,rejected,"Recorded the parent as the provider; Anthropic's S-1 says the agreements are with wholly owned subsidiaries of Nscale Global Holdings, consistent with Ex-10.25 naming Nscale GPU MCC B1.1 LLC.",claude (pending analyst review),2026-10-29
 st1305,rejected,"Superseded by the Microsoft SOW filed as Ex-10.19: fees start only after acceptance and late tranches can be cancelled, so it is not take-or-pay before delivery.",claude (pending analyst review),2026-10-29
+st1243,rejected,Recorded as other only because the vocabulary had no convertible type; superseded by st4105 (same source).,claude (pending analyst review),2026-10-30
+st1261,rejected,Recorded as other only because the vocabulary had no convertible type; superseded by st4106 (same source).,claude (pending analyst review),2026-10-30

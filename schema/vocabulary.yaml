@@ -98,7 +98,7 @@ entity_types:
       name: {kind: text, multi: true, key: true}   # a thing can have several names (aliases)
       borrower: {kind: entity, ref: [legal_entity], key: true}
       co_borrower: {kind: entity, ref: [legal_entity], multi: true}
-      facility_type: {kind: enum, key: true, values: [term_loan, delayed_draw_term_loan, revolver, project_finance, bond, abs, vendor_financing, lease_financing, other]}
+      facility_type: {kind: enum, key: true, values: [term_loan, delayed_draw_term_loan, revolver, project_finance, bond, abs, vendor_financing, lease_financing, convertible_notes, private_placement, holdco_pik, preferred_equity, other]}
       amount_max: {kind: money, key: true}
       amount_drawn: {kind: money}          # balance outstanding at the effective date
       drawdown: {kind: money, multi: true}   # an individual draw event (a flow, not a balance)

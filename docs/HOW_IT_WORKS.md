@@ -163,6 +163,26 @@ Reads the Companies House charges stream from the last saved position (`data/str
 UK companies in the statements. Needs `COMPANIES_HOUSE_STREAM_KEY`, which is a separate key from the REST key (create it
 in the Companies House developer hub). Not yet tested against the live stream.
 
+### `python -m tracker financings [--dashboard reports/dashboard]`
+The financing table behind the timeline dashboard (rules in the docstring of `tracker/financings.py`):
+- One row per `facility` entity, with resolved values, so conflicts, history and reviews apply as in the credit file.
+- A facility that others are `part_of` is an umbrella: listed, not summed (its parts are).
+- Date = signing date (undated facilities count in totals, not on the timeline). Amount = commitment, converted to USD
+  at the dated ECB rates in `data/fx.yaml` (originals kept).
+- Region = country of the financed site, else the borrower's jurisdiction, else the group's headquarters.
+- Detected waves come from the `signal` events in `events.csv`; each is matched to a recorded facility of the same group
+  signed within three days (a date match only). Unmatched waves are leads for financings not yet recorded.
+- BDC holdings come from `reports/lender_positions_*.csv`.
+`--dashboard <dir>` writes `financings.json`, `waves.json` and `holdings.json` for the dashboard; re-attach them to the
+dashboard to update it.
+
+### `python -m tracker intake <file.csv> [--dry-run]`
+Adds financings from a simple CSV (template `data/intake/financings_template.csv`: one row per deal with group,
+borrower, instrument, amount, currency, dates, lenders, agent, asset country and the source). It creates the group,
+borrower, lenders, source, a site for the asset country, the facility, and one statement per filled field; ids come
+from the row's content, so re-running a file adds nothing. All checks run before anything is written. Do not enter
+data from paid services in the public repository.
+
 ### `python -m tracker documents | sources | where | signals | refs`
 Print the data files, filtered: document types by jurisdiction and question; sources by jurisdiction, channel and
 cost; the disclosure map by instrument and region; signals by stage and region; citations.
