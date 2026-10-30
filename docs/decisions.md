@@ -272,3 +272,19 @@ contracts, so it is sorted by its title (first 20 KB of the exhibit).
   already assign are exact for most filings. An LLM pass can come later for the titles rules miss.
 - *Sector debt from industry codes alone.* Data-centre property SPVs are often coded as real estate, and NACE Rev. 2.1
   moved hosting from 63.11 to 63.10; presets combine codes, name keywords and known groups.
+
+## D18. The reasoning about where to look is data, with citations
+
+**Problem.** Knowing that a UK secured loan must be registered within 21 days, that Luxembourg share pledges are never
+registered, or that a new SPV and LEI often come before a financing, decides where the tool looks. Kept in code or in
+chat, that reasoning is a black box and cannot be checked.
+
+**Choice.** `data/disclosure_map.yaml` records, for each kind of debt and region, what becomes public, when, where,
+and why, with a citation for every legal claim and an evidence label (law, regulator, market practice, judgement).
+The same file lists the signals before, at and after closing. `where`, `signals` and `refs` print it; `check` fails
+if a citation or source is missing; the directory page shows it. `docs/HOW_IT_WORKS.md` explains every command and
+rule.
+
+**Alternatives rejected.**
+- *Keep it in documentation only.* Prose drifts from what the code does; data that the code and checks read cannot.
+- *Treat market practice as fact.* Labelled separately, so "usually" is never mistaken for "must".

@@ -8,7 +8,9 @@ landlords. Every number is traceable to a source.
 Every fact is stored as a **statement**: one claim, from one source, with dates and how it was
 obtained (`data/statements.csv`). Statements are never overwritten. The tracker computes what
 readers see (a debt ledger, conflicts, history, gaps) from the statements using fixed rules.
-See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and what we rejected.
+See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and what we rejected,
+[`docs/HOW_IT_WORKS.md`](docs/HOW_IT_WORKS.md) for exactly what each command does, and
+[`docs/related_tools.md`](docs/related_tools.md) for open-source tools that do parts of the job.
 
 ## Files
 
@@ -21,6 +23,7 @@ See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and wh
 | `data/statements.csv` | The facts |
 | `data/quotes.csv` | Verbatim quotes behind statements; `check` fails if a quote is not in the archived document |
 | `data/source_directory.yaml` | Every free and paid source by jurisdiction (registers, security, insolvency, courts, markets, lenders) |
+| `data/disclosure_map.yaml` | For each kind of debt and region: what becomes public, when, where and why, with citations; signals before, at and after closing |
 | `data/document_types.yaml` | Which document answers which question (org chart, guarantors, debt documents, security, financials, restructuring, lenders, contracts), how to recognise it in each feed, and sector presets |
 | `data/archive/` | Downloaded documents, each folder with a `manifest.json` (URL, SHA-256, retrieval time) |
 | `tracker/` | Validator, resolution rules, report generator, monitor, archive checks, jurisdiction search |
@@ -40,6 +43,9 @@ python -m tracker sources lu --paid     # the source directory for a jurisdictio
 python -m tracker company uk 16925886   # one company's filings sorted by question (registry no, SEC CIK or LEI)
 python -m tracker sector data_centres --jur us,no,uk   # debt documents and debt totals across a sector
 python -m tracker documents lu --need guarantors      # which document answers a question, and how to spot it
+python -m tracker where secured_loan --region uk      # what a kind of debt must make public, when, legal basis
+python -m tracker signals --stage pre                 # signs a financing is coming, and where to watch
+python -m tracker refs                                # every citation behind the disclosure map
 python scripts/build_source_directory.py   # reports/source_directory.html (shareable page) + .csv
 python -m unittest discover -s tests -t .
 ```

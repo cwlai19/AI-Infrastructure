@@ -1,0 +1,642 @@
+# Disclosure map: for each kind of debt, what must (or usually does) become public, where, when, and why.
+#
+# This is the reasoning behind where the tracker looks. Nothing here is hidden in code: commands read this file.
+#   python -m tracker where [<instrument>] [--region uk]    traces of an instrument, by region, with legal basis
+#   python -m tracker signals [--region uk] [--stage pre]   signs that a financing is coming, happening or done
+#   python -m tracker refs [<ref id>]                        the sources behind every claim
+#
+# Every trace and signal says how sure we are, in `evidence`:
+#   law             a statute or regulation requires it (cited in refs)
+#   regulator       a regulator's form or rule requires it (cited)
+#   market_practice it usually happens because of how the market works, not because a rule requires it
+#   judgement       our reading; check before relying on it
+# `status`: mandatory (always public if the condition holds) | conditional (only in the stated case) |
+#           voluntary | confidential (reported to a regulator, not published) | none
+# `where`: source ids from data/source_directory.yaml. `detect`: the tracker command that finds it, if any.
+# Facts were checked against the cited texts on 30 Oct 2026 (`checked`).
+
+references:
+  uk_ca2006_s859a:
+    title: Companies Act 2006, s859A (registration of charges; 21-day period)
+    url: https://www.legislation.gov.uk/ukpga/2006/46/section/859A
+    supports: "A UK company's charge is registered by delivering a statement of particulars within 21 days of creation"
+    checked: 2026-10-30
+  uk_ca2006_s859h:
+    title: Companies Act 2006, s859H (consequence of failing to register)
+    url: https://www.legislation.gov.uk/ukpga/2006/46/section/859H
+    supports: "An unregistered charge is void against a liquidator, administrator and creditors: lenders always register"
+    checked: 2026-10-30
+  uk_ca2006_s442:
+    title: Companies Act 2006, s442 (period for filing accounts)
+    url: https://www.legislation.gov.uk/ukpga/2006/46/section/442
+    supports: "Private companies file accounts within nine months of the year end"
+    checked: 2026-10-30
+  uk_ca2006_s479a:
+    title: Companies Act 2006, s479A (audit exemption with parent guarantee)
+    url: https://www.legislation.gov.uk/ukpga/2006/46/section/479A
+    supports: "A parent can guarantee a subsidiary's liabilities so the subsidiary skips its audit; the guarantee is filed"
+    checked: 2026-10-30
+  uk_ita2007_s882:
+    title: Income Tax Act 2007, s882 (quoted Eurobond exemption)
+    url: https://www.legislation.gov.uk/ukpga/2007/3/section/882
+    supports: "Interest on securities listed on a recognised stock exchange can be paid without UK withholding tax: a reason private notes get listed"
+    checked: 2026-10-30
+  uk_ch_charges_stream:
+    title: Companies House Streaming API, charges stream
+    url: https://developer-specs.company-information.service.gov.uk/streaming-api/resources/chargesstream
+    supports: "Every new or changed UK charge, pushed in real time, including persons entitled"
+    checked: 2026-10-30
+  ie_ca2014_s409:
+    title: Companies Act 2014 (Ireland), s409 (registration of charges)
+    url: https://www.irishstatutebook.ie/eli/2014/act/38/section/409/enacted/en/html
+    supports: "Irish charges are registered with the CRO within 21 days of creation"
+    checked: 2026-10-30
+  ie_ca2014_s357:
+    title: Companies Act 2014 (Ireland), s357 (parent guarantee for filing exemption)
+    url: https://www.irishstatutebook.ie/eli/2014/act/38/section/357/enacted/en/html
+    supports: "A parent guarantee lets an Irish subsidiary avoid filing its own accounts"
+    checked: 2026-10-30
+  nl_bw2_403:
+    title: Dutch Civil Code Book 2 (Art. 2:403 group exemption)
+    url: https://wetten.overheid.nl/BWBR0003045/
+    supports: "A parent's 403 declaration makes it jointly liable for the subsidiary's debts; deposited at the KVK"
+    checked: 2026-10-30
+  de_hgb_264:
+    title: German Commercial Code (HGB) §264 (exemption where parent absorbs losses)
+    url: https://www.gesetze-im-internet.de/hgb/__264.html
+    supports: "A subsidiary may skip publishing accounts if the parent commits to absorb its losses; the commitment is published"
+    checked: 2026-10-30
+  de_starug_84:
+    title: StaRUG §84 (public restructuring matters only on the debtor's application)
+    url: https://www.gesetze-im-internet.de/starug/__84.html
+    supports: "German StaRUG cases are published only if the debtor applies"
+    checked: 2026-10-30
+  lu_fcl_2005:
+    title: Luxembourg law of 5 August 2005 on financial collateral arrangements
+    url: https://legilux.public.lu/eli/etat/leg/loi/2005/08/05/n1/jo
+    supports: "Share and receivable pledges need no public registration in Luxembourg"
+    checked: 2026-10-30
+  fr_rsm:
+    title: French security interests register (registre des sûretés mobilières), in force from 1 Jan 2023
+    url: https://blog.landot-avocats.net/2023/05/16/ajustements-reglementaires-en-matiere-de-registre-des-suretes-mobilieres/
+    supports: "Non-possessory pledges and business-asset pledges are published on the RSM to be enforceable against third parties"
+    checked: 2026-10-30
+  es_hmpsd_1954:
+    title: Spanish law of 16 Dec 1954 on chattel mortgages and non-possessory pledges
+    url: https://www.boe.es/buscar/act.php?id=BOE-A-1954-15448
+    supports: "Chattel mortgages and non-possessory pledges are registered in the Registro de Bienes Muebles"
+    checked: 2026-10-30
+  se_foretagsinteckning:
+    title: Swedish Act (2008:990) on business mortgages (företagsinteckning)
+    url: "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2008990-om-foretagsinteckning_sfs-2008-990/"
+    supports: "Business mortgages are registered with Bolagsverket"
+    checked: 2026-10-30
+  no_panteloven:
+    title: Norwegian Mortgage Act (panteloven) and the Register of Mortgaged Movable Property
+    url: https://www.brreg.no/
+    supports: "Pledges over operating assets, receivables and inventory are perfected by registration in Løsøreregisteret"
+    checked: 2026-10-30
+  dk_tinglysning:
+    title: Danish land and personal property registration (Tinglysning), incl. company charges (virksomhedspant)
+    url: https://www.tinglysning.dk/
+    supports: "Company charges and real-estate mortgages are registered in the Danish registration system"
+    checked: 2026-10-30
+  us_ucc9:
+    title: Uniform Commercial Code Article 9 (secured transactions)
+    url: https://www.law.cornell.edu/ucc/9
+    supports: "Lenders perfect security over US borrowers' movable assets by filing a public UCC-1 financing statement"
+    checked: 2026-10-30
+  us_delaware_ucc:
+    title: Delaware UCC search
+    url: https://corp.delaware.gov/uccsearch/
+    supports: "Where to search UCC filings against Delaware entities (most US SPVs)"
+    checked: 2026-10-30
+  us_form_8k:
+    title: SEC Form 8-K (general instructions; Item 2.03)
+    url: https://www.sec.gov/files/form8-k.pdf
+    supports: "Reporting companies file within four business days after a material direct financial obligation is created (Item 2.03)"
+    checked: 2026-10-30
+  us_regsx_12_12:
+    title: Regulation S-X Rule 12-12 (schedule of investments)
+    url: https://www.ecfr.gov/current/title-17/section-210.12-12
+    supports: "Investment companies, including BDCs, list every investment in their financial statements"
+    checked: 2026-10-30
+  us_rel_33_10771:
+    title: SEC Release 33-10771 (2020), Securities Offering Reform for Closed-End Investment Companies
+    url: https://www.sec.gov/rules/final/2020/33-10771.pdf
+    supports: "BDCs tag their financial statements in Inline XBRL, so schedules of investments are machine-readable"
+    checked: 2026-10-30
+  us_rel_33_10762:
+    title: SEC Release 33-10762 (2020), Financial Disclosures about Guarantors (effective 4 Jan 2021)
+    url: https://www.sec.gov/rules/final/2020/33-10762.pdf
+    supports: "Exhibit 22 lists subsidiary guarantors and issuers of registered guaranteed securities"
+    checked: 2026-10-30
+  us_regsk_601:
+    title: Regulation S-K Item 601 (exhibits)
+    url: https://www.ecfr.gov/current/title-17/section-229.601
+    supports: "Material contracts, including credit agreements, are filed as Exhibit 10; indentures as Exhibit 4"
+    checked: 2026-10-30
+  us_form_nport:
+    title: SEC Form N-PORT
+    url: https://www.sec.gov/files/formn-port.pdf
+    supports: "Registered funds report portfolio holdings to the SEC; part is made public with a lag"
+    checked: 2026-10-30
+  us_nport_proposal_2026:
+    title: Ropes & Gray investment management update (Jan-Feb 2026) on N-PORT public disclosure timing
+    url: https://www.ropesgray.com/en/insights/alerts/2026/03/ropes-grays-investment-management-update-january-february-2026
+    supports: "The 2024 move to monthly public N-PORT data was delayed and a 2026 proposal would keep public data quarterly (60 days after quarter end); check the current rule"
+    checked: 2026-10-30
+  eu_mar:
+    title: Market Abuse Regulation (EU) 596/2014, Art. 17 (public disclosure of inside information)
+    url: https://eur-lex.europa.eu/eli/reg/2014/596/oj
+    supports: "Issuers with securities on a regulated market or MTF, including bond-only issuers, publish inside information promptly"
+    checked: 2026-10-30
+  eu_mifir:
+    title: MiFIR (EU) 600/2014, Art. 27 (instrument reference data), published by ESMA as FIRDS
+    url: https://eur-lex.europa.eu/eli/reg/2014/600/oj
+    supports: "Every instrument admitted to an EU trading venue is reported with its issuer LEI; ESMA publishes the data (FIRDS)"
+    checked: 2026-10-30
+  uk_mar_17:
+    title: UK Market Abuse Regulation, Art. 17 (as retained in UK law)
+    url: https://www.legislation.gov.uk/eur/2014/596/article/17
+    supports: "Issuers with securities on a UK market publish inside information as soon as possible, via a regulatory information service"
+    checked: 2026-10-30
+  eu_gber:
+    title: General Block Exemption Regulation (EU) 651/2014, Art. 9 (publication of aid)
+    url: https://eur-lex.europa.eu/eli/reg/2014/651/oj
+    supports: "Individual state aid awards above EUR 100,000 are published on the transparency module"
+    checked: 2026-10-30
+  eib_transparency:
+    title: EIB Group Transparency Policy
+    url: https://www.eib.org/en/publications/eib-group-transparency-policy
+    supports: "The EIB publishes information on the projects it finances; this is the bank's own policy, not a legal duty to the public"
+    checked: 2026-10-30
+  eu_firds:
+    title: ESMA FIRDS register
+    url: https://registers.esma.europa.eu/publication/searchRegister?core=esma_registers_firds
+    supports: "Searchable and downloadable instrument reference data, updated daily"
+    checked: 2026-10-30
+  eu_prospectus:
+    title: Prospectus Regulation (EU) 2017/1129
+    url: https://eur-lex.europa.eu/eli/reg/2017/1129/oj
+    supports: "Securities offered to the public or admitted to a regulated market need an approved, published prospectus; wholesale and MTF-only deals often use lighter listing documents"
+    checked: 2026-10-30
+  eu_emir:
+    title: EMIR (EU) 648/2012 (derivatives reporting)
+    url: https://eur-lex.europa.eu/eli/reg/2012/648/oj
+    supports: "Derivative counterparties, including companies hedging loan interest, are identified by LEI in trade reports"
+    checked: 2026-10-30
+  eu_securitisation:
+    title: Securitisation Regulation (EU) 2017/2402, Art. 7
+    url: https://eur-lex.europa.eu/eli/reg/2017/2402/oj
+    supports: "Securitisations report loan-level data to repositories for investors and regulators; private deals are not published"
+    checked: 2026-10-30
+  eu_cra:
+    title: Credit Rating Agencies Regulation (EC) 1060/2009, Art. 2(2)(a)
+    url: https://eur-lex.europa.eu/eli/reg/2009/1060/oj
+    supports: "Private ratings produced for a single client and not disclosed publicly fall outside the publication rules"
+    checked: 2026-10-30
+  eu_aifmd:
+    title: AIFMD 2011/61/EU (Annex IV reporting)
+    url: https://eur-lex.europa.eu/eli/dir/2011/61/oj
+    supports: "Alternative fund managers report holdings to regulators, not to the public"
+    checked: 2026-10-30
+  eu_eltif:
+    title: ELTIF Regulation (EU) 2015/760
+    url: https://eur-lex.europa.eu/eli/reg/2015/760/oj
+    supports: "ELTIFs produce annual reports for investors; publication on a website is common but holdings detail varies"
+    checked: 2026-10-30
+  ecb_anacredit:
+    title: ECB AnaCredit
+    url: https://www.ecb.europa.eu/stats/money_credit_banking/anacredit/html/index.en.html
+    supports: "Euro-area banks report loan-by-loan data on loans to companies to central banks; confidential"
+    checked: 2026-10-30
+  gleif_golden_copy:
+    title: GLEIF Golden Copy and delta files
+    url: https://www.gleif.org/en/lei-data/gleif-golden-copy
+    supports: "All LEI records, published several times a day with delta files of new and changed records"
+    checked: 2026-10-30
+  gleif_level2:
+    title: GLEIF Level 2 data (who owns whom)
+    url: https://www.gleif.org/en/lei-data/access-and-use-lei-data/level-2-data-who-owns-whom
+    supports: "Direct and ultimate accounting parents of each LEI, or the reason none is reported"
+    checked: 2026-10-30
+  nordic_investor_meetings_example:
+    title: Example Nordic bond mandate announcement (Ocean Yield, fixed income investor meetings)
+    url: https://www.oceanyield.no/investor-relations/press-releases/ocean-yield-asa-fixed-income-investor-meetings
+    supports: "Nordic issuers announce mandated banks and investor meetings before a contemplated bond issue"
+    checked: 2026-10-30
+  nordic_investor_meetings_example_2:
+    title: Example (Navigator Gas announces fixed income investor meetings, Euronext, Oct 2024)
+    url: https://live.euronext.com/en/products/equities/company-news/2024-10-14-navigator-gas-announces-fixed-income-investor-meetings
+    supports: "Same practice on Euronext/Oslo company news"
+    checked: 2026-10-30
+
+# Regions use the jurisdiction keys of the source directory. "nordics" expands to no, se, dk, fi.
+instruments:
+
+  - id: secured_loan
+    name: Secured loan (bank or private credit term loan, delayed-draw, revolver, GPU-backed facility)
+    in_this_sector: "Most neocloud GPU financings and data-centre construction and acquisition debt"
+    traces:
+      - region: uk
+        status: mandatory
+        evidence: law
+        trace: "Charge registered: chargee (usually the security or collateral agent), assets, fixed/floating charge, negative pledge; the instrument is usually attached"
+        timing: "Within 21 days of creation"
+        where: [uk_ch, uk_ch_stream]
+        detect: "company uk <no>; sector <preset> --jur uk; monitor (ch feed)"
+        refs: [uk_ca2006_s859a, uk_ca2006_s859h, uk_ch_charges_stream]
+      - region: ie
+        status: mandatory
+        evidence: law
+        trace: "Charge particulars filed with the CRO"
+        timing: "Within 21 days of creation"
+        where: [ie_core]
+        refs: [ie_ca2014_s409]
+      - region: "no"
+        status: conditional
+        evidence: law
+        trace: "Pledges over operating assets, receivables or inventory registered in Løsøreregisteret; mortgages on land in the land register. Share pledges are not registered."
+        where: [no_losore, no_kartverket]
+        refs: [no_panteloven]
+      - region: se
+        status: conditional
+        evidence: law
+        trace: "Business mortgage certificates registered with Bolagsverket (amount, not lender); real-estate mortgage deeds with Lantmäteriet"
+        where: [se_bolagsverket, se_lantmateriet]
+        refs: [se_foretagsinteckning]
+      - region: dk
+        status: conditional
+        evidence: law
+        trace: "Company charges (virksomhedspant) and real-estate mortgages registered in Tinglysning"
+        where: [dk_tinglysning]
+        refs: [dk_tinglysning]
+      - region: fr
+        status: conditional
+        evidence: law
+        trace: "Non-possessory pledges and business-asset pledges published on the security-interests register (RSM). Pledges over securities accounts (e.g. SAS shares) are perfected without it (our reading)"
+        where: [fr_infogreffe]
+        refs: [fr_rsm]
+        note: "Whether a given pledge type must be registered depends on its legal form; check with French counsel"
+      - region: es
+        status: conditional
+        evidence: law
+        trace: "Chattel mortgages and non-possessory pledges in the Registro de Bienes Muebles; real-estate mortgages in the land registry"
+        where: [es_registradores]
+        refs: [es_hmpsd_1954]
+      - region: lu
+        status: none
+        evidence: law
+        trace: "Share and receivable pledges are not registered; real-estate mortgages are"
+        where: [lu_hypotheques]
+        refs: [lu_fcl_2005]
+      - region: nl
+        status: none
+        evidence: judgement
+        trace: "Undisclosed pledges are registered with the tax authority only to fix the date, not published; mortgages on land are in the Kadaster"
+        where: [nl_kadaster]
+      - region: de
+        status: none
+        evidence: judgement
+        trace: "No public register for security transfers, assignments or share pledges; land charges are in the Grundbuch (legitimate interest needed)"
+        where: [de_grundbuch]
+      - region: us
+        status: mandatory
+        evidence: law
+        trace: "UCC-1 financing statement naming the secured party (often the collateral agent) and the collateral; GPU-backed loans show here"
+        timing: "At or before closing"
+        where: [us_ucc]
+        refs: [us_ucc9, us_delaware_ucc]
+    never_public: "Amount (unless the instrument states it), pricing, covenants, lender syndicate behind the agent"
+
+  - id: unsecured_holdco_loan
+    name: Unsecured or holdco loan (incl. PIK holdco notes held privately, shareholder loans)
+    in_this_sector: "Holdco and mezzanine financing above asset-level debt"
+    traces:
+      - region: all
+        status: none
+        evidence: judgement
+        trace: "No registration anywhere. Appears only in the borrower's accounts (debt note), a US filer's exhibits, a listed lender's holdings, or reporting by news and paid services"
+        where: [gl_9fin, gl_debtwire, gl_octus]
+    never_public: "Almost everything until accounts are filed"
+
+  - id: project_finance
+    name: Data-centre construction or project finance loan
+    in_this_sector: "Campus construction debt secured on land, buildings and contracts"
+    traces:
+      - region: all
+        status: conditional
+        evidence: law
+        trace: "Mortgage on the site in the land register; share and account security as for secured loans in that country"
+        where: [uk_land_registry, nl_kadaster, no_kartverket, se_lantmateriet, dk_tinglysning]
+        refs: [uk_ca2006_s859a]
+      - region: eu
+        status: conditional
+        evidence: regulator
+        trace: "If a public lender (EIB, EBRD, NIB) or export credit agency takes part: borrower, amount and project published"
+        where: [eu_eib, eu_ebrd, eu_nib, eu_eca]
+    never_public: "Commercial lenders' shares, pricing, completion tests (unless the borrower files them)"
+
+  - id: equipment_finance
+    name: Equipment finance, GPU vendor financing, leases and sale-leasebacks
+    in_this_sector: "GPU and server financing by vendors, leasing companies and private credit"
+    traces:
+      - region: uk
+        status: conditional
+        evidence: law
+        trace: "Registered if the company grants a charge; a true lease or retention-of-title sale is not a charge and is not registered"
+        where: [uk_ch]
+        refs: [uk_ca2006_s859a]
+      - region: us
+        status: conditional
+        evidence: law
+        trace: "UCC-1 filings by lessors and vendors (precautionary filings are common)"
+        where: [us_ucc]
+        refs: [us_ucc9]
+      - region: all
+        status: conditional
+        evidence: law
+        trace: "Lease liabilities and purchase commitments appear in filed accounts or SEC filings, without counterparty names"
+        where: [uk_ch, us_edgar_api]
+    never_public: "Lessor identity outside the UCC and UK charges register"
+
+  - id: listed_bond
+    name: Listed bond (high yield, investment grade, green bond) on a regulated market or MTF
+    in_this_sector: "Data-centre platforms with bond programmes; neocloud high-yield bonds"
+    traces:
+      - region: eu
+        status: mandatory
+        evidence: law
+        trace: "Instrument reference data with issuer LEI, maturity and coupon published by ESMA (FIRDS); listing document on the exchange; inside information announcements"
+        timing: "Reference data from admission to trading; announcements promptly"
+        where: [eu_firds, lu_luxse, ie_euronext_dublin, de_boerse_frankfurt]
+        refs: [eu_mifir, eu_firds, eu_mar, eu_prospectus]
+      - region: uk
+        status: mandatory
+        evidence: law
+        trace: "Listing document and regulatory announcements on the FCA National Storage Mechanism and RNS"
+        where: [uk_nsm, uk_rns]
+        refs: [uk_mar_17]
+      - region: us
+        status: conditional
+        evidence: regulator
+        trace: "Registered bonds: prospectus (424B), indenture (Exhibit 4), guarantors (Exhibit 22). Rule 144A bonds: no SEC filing of the offering memorandum"
+        where: [us_edgar_fts]
+        refs: [us_rel_33_10762, us_regsk_601]
+    never_public: "Holders (except fund holdings), private side letters"
+
+  - id: nordic_bond
+    name: Nordic bond (Norwegian or Swedish law, trustee Nordic Trustee)
+    in_this_sector: "Common for Nordic data-centre operators and growth issuers"
+    traces:
+      - region: nordics
+        status: mandatory
+        evidence: law
+        trace: "Mandate announcement, pricing announcement, bond terms (often on the issuer's site), listing on Oslo, Stockholm or Frankfurt Open Market; trustee notices for amendments and defaults"
+        timing: "Mandate announcement days before pricing; listing within months"
+        where: [no_newsweb, se_nasdaq_nordic, no_nordic_trustee, no_stamdata, eu_firds]
+        refs: [eu_mar, eu_mifir, nordic_investor_meetings_example, nordic_investor_meetings_example_2]
+        note: "The mandate announcement is market practice driven by MAR for already-listed issuers"
+    never_public: "Allocation"
+
+  - id: private_notes_listed_for_tax
+    name: Private notes listed only for tax reasons (TISE, Euronext Dublin, Vienna MTF)
+    in_this_sector: "Direct-lending notes, holdco notes, intra-group notes"
+    traces:
+      - region: eu
+        status: conditional
+        evidence: law
+        trace: "A listing on a recognised exchange lets interest be paid without UK withholding tax, so private notes get a short listing document and an ISIN"
+        where: [ie_euronext_dublin, eu_firds]
+        refs: [uk_ita2007_s882, eu_mifir]
+    never_public: "Pricing and covenants usually; holders"
+
+  - id: private_placement
+    name: Private placement (US private placement notes, Schuldschein, unlisted notes)
+    in_this_sector: "Mature data-centre platforms with stable cash flows"
+    traces:
+      - region: all
+        status: none
+        evidence: judgement
+        trace: "No exchange, no prospectus, no register. Seen only in the borrower's accounts, rating releases (if publicly rated), arranger or law-firm announcements and paid services"
+        where: [gl_9fin, gl_ratings]
+        refs: [eu_cra]
+    never_public: "Investors, pricing, covenants"
+
+  - id: securitisation
+    name: Securitisation (data-centre ABS or CMBS)
+    in_this_sector: "Stabilised data-centre portfolios"
+    traces:
+      - region: eu
+        status: conditional
+        evidence: law
+        trace: "Public deals: prospectus and listing; loan-level data goes to repositories for investors and regulators, not the public"
+        where: [ie_euronext_dublin, eu_sts]
+        refs: [eu_securitisation]
+      - region: us
+        status: conditional
+        evidence: market_practice
+        trace: "Rule 144A data-centre ABS: rating agency pre-sale reports are usually published; no SEC registration"
+        where: [gl_ratings]
+    never_public: "Private securitisations"
+
+  - id: public_lender
+    name: Public lender or export credit agency loan or guarantee
+    in_this_sector: "EIB, NIB, export credit agencies for equipment exports, state aid"
+    traces:
+      - region: eu
+        status: conditional
+        evidence: law
+        trace: "State aid above EUR 100,000 is published with the beneficiary (law). Public lenders publish project lists under their own transparency policies (policy, not law; depth varies)"
+        where: [eu_eib, eu_ebrd, eu_nib, eu_eca, eu_state_aid, uk_ukef, uk_subsidy]
+        refs: [eu_gber, eib_transparency]
+    never_public: "Terms"
+
+  - id: fund_held_loan
+    name: Loan held by a fund (who the lender is)
+    in_this_sector: "Private credit funds holding neocloud and data-centre loans"
+    traces:
+      - region: us
+        status: mandatory
+        evidence: regulator
+        trace: "BDCs list every investment (borrower, rate, spread, maturity, cost, fair value) in each 10-Q and 10-K, tagged in Inline XBRL"
+        timing: "10-Q within 40 to 45 days of quarter end"
+        where: [us_bdc]
+        refs: [us_regsx_12_12, us_rel_33_10771]
+        detect: "edgartools PortfolioInvestments (see docs/related_tools.md)"
+      - region: us
+        status: conditional
+        evidence: regulator
+        trace: "Registered funds (mutual, interval, closed-end) report holdings on N-PORT; part is public with a lag"
+        where: [us_nport]
+        refs: [us_form_nport, us_nport_proposal_2026]
+      - region: eu
+        status: confidential
+        evidence: law
+        trace: "European private credit funds report to regulators (AIFMD Annex IV), not the public; ELTIF and listed vehicles publish annual reports"
+        where: [lu_cssf, ie_cbi_registers]
+        refs: [eu_aifmd, eu_eltif]
+      - region: eu
+        status: confidential
+        evidence: law
+        trace: "Euro-area banks report loans loan by loan to central banks (AnaCredit); confidential"
+        refs: [ecb_anacredit]
+    never_public: "Separately managed accounts, insurers' and pension funds' direct loans, most European funds' holdings"
+
+# Disclosure by the borrower, whatever the instrument.
+borrower_traces:
+  - region: uk
+    status: mandatory
+    evidence: law
+    trace: "Filed accounts show borrowings by maturity, security given and guarantees"
+    timing: "Within nine months of the year end (private companies)"
+    where: [uk_ch]
+    refs: [uk_ca2006_s442]
+  - region: uk
+    status: conditional
+    evidence: law
+    trace: "Parent guarantee filed so a subsidiary can skip its audit: a public, statutory guarantee"
+    where: [uk_ch]
+    refs: [uk_ca2006_s479a]
+  - region: ie
+    status: conditional
+    evidence: law
+    trace: "Parent guarantee filed so a subsidiary can skip filing accounts"
+    where: [ie_core]
+    refs: [ie_ca2014_s357]
+  - region: nl
+    status: conditional
+    evidence: law
+    trace: "403 declaration deposited at the KVK: the parent is liable for the subsidiary's debts"
+    where: [nl_kvk]
+    refs: [nl_bw2_403]
+  - region: de
+    status: conditional
+    evidence: law
+    trace: "Parent's loss-absorption commitment published when a subsidiary uses the §264(3) exemption"
+    where: [de_unternehmensregister]
+    refs: [de_hgb_264]
+  - region: us
+    status: mandatory
+    evidence: regulator
+    trace: "SEC reporting companies file an 8-K within four business days of a material new debt obligation (Item 2.03) and file the agreement as an exhibit"
+    timing: "Four business days"
+    where: [us_edgar_fts]
+    refs: [us_form_8k, us_regsk_601]
+  - region: eu
+    status: conditional
+    evidence: law
+    trace: "Issuers with securities on a regulated market or MTF publish inside information, which can include a major financing"
+    timing: "As soon as possible"
+    where: [uk_nsm, no_newsweb, se_nasdaq_nordic, fr_amf, lu_luxse]
+    refs: [eu_mar]
+
+signals:
+  - id: spv_incorporated
+    stage: pre
+    name: New financing-style SPVs incorporated (HoldCo, MidCo, BidCo, PropCo, FinCo, "DC Holdings", "GPU Holdings")
+    why: "Lenders want a ring-fenced borrower and a holding company whose shares they can take as security"
+    evidence: market_practice
+    where: [uk_ch, uk_ch_stream, lu_lbr, no_brreg]
+    detect: "search uk \"<group>\"; company uk <parent no> (PSC chain)"
+    lead_time: "Weeks to months before closing"
+  - id: psc_link
+    stage: pre
+    name: New corporate parent link (PSC notification) placing the SPV under the group
+    why: "Shows the SPV belongs to the group before any financing filing"
+    evidence: law
+    where: [uk_ch]
+    detect: "company uk <no> (PSC filings and corporate PSCs)"
+    lead_time: "Weeks"
+  - id: new_lei
+    stage: pre
+    name: New LEI registered for an SPV, with the group as parent
+    why: "Hedging the loan's interest rate needs an LEI for derivatives reporting, and banks ask for one at onboarding"
+    evidence: market_practice
+    where: [eu_gleif]
+    refs: [eu_emir, gleif_golden_copy, gleif_level2]
+    detect: "company <jur> <LEI or no> (GLEIF children); daily delta files not yet automated"
+    lead_time: "Weeks before closing"
+  - id: articles_changed
+    stage: pre
+    name: New articles or resolutions removing share-transfer restrictions (UK MA, RES01)
+    why: "Lenders taking a share charge need to be free to enforce by transferring the shares"
+    evidence: market_practice
+    where: [uk_ch]
+    detect: "company uk <no> (filing history)"
+    lead_time: "Days to weeks; often filed with the MR01"
+  - id: bond_mandate
+    stage: pre
+    name: Bond mandate and investor meetings announced (Nordic market)
+    why: "Listed issuers announce a contemplated bond issue; standard practice in the Nordic market"
+    evidence: market_practice
+    where: [no_newsweb, se_nasdaq_nordic]
+    refs: [eu_mar, nordic_investor_meetings_example, nordic_investor_meetings_example_2]
+    lead_time: "Days before pricing"
+  - id: provisional_rating
+    stage: pre
+    name: Provisional or expected rating assigned
+    why: "Rated bonds, ABS and some private placements get a rating release before closing"
+    evidence: market_practice
+    where: [gl_ratings]
+    refs: [eu_cra]
+    lead_time: "Days to weeks"
+  - id: paid_service_report
+    stage: pre
+    name: Deal reported by 9fin, Debtwire, Octus, LoanConnector, PitchBook LCD or IJGlobal
+    why: "Journalists report private deals from lenders and sponsors, often before closing"
+    evidence: market_practice
+    where: [gl_9fin, gl_debtwire, gl_octus, gl_loanconnector, gl_pitchbook_lcd, gl_ijglobal]
+    lead_time: "Before to after closing"
+  - id: charge_registered
+    stage: closing
+    name: Charge registered (UK MR01, Irish C1, Nordic pledge registers, US UCC-1)
+    why: "Security must be registered to be effective against insolvency officers; the strongest free proof that a secured financing closed"
+    evidence: law
+    where: [uk_ch, uk_ch_stream, ie_core, no_losore, dk_tinglysning, us_ucc]
+    refs: [uk_ca2006_s859a, uk_ca2006_s859h, ie_ca2014_s409, us_ucc9]
+    detect: "company uk <no>; sector <preset> --jur uk; monitor (ch feed)"
+    lead_time: "Within 21 days after closing (UK, Ireland)"
+  - id: new_isin
+    stage: closing
+    name: New ISIN for an issuer LEI in FIRDS
+    why: "Every bond admitted to an EU venue appears with its issuer LEI"
+    evidence: law
+    where: [eu_firds]
+    refs: [eu_mifir, eu_firds]
+    lead_time: "At admission to trading"
+  - id: form_8k_203
+    stage: closing
+    name: 8-K Item 2.03 (new direct financial obligation)
+    why: "Required for SEC reporting companies"
+    evidence: regulator
+    where: [us_edgar_fts]
+    refs: [us_form_8k]
+    detect: "company us <CIK>; sector <preset> --jur us"
+    lead_time: "Within four business days"
+  - id: announcements
+    stage: closing
+    name: Lender, sponsor or law-firm deal announcements and trade press
+    why: "Lenders and advisers publicise deals; not required"
+    evidence: market_practice
+    where: []
+    detect: "monitor (news feed); web search"
+    lead_time: "At or after closing"
+  - id: bdc_position
+    stage: after
+    name: New position in a BDC schedule of investments
+    why: "BDCs list every investment each quarter"
+    evidence: regulator
+    where: [us_bdc]
+    refs: [us_regsx_12_12, us_rel_33_10771]
+    lead_time: "40 to 45 days after quarter end"
+  - id: accounts_filed
+    stage: after
+    name: Accounts filed showing new borrowings
+    why: "Statutory accounts disclose debt by maturity and security"
+    evidence: law
+    where: [uk_ch, no_regnskap, dk_cvr, fr_rne]
+    refs: [uk_ca2006_s442]
+    detect: "company <jur> <no> (financials)"
+    lead_time: "Up to nine months after the year end (UK)"

@@ -14,10 +14,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from tracker.disclaimer import AS_OF, DETAIL, SHORT  # noqa: E402
+from tracker.disclosure import disclosure_map, validate_map  # noqa: E402
 from tracker.documents import taxonomy, validate_taxonomy  # noqa: E402
 from tracker.jurisdictions import ADAPTERS, UNTESTED, directory, validate_directory  # noqa: E402
 
-problems = validate_directory() + validate_taxonomy()
+problems = validate_directory() + validate_taxonomy() + validate_map()
 if problems:
     raise SystemExit("\n".join(problems))
 d = directory()
@@ -36,8 +37,9 @@ with (ROOT / "reports" / "source_directory.csv").open("w", newline="", encoding=
 
 payload = json.dumps({"jurisdictions": d["jurisdictions"], "channels": d["channels"], "access": d["access_levels"],
                       "resources": d["resources"], "needs": t["needs"], "documents": t["documents"],
+                      "disclosure": disclosure_map(),
                       "short": SHORT, "detail": DETAIL, "asOf": AS_OF},
-                     ensure_ascii=False).replace("</", "<\\/")
+                     ensure_ascii=False, default=str).replace("</", "<\\/")
 
 page = """<title>European Credit Source Directory</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -150,6 +152,28 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
 .doc .codes { font: 12px var(--mono); color: var(--ink-3); }
 .doc .act { grid-column: 2; grid-row: 1 / span 3; align-self: start; }
 @media (max-width: 640px) { .doc { grid-template-columns: minmax(0, 1fr); } .doc .act { grid-column: 1; grid-row: auto; } }
+.dm-wrap { overflow-x: auto; }
+table.dm { border-collapse: separate; border-spacing: 3px; font-size: 12.5px; }
+.dm th { font: 500 11px var(--mono); color: var(--ink-3); text-transform: uppercase; padding: 2px 4px; text-align: center; }
+.dm th.i { text-align: left; color: var(--ink); font: 500 13px var(--body); text-transform: none; min-width: 210px; }
+.dm td { min-width: 34px; height: 28px; text-align: center; border-radius: 4px; cursor: pointer; border: 1px solid transparent; font-weight: 600; }
+.dm td.mandatory { background: var(--free-bg); color: var(--free); }
+.dm td.conditional { background: var(--paid-bg); color: var(--paid); }
+.dm td.confidential, .dm td.none { background: var(--gap-bg); color: var(--ink-3); font-weight: 400; }
+.dm td.blank { color: var(--ink-3); font-weight: 400; cursor: default; }
+.dm td.on { border-color: var(--accent); }
+.dm-detail { display: grid; gap: 10px; margin-top: 10px; }
+.tr { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 3px; }
+.tr .h { font-weight: 600; }
+.tr .k { color: var(--ink-2); font-size: 13px; }
+.ref a { color: var(--accent); }
+.stage { display: grid; gap: 6px; }
+.stage h3 { font-size: 16px; color: var(--ink-2); }
+.sig { border-top: 1px solid var(--line); padding-top: 6px; display: grid; gap: 2px; }
+.sig .h { font-weight: 600; }
+.sig .k { color: var(--ink-2); font-size: 13px; }
+details.refs summary { cursor: pointer; color: var(--accent); }
+details.refs li { margin: 4px 0; color: var(--ink-2); font-size: 13px; }
 .howto { display: grid; gap: 10px; }
 .howto p { margin: 0; color: var(--ink-2); max-width: 75ch; }
 .code { position: relative; }
@@ -214,6 +238,24 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
     <div id="need-list"></div>
   </section>
 
+  <section class="panel" aria-labelledby="dm-h">
+    <h2 id="dm-h">Where debt shows up: instrument by region</h2>
+    <p class="intro">What each kind of debt must (or usually does) make public. Green: always public by law or regulation.
+      Amber: only in some cases. Hatched: nothing public or reported only to regulators. Click a cell for what is published,
+      when, where, the legal basis and the citation. Evidence labels say whether a point is law, a regulator's rule, market
+      practice or our judgement.</p>
+    <div class="dm-wrap"><table class="dm" id="dm"></table></div>
+    <div class="dm-detail" id="dm-detail"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="sig-h">
+    <h2 id="sig-h">Signals: before, at and after closing</h2>
+    <p class="intro">Signs that a financing is coming, closing or done, and where to watch for each. The strongest free proof of a
+      secured financing is the charge registration; the earliest signs are new SPVs, parent links and LEIs.</p>
+    <div id="signals"></div>
+    <details class="refs"><summary>All references behind this map</summary><ul id="refs"></ul></details>
+  </section>
+
   <section id="list" aria-live="polite"></section>
 
   <section class="panel howto" aria-labelledby="cli-h">
@@ -227,6 +269,9 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
       lenders), by registry number, SEC CIK or LEI; and debt across a sector.</p>
     <div class="code"><pre id="cli3">python -m tracker company uk 16925886</pre><button type="button" data-copy="cli3">Copy</button></div>
     <div class="code"><pre id="cli4">python -m tracker sector data_centres --jur us,no,uk</pre><button type="button" data-copy="cli4">Copy</button></div>
+    <p>The disclosure map and signals above, with citations, from the command line.</p>
+    <div class="code"><pre id="cli5">python -m tracker where secured_loan --region uk</pre><button type="button" data-copy="cli5">Copy</button></div>
+    <div class="code"><pre id="cli6">python -m tracker signals --stage pre</pre><button type="button" data-copy="cli6">Copy</button></div>
   </section>
 </div>
 
@@ -377,6 +422,60 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
       }).join("")}</div>`).join("");
   }
 
+  const DM = D.disclosure;
+  const DM_REGIONS = ["uk", "ie", "lu", "nl", "de", "fr", "es", "it", "no", "se", "dk", "fi", "us"];
+  const RANK = { mandatory: 4, conditional: 3, voluntary: 2, confidential: 1, none: 0 };
+  const covers = (region, wanted) => region === wanted || region === "all" ||
+    (region === "nordics" && ["no", "se", "dk", "fi"].includes(wanted)) || (region === "eu" && !["us", "uk"].includes(wanted));
+  const refHtml = (ids) => (ids || []).filter((r) => DM.references[r]).map((r) =>
+    `<span class="ref"><a href="${esc(DM.references[r].url)}" target="_blank" rel="noopener">${esc(DM.references[r].title)}</a></span>`).join("; ");
+  const srcList = (ids) => (ids || []).map((i) => SRC[i] ? `<a href="${esc(SRC[i].url)}" target="_blank" rel="noopener">${esc(SRC[i].name)}</a>` : esc(i)).join(", ");
+  const label = { mandatory: "M", conditional: "C", voluntary: "V", confidential: "R", none: "–" };
+  let dmSel = { ins: "secured_loan", region: "uk" };
+
+  function renderDM() {
+    let h = `<thead><tr><th class="i" scope="col">Instrument</th>${DM_REGIONS.map((r) => `<th scope="col">${r}</th>`).join("")}</tr></thead><tbody>`;
+    for (const ins of DM.instruments) {
+      h += `<tr><th class="i" scope="row">${esc(ins.name.split(" (")[0])}</th>`;
+      for (const r of DM_REGIONS) {
+        const ts = ins.traces.filter((t) => covers(t.region, r));
+        if (!ts.length) { h += `<td class="blank" title="Not mapped">·</td>`; continue; }
+        const best = ts.reduce((a, b) => (RANK[b.status] > RANK[a.status] ? b : a));
+        const on = dmSel.ins === ins.id && dmSel.region === r ? " on" : "";
+        h += `<td class="${best.status}${on}" data-i="${ins.id}" data-r="${r}" title="${esc(best.status)}">${label[best.status]}</td>`;
+      }
+      h += "</tr>";
+    }
+    $("dm").innerHTML = h + "</tbody>";
+    const ins = DM.instruments.find((x) => x.id === dmSel.ins);
+    const ts = ins.traces.filter((t) => covers(t.region, dmSel.region));
+    $("dm-detail").innerHTML = `<div><b>${esc(ins.name)}</b> · ${esc(dmSel.region.toUpperCase())}<div class="k">${esc(ins.in_this_sector || "")}</div></div>` +
+      ts.map((t) => `<div class="tr"><div class="h">${esc(t.status)} · ${esc(t.evidence.replace("_", " "))} · applies to ${esc(t.region)}</div>
+        <div>${esc(t.trace)}</div>
+        ${t.timing ? `<div class="k">When: ${esc(t.timing)}</div>` : ""}
+        ${t.where && t.where.length ? `<div class="k">Where: ${srcList(t.where)}</div>` : ""}
+        ${t.detect ? `<div class="k">Tracker: <code>python -m tracker ${esc(t.detect)}</code></div>` : ""}
+        ${t.note ? `<div class="k">Note: ${esc(t.note)}</div>` : ""}
+        ${t.refs && t.refs.length ? `<div class="k">Basis: ${refHtml(t.refs)}</div>` : ""}</div>`).join("") +
+      `<div class="k">Never public: ${esc(ins.never_public || "")}</div>`;
+  }
+  $("dm").addEventListener("click", (e) => {
+    const td = e.target.closest("td[data-i]"); if (!td) return;
+    dmSel = { ins: td.dataset.i, region: td.dataset.r }; renderDM();
+  });
+
+  function renderSignals() {
+    const names = { pre: "Before closing", closing: "At closing", after: "After closing" };
+    $("signals").innerHTML = ["pre", "closing", "after"].map((st) => `<div class="stage"><h3>${names[st]}</h3>${DM.signals.filter((s) => s.stage === st).map((s) =>
+      `<div class="sig"><div class="h">${esc(s.name)}</div><div>${esc(s.why)}</div>
+        <div class="k">${esc(s.evidence.replace("_", " "))} · ${esc(s.lead_time || "")}</div>
+        ${s.where && s.where.length ? `<div class="k">Where: ${srcList(s.where)}</div>` : ""}
+        ${s.detect ? `<div class="k">Tracker: <code>python -m tracker ${esc(s.detect)}</code></div>` : ""}
+        ${s.refs && s.refs.length ? `<div class="k">Basis: ${refHtml(s.refs)}</div>` : ""}</div>`).join("")}</div>`).join("");
+    $("refs").innerHTML = Object.entries(DM.references).map(([k, v]) =>
+      `<li><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.title)}</a>: ${esc(v.supports)} <span class="code">(${esc(k)}, checked ${esc(v.checked || "")})</span></li>`).join("");
+  }
+
   function render() {
     document.querySelectorAll("#jur-chips .chip").forEach((b) =>
       b.setAttribute("aria-pressed", String(b.dataset.j ? state.jur.has(b.dataset.j) : state.jur.size === 0)));
@@ -393,7 +492,7 @@ table.matrix { border-collapse: separate; border-spacing: 3px; font-size: 12.5px
     });
   }));
 
-  hint(); render();
+  hint(); render(); renderDM(); renderSignals();
 })();
 </script>
 """

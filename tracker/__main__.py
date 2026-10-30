@@ -17,13 +17,18 @@
                                          data/document_types.yaml, e.g. data_centres)
     python -m tracker documents [<jurisdiction>] [--need <need>]
                                          which document answers which question, and how to recognise it
+    python -m tracker where [<instrument>] [--region <jurisdiction>]
+                                         where a kind of debt leaves a public trace, when, and the legal basis
+    python -m tracker signals [--region <jurisdiction>] [--stage pre|closing|after]
+                                         signs that a financing is coming, closing or done, and where to watch
+    python -m tracker refs [<reference id>]   the citations behind the disclosure map
 """
 
 import sqlite3
 import sys
 from dataclasses import asdict
 
-from . import archive, documents, jurisdictions
+from . import archive, disclosure, documents, jurisdictions
 from .model import ROOT, load, validate
 from .report import credit_file
 
@@ -131,8 +136,49 @@ def documents_cmd(argv):
     return 0
 
 
+def _region(argv):
+    r = _option(argv, "--region")
+    if r in (None, "all", "nordics", "eu"):
+        return r
+    return jurisdictions.jurisdiction_key(r)
+
+
+def where_cmd(argv):
+    instrument = next((a for a in argv if not a.startswith("--") and a != _option(argv, "--region")), None)
+    try:
+        region = _region(argv)
+    except KeyError as e:
+        print(e.args[0])
+        return 2
+    print(disclosure.format_where(disclosure.instruments(instrument, region)))
+    if region:
+        rows = [t for t in disclosure.disclosure_map().get("borrower_traces", []) if disclosure.covers(t["region"], region)]
+        if rows and not instrument:
+            print("=== Disclosure by the borrower, whatever the instrument")
+            for t in rows:
+                print(f"  [{t['region']}] {t['status'].upper()} ({t['evidence'].replace('_', ' ')}): {t['trace']}"
+                      + (f"; {t['timing']}" if t.get("timing") else ""))
+    return 0
+
+
+def signals_cmd(argv):
+    try:
+        region = _region(argv)
+    except KeyError as e:
+        print(e.args[0])
+        return 2
+    print(disclosure.format_signals(disclosure.signals(region, _option(argv, "--stage"))))
+    return 0
+
+
+def refs_cmd(argv):
+    print(disclosure.format_refs(next((a for a in argv if not a.startswith("--")), None)))
+    return 0
+
+
 def main(argv):
-    commands = ("check", "build", "report", "monitor", "search", "sources", "company", "sector", "documents")
+    commands = ("check", "build", "report", "monitor", "search", "sources", "company", "sector", "documents",
+                "where", "signals", "refs")
     if not argv or argv[0] not in commands:
         print(__doc__)
         return 2
@@ -140,13 +186,14 @@ def main(argv):
         return search_cmd(argv[1:])
     if argv[0] == "sources":
         return sources_cmd(argv[1:])
-    if argv[0] in ("company", "sector", "documents"):
-        return {"company": company_cmd, "sector": sector_cmd, "documents": documents_cmd}[argv[0]](argv[1:])
+    if argv[0] in ("company", "sector", "documents", "where", "signals", "refs"):
+        return {"company": company_cmd, "sector": sector_cmd, "documents": documents_cmd, "where": where_cmd,
+                "signals": signals_cmd, "refs": refs_cmd}[argv[0]](argv[1:])
     store = load()
     errors = validate(store)
     if argv[0] == "check":
         errors += (archive.verify() + archive.check_quotes(store) + jurisdictions.validate_directory()
-                   + documents.validate_taxonomy())
+                   + documents.validate_taxonomy() + disclosure.validate_map())
     if errors:
         print(f"{len(errors)} problem(s):")
         print("\n".join(f"  - {e}" for e in errors))
@@ -155,7 +202,8 @@ def main(argv):
     if cmd == "check":
         n_quotes = len(archive._read_csv(archive.QUOTES))
         print(f"OK: {len(store.statements)} statements, {len(store.entities)} entities, {len(store.sources)} sources, "
-              f"{n_quotes} verbatim quotes, {len(jurisdictions.directory()['resources'])} directory sources.")
+              f"{n_quotes} verbatim quotes, {len(jurisdictions.directory()['resources'])} directory sources, "
+              f"{len(disclosure.disclosure_map()['references'])} disclosure-map references.")
     elif cmd == "build":
         path = ROOT / "build" / "tracker.db"
         build_db(store, path)
