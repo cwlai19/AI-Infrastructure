@@ -8,6 +8,8 @@ Feeds:
   edgar      SEC full-text search for the group's search terms: catches the company's own filings
              and anyone else who files about it (lenders' holdings, landlords, suppliers, customers).
   ch         Companies House filing history and charges for every UK entity with a registry id.
+  signal     pre-financing signals for every watched group (tracker/watch.py): new SPVs, parent links, new LEIs,
+             articles changes, charges registered or released.
   news       Google News search for the group's terms. Fastest but weakest (grade C): use it to
              know something happened, then confirm in a filing before it becomes an A-grade statement.
 
@@ -181,7 +183,7 @@ def uk_companies(store, group_id):
     return out
 
 
-def run(store, feeds=("edgar", "ch", "news"), lookback_days=45):
+def run(store, feeds=("edgar", "ch", "news", "signal"), lookback_days=45):
     """Poll every feed for every watched group. Returns (new events to triage, feed failures).
 
     A failing feed (site down, key missing, format changed) is recorded in `failures` and the
@@ -197,8 +199,16 @@ def run(store, feeds=("edgar", "ch", "news"), lookback_days=45):
             "news": lambda: news_events(group_id, cfg.get("news_terms") or []),
         }
         for feed in feeds:
+            if feed not in jobs:
+                continue
             try:
                 all_events += jobs[feed]()
             except Exception as e:   # noqa: BLE001 - any failure is reported, never fatal
                 failures.append(f"{feed} ({group_id}): {type(e).__name__}: {str(e)[:200]}")
+    if "signal" in feeds:
+        # Pre-financing signals for every watched group, including the watch-only list (tracker/watch.py)
+        from . import watch as signal_watch
+        signals, signal_failures = signal_watch.watch(signal_watch.watch_groups(), lookback_days)
+        all_events += signal_watch.to_events(signals)
+        failures += [f"signal: {f}" for f in signal_failures]
     return append_new(all_events, tuple(watch.get("ignore_kinds", []))), failures

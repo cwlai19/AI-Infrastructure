@@ -19,7 +19,8 @@ decided inside the code that is not written down in one of the files below or in
 
 Code (`tracker/`): `model.py` loads, validates and resolves facts; `net.py` makes every web request; `monitor.py`
 runs the daily feeds; `jurisdictions.py` searches registers by country; `documents.py` sorts documents by question;
-`disclosure.py` queries the disclosure map; `archive.py` checks hashes and quotes; `__main__.py` is the command line.
+`disclosure.py` queries the disclosure map; `archive.py` checks hashes and quotes; `lenders.py` finds BDC holdings;
+`watch.py` finds pre-financing signals; `__main__.py` is the command line.
 
 ## 2. Rules that apply everywhere
 
@@ -64,6 +65,7 @@ Daily via GitHub Actions. For each group in `watchlist.yaml`:
 - **edgar**: SEC full-text search for each term, last 45 days, all pages; one event per filing.
 - **ch**: for every UK entity of the group with a registry number: full filing history and all charges.
 - **news**: Google News RSS for each term.
+- **signal**: the `watch` checks for every watched group (see below).
 
 New events (ids never seen) are appended to `events.csv`. On a feed's first run, items older than 21 days are marked
 `baseline`; form types in `ignore_kinds` (fund registration noise) are `ignored`. The issue lists new events tagged
@@ -120,6 +122,47 @@ moved hosting from 63.11 to 63.10).
   many sector companies they hold security over. Each borrower shows how it was matched and its SIC codes, because a
   name match can be an unrelated company.
 
+### `python -m tracker lenders <preset> | --terms "A,B"`
+Which BDCs (US-listed and private business development companies, the main public window on private credit) hold a
+group's or sector's debt or equity. Needs `pip install edgartools`.
+1. **Discovery.** Reads SEC's monthly BDC data sets (default: the newest 3 months, found on SEC's index page; SEC moved
+   from quarterly to monthly files in 2026). One file holds every BDC filing's schedule of investments. Every name
+   column is searched for each term as a whole word (so "IREN" does not match "Firenze"). Only rows for the filing's
+   own period count (filings also carry prior-period comparatives), and only each BDC's newest filing. Files are cached
+   in `build/cache/`.
+2. **Confirmation.** For each BDC filing with a match, edgartools parses the filing's own XBRL and the matched positions
+   are taken from that parse (it finds positions the data set misses, e.g. Blue Owl's loan to Nscale Services UK).
+3. **Reconciliation.** The parsed rows are summed and compared with the BDC's reported total investments at fair value.
+   Within 2%: ok. Above: some holdings are tagged twice, so totals and portfolio shares from that filing are unreliable
+   (positions still stand). Below: some holdings were not parsed, so a missing name is not proof of no position.
+4. **Each position:** borrower (the identifier segment containing the term), instrument, debt or equity, rate, spread,
+   principal, cost, fair value and mark (fair value per 100 of principal, or of cost for equity). A mark outside 50–150
+   of principal is flagged "check units" (some filings report principal as the whole facility). If a filing cannot be
+   parsed, its data-set rows are shown marked "not confirmed".
+`--csv <path>` writes every position for review. Positions are leads: record them as statements (source type
+`counterparty_filing`) after checking the filing.
+
+### `python -m tracker watch [--names "A,B"] [--since 90]`
+Pre-financing signals for each group in `data/watchlist.yaml` (`groups` and `watch_only`), or for the names given.
+Signal ids and the reasoning behind each are in `data/disclosure_map.yaml` (`python -m tracker signals`).
+- **Companies House** (key): companies whose name contains the group name. New ones since the date are
+  `spv_incorporated`, flagged when the name looks like a financing vehicle (HoldCo, MidCo, BidCo, FinCo, GPU, DC,
+  Borrower, SPV…) and when registered at the group's most common postcode. Their corporate parents are `psc_link`.
+  For up to 60 active companies (newest first): new articles or resolutions (`articles_changed`), charges created
+  (`charge_registered`) and charges satisfied or released (`charge_released`).
+- **Brønnøysund**: Norwegian entities with the name, registered since the date.
+- **GLEIF**: LEIs first registered since the date whose legal name contains the group name, minus funds (ETFs on the
+  group's shares), with the parent where reported (`new_lei`).
+- **Likely financings**: charges created at two or more group companies within three days are grouped as one
+  financing, because a facility's security package is signed across all obligors at closing. The output says how many
+  of those companies changed their articles within 60 days either side.
+The daily monitor runs the same checks (feed `signal`, last 45 days) and adds new ones to `events.csv` and the issue.
+
+### `python -m tracker stream [--seconds 300]`
+Reads the Companies House charges stream from the last saved position (`data/stream_state.json`) and keeps charges for
+UK companies in the statements. Needs `COMPANIES_HOUSE_STREAM_KEY`, which is a separate key from the REST key (create it
+in the Companies House developer hub). Not yet tested against the live stream.
+
 ### `python -m tracker documents | sources | where | signals | refs`
 Print the data files, filtered: document types by jurisdiction and question; sources by jurisdiction, channel and
 cost; the disclosure map by instrument and region; signals by stage and region; citations.
@@ -146,3 +189,4 @@ cost; the disclosure map by instrument and region; signals by stage and region; 
 | `EDGAR_USER_AGENT` | All SEC calls | "Name email"; SEC requires a contact |
 | `COMPANIES_HOUSE_API_KEY` | UK search, company, sector, monitor | Free key; or the file `~/.config/ai-infrastructure/companies_house_api_key`. Never commit it |
 | `KVK_API_KEY` | Dutch register search | Paid |
+| `COMPANIES_HOUSE_STREAM_KEY` | `stream` | Separate stream key from the developer hub |

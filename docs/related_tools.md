@@ -8,7 +8,7 @@ credit tracker for European private debt); several do parts of it well.
 
 | Tool | What it does | Overlap | Decision |
 |---|---|---|---|
-| [edgartools](https://github.com/dgunning/edgartools) (PyPI 5.62.1, 23 Oct 2026) | Python library for EDGAR filings, exhibits and XBRL financials, including BDC schedules of investments (`PortfolioInvestments`) | Our `fetch_edgar.py`, US company pulls, and the planned lender layer | **Use it for BDC holdings and XBRL financials** instead of writing our own parser. Its open issues show the hard cases: picking the right period, and identifiers that end in a coupon being dropped ([#1584](https://github.com/dgunning/edgartools/issues/1584), [#1504](https://github.com/dgunning/edgartools/issues/1504)). Keep our fetcher for the archive and quote checks |
+| [edgartools](https://github.com/dgunning/edgartools) (PyPI 5.62.1, 23 Oct 2026) | Python library for EDGAR filings, exhibits and XBRL financials, including BDC schedules of investments (`PortfolioInvestments`) | Our `fetch_edgar.py`, US company pulls, and the planned lender layer | **Used** by `python -m tracker lenders` for BDC holdings (monthly data sets and per-filing XBRL parse with reconciliation). Its open issues show the hard cases: picking the right period, and identifiers that end in a coupon being dropped ([#1584](https://github.com/dgunning/edgartools/issues/1584), [#1504](https://github.com/dgunning/edgartools/issues/1504)). Keep our fetcher for the archive and quote checks |
 | [tpmkuehn/bdc-soi](https://github.com/tpmkuehn/bdc-soi) | Extracts BDC schedules of investments from 10-Qs (XBRL, Inline XBRL, HTML), no LLM, reconciles to reported totals | Lender layer | **Borrow the reconciliation idea:** check extracted positions add up to the filed total before trusting them |
 | [Lakshya5Jain/bdc-loan-quality](https://github.com/Lakshya5Jain/bdc-loan-quality) | Every BDC loan quarter over quarter from SEC XBRL into DuckDB, with a stable loan id across quarters | Lender layer, history | **Borrow the stable loan id** (identifier parsing plus fuzzy matching) for tracking a loan's marks over time |
 | [kennypang41-hub/BDC](https://github.com/kennypang41-hub/BDC) | BDC tracker built on SEC's bulk financial statement data sets, with per-filing XBRL as fallback | Lender layer | **Borrow the bulk-first approach:** one bulk download instead of hundreds of filing requests |
@@ -46,8 +46,10 @@ pushes every new charge and is the right next step for monitoring at scale.
 
 ## Practices to take, in order
 
-1. **Use edgartools for BDC holdings**, and check every extraction against reported totals (bdc-soi). This gives the
-   lender layer (who holds which neocloud loan, at what mark) without a new parser.
+1. **Done:** edgartools for BDC holdings, every extraction checked against the BDC's reported total. Two things found
+   while building it: SEC moved the BDC data sets from quarterly to monthly files in 2026 (edgartools' quarterly
+   discovery returns nothing for 2026, so we read SEC's index page for monthly files), and edgartools' own search reads
+   one name column, so it missed Nscale; we search every name column.
 2. **Record real responses for tests** (vcrpy), so adapter changes are tested against what sites actually return.
 3. **Per-source metadata** (zavod): add update frequency, licence, terms URL and last successful run to
    `source_directory.yaml`, and show stale sources in `check`.

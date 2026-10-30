@@ -7,6 +7,26 @@ groups:
   group_nscale:
     edgar_terms: ["Nscale"]
     news_terms: ["Nscale"]
+    watch_names: ["Nscale"]
+
+# Groups watched only for pre-financing signals (new SPVs, LEIs, articles, charges): python -m tracker watch.
+# Names are searched as written; prefer the distinctive part of the name (a generic word catches unrelated companies).
+watch_only:
+  group_fluidstack: ["Fluidstack"]
+  group_nebius: ["Nebius"]
+  group_northern_data: ["Northern Data"]
+  group_atnorth: ["atNorth"]
+  group_green_mountain: ["Green Mountain DC", "Green Mountain AS"]
+  group_bulk: ["Bulk Infrastructure", "Bulk Data Centers"]
+  group_start_campus: ["Start Campus"]
+  group_kao: ["Kao Data"]
+  group_ark: ["Ark Data Centres"]
+  group_pure_dc: ["Pure DC", "Pure Data Centres"]
+  group_yondr: ["Yondr"]
+  group_evroc: ["Evroc"]
+  group_data4: ["Data4"]
+  group_virtus: ["Virtus Data Centres"]
+  group_global_switch: ["Global Switch"]
 
 # Filing types that mention a watched name but carry no credit information
 # (e.g. ETF registration statements listing holdings). Logged as 'ignored', not alerted.

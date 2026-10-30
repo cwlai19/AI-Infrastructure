@@ -22,13 +22,19 @@
     python -m tracker signals [--region <jurisdiction>] [--stage pre|closing|after]
                                          signs that a financing is coming, closing or done, and where to watch
     python -m tracker refs [<reference id>]   the citations behind the disclosure map
+    python -m tracker lenders [<preset>] [--terms "A,B"] [--months 3] [--no-reconcile] [--csv <path>]
+                                         which BDCs hold a group's or sector's debt or equity, cost and mark,
+                                         checked against each BDC's reported total (needs edgartools)
+    python -m tracker watch [--names "A,B"] [--since <days>]
+                                         pre-financing signals: new SPVs, parent links, LEIs, articles, charges
+    python -m tracker stream [--seconds 300]  Companies House charges stream (needs a stream key)
 """
 
 import sqlite3
 import sys
 from dataclasses import asdict
 
-from . import archive, disclosure, documents, jurisdictions
+from . import archive, disclosure, documents, jurisdictions, lenders, watch
 from .model import ROOT, load, validate
 from .report import credit_file
 
@@ -176,9 +182,50 @@ def refs_cmd(argv):
     return 0
 
 
+def lenders_cmd(argv):
+    import warnings
+    warnings.filterwarnings("ignore")    # edgartools warns on every unusual row; the reconciliation reports what matters
+    preset = next((a for a in argv if not a.startswith("--") and a not in
+                   (_option(argv, "--terms"), _option(argv, "--months"), _option(argv, "--csv"))), None)
+    if _option(argv, "--terms"):
+        terms = [t.strip() for t in _option(argv, "--terms").split(",") if t.strip()]
+    elif preset in documents.taxonomy()["sectors"]:
+        terms = documents.taxonomy()["sectors"][preset].get("lender_terms") or []
+    else:
+        print('usage: python -m tracker lenders <preset> | --terms "Name A,Name B" [--months 3] [--no-reconcile] [--csv <path>]')
+        return 2
+    positions, recons, failures, months = lenders.lenders(terms, int(_option(argv, "--months") or 3), "--no-reconcile" not in argv)
+    print(lenders.format_lenders(positions, recons, failures, months))
+    if _option(argv, "--csv"):
+        lenders.write_csv(positions, _option(argv, "--csv"))
+        print(f"\nwrote {_option(argv, '--csv')}")
+    return 0
+
+
+def watch_cmd(argv):
+    groups = ({"names": [n.strip() for n in _option(argv, "--names").split(",") if n.strip()]}
+              if _option(argv, "--names") else watch.watch_groups())
+    signals, failures = watch.watch(groups, int(_option(argv, "--since") or 90))
+    print(watch.format_watch(signals, failures))
+    return 0
+
+
+def stream_cmd(store, argv):
+    from .monitor import append_new, uk_companies
+    numbers = {n for g in store.entities if store.entities[g]["type"] == "group" for _, n in uk_companies(store, g)}
+    try:
+        events = watch.stream_charges(int(_option(argv, "--seconds") or 300), numbers or None)
+    except RuntimeError as e:
+        print(e)
+        return 2
+    new = append_new(events)
+    print(f"{len(events)} charge event(s) for watched companies; {len(new)} new")
+    return 0
+
+
 def main(argv):
     commands = ("check", "build", "report", "monitor", "search", "sources", "company", "sector", "documents",
-                "where", "signals", "refs")
+                "where", "signals", "refs", "lenders", "watch", "stream")
     if not argv or argv[0] not in commands:
         print(__doc__)
         return 2
@@ -186,9 +233,9 @@ def main(argv):
         return search_cmd(argv[1:])
     if argv[0] == "sources":
         return sources_cmd(argv[1:])
-    if argv[0] in ("company", "sector", "documents", "where", "signals", "refs"):
+    if argv[0] in ("company", "sector", "documents", "where", "signals", "refs", "lenders", "watch"):
         return {"company": company_cmd, "sector": sector_cmd, "documents": documents_cmd, "where": where_cmd,
-                "signals": signals_cmd, "refs": refs_cmd}[argv[0]](argv[1:])
+                "signals": signals_cmd, "refs": refs_cmd, "lenders": lenders_cmd, "watch": watch_cmd}[argv[0]](argv[1:])
     store = load()
     errors = validate(store)
     if argv[0] == "check":
@@ -208,9 +255,11 @@ def main(argv):
         path = ROOT / "build" / "tracker.db"
         build_db(store, path)
         print(f"Wrote {path}")
+    elif cmd == "stream":
+        return stream_cmd(store, argv[1:])
     elif cmd == "monitor":
         from .monitor import run
-        feeds = tuple(argv[1:]) or ("edgar", "ch", "news")
+        feeds = tuple(argv[1:]) or ("edgar", "ch", "news", "signal")
         new, failures = run(store, feeds)
         print(f"{len(new)} new event(s), {len(failures)} feed failure(s)")
         for f in failures:

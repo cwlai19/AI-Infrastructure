@@ -539,7 +539,7 @@ signals:
     why: "Lenders want a ring-fenced borrower and a holding company whose shares they can take as security"
     evidence: market_practice
     where: [uk_ch, uk_ch_stream, lu_lbr, no_brreg]
-    detect: "search uk \"<group>\"; company uk <parent no> (PSC chain)"
+    detect: "watch; search uk <group>"
     lead_time: "Weeks to months before closing"
   - id: psc_link
     stage: pre
@@ -547,7 +547,7 @@ signals:
     why: "Shows the SPV belongs to the group before any financing filing"
     evidence: law
     where: [uk_ch]
-    detect: "company uk <no> (PSC filings and corporate PSCs)"
+    detect: "watch; company uk <no>"
     lead_time: "Weeks"
   - id: new_lei
     stage: pre
@@ -556,7 +556,7 @@ signals:
     evidence: market_practice
     where: [eu_gleif]
     refs: [eu_emir, gleif_golden_copy, gleif_level2]
-    detect: "company <jur> <LEI or no> (GLEIF children); daily delta files not yet automated"
+    detect: "watch; company <jur> <LEI or no>"
     lead_time: "Weeks before closing"
   - id: articles_changed
     stage: pre
@@ -564,7 +564,7 @@ signals:
     why: "Lenders taking a share charge need to be free to enforce by transferring the shares"
     evidence: market_practice
     where: [uk_ch]
-    detect: "company uk <no> (filing history)"
+    detect: "watch; company uk <no>"
     lead_time: "Days to weeks; often filed with the MR01"
   - id: bond_mandate
     stage: pre
@@ -596,8 +596,17 @@ signals:
     evidence: law
     where: [uk_ch, uk_ch_stream, ie_core, no_losore, dk_tinglysning, us_ucc]
     refs: [uk_ca2006_s859a, uk_ca2006_s859h, ie_ca2014_s409, us_ucc9]
-    detect: "company uk <no>; sector <preset> --jur uk; monitor (ch feed)"
+    detect: "watch; stream; company uk <no>; sector <preset> --jur uk"
     lead_time: "Within 21 days after closing (UK, Ireland)"
+  - id: charge_released
+    stage: closing
+    name: Charge satisfied or released (UK MR04, MR05)
+    why: "A repayment or refinancing: a new charge around the same date usually means the debt was refinanced"
+    evidence: law
+    where: [uk_ch]
+    refs: [uk_ca2006_s859a]
+    detect: "watch; company uk <no>"
+    lead_time: "At repayment"
   - id: new_isin
     stage: closing
     name: New ISIN for an issuer LEI in FIRDS
@@ -630,6 +639,7 @@ signals:
     evidence: regulator
     where: [us_bdc]
     refs: [us_regsx_12_12, us_rel_33_10771]
+    detect: "lenders <preset>; lenders --terms <names>"
     lead_time: "40 to 45 days after quarter end"
   - id: accounts_filed
     stage: after

@@ -31,7 +31,7 @@ See [`docs/decisions.md`](docs/decisions.md) for why it is built this way and wh
 
 ## Commands
 
-Needs Python 3.11+ and PyYAML (`pip install pyyaml`).
+Needs Python 3.11+ and PyYAML (`pip install pyyaml`); the lender layer also needs `pip install edgartools`.
 
 ```bash
 python -m tracker check                 # validate data, archive hashes, quotes and the source directory
@@ -46,6 +46,8 @@ python -m tracker documents lu --need guarantors      # which document answers a
 python -m tracker where secured_loan --region uk      # what a kind of debt must make public, when, legal basis
 python -m tracker signals --stage pre                 # signs a financing is coming, and where to watch
 python -m tracker refs                                # every citation behind the disclosure map
+python -m tracker lenders data_centres --csv reports/lender_positions.csv   # BDC holdings, reconciled (pip install edgartools)
+python -m tracker watch --since 90                    # new SPVs, LEIs, articles changes, charges; likely financings
 python scripts/build_source_directory.py   # reports/source_directory.html (shareable page) + .csv
 python -m unittest discover -s tests -t .
 ```

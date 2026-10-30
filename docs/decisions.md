@@ -288,3 +288,26 @@ rule.
 **Alternatives rejected.**
 - *Keep it in documentation only.* Prose drifts from what the code does; data that the code and checks read cannot.
 - *Treat market practice as fact.* Labelled separately, so "usually" is never mistaken for "must".
+
+## D19. Lender layer: discover in bulk, confirm in the filing, reconcile to the reported total
+
+**Problem.** BDC schedules of investments are the main public record of who holds private credit loans, but
+parsers misread some filings (holdings tagged twice, coupons in identifiers, comparatives mixed in).
+
+**Choice.** Search SEC's monthly bulk data sets for names (cheap, all BDCs at once), then parse each matching filing's
+own XBRL with edgartools and report positions from that parse, with the gap between the parsed rows and the BDC's
+reported total. Positions stand even when the total does not reconcile; totals and portfolio shares do not.
+
+**Alternatives rejected.** *Parse every BDC filing every quarter* (hundreds of downloads for a few names). *Trust the
+bulk data set alone* (it missed a Blue Owl loan to Nscale Services UK that the filing parse found).
+
+## D20. Pre-financing signals are read from registers, and grouped into likely financings
+
+**Problem.** Private credit deals are rarely announced, but borrowers must incorporate vehicles, register LEIs, change
+articles and register charges. Each filing alone is weak evidence; together and on the same dates they show a deal.
+
+**Choice.** `watch` collects those filings per group from Companies House, Brønnøysund and GLEIF, flags financing-style
+names and the group's usual address, and groups charges created at several companies within three days into one
+likely financing. Every signal links to its reasoning in the disclosure map.
+
+**Alternative rejected.** *Report charges one by one.* A dozen MR01s on one day are one facility, not twelve deals.

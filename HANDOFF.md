@@ -95,6 +95,8 @@ Derived values take the grade of their weakest input.
 | `tracker/jurisdictions.py` | Live registry adapters by jurisdiction and the `search` / `sources` commands |
 | `tracker/disclosure.py` + `data/disclosure_map.yaml` | Where each kind of debt leaves a public trace, signals, citations (`where`, `signals`, `refs`) |
 | `docs/HOW_IT_WORKS.md`, `docs/related_tools.md` | What every command does; open-source tools surveyed |
+| `tracker/lenders.py` | BDC holdings by name or sector, confirmed in each filing and reconciled (`lenders`) |
+| `tracker/watch.py` | Pre-financing signals and likely financings (`watch`, `stream`; monitor feed `signal`) |
 | `tracker/documents.py` | Document classification by credit question; `company`, `sector` and `documents` commands |
 | `data/document_types.yaml` | Document types per jurisdiction, how to recognise them (CH filing codes, EDGAR form/exhibit types, 8-K items), Exhibit 10 title rules, sector presets |
 | `tracker/disclaimer.py` | Watermark text |
@@ -109,7 +111,7 @@ Derived values take the grade of their weakest input.
 | `scripts/export_xlsx.py` (`--compact`) + `scripts/xlsx_compact.py` | Excel export, plus a small email-size copy |
 | `tools/*.js` | Playwright screenshot and PDF helpers for checking outputs |
 | `.github/workflows/monitor.yml` | Daily monitor (needs the `COMPANIES_HOUSE_API_KEY` secret and the `EDGAR_USER_AGENT` variable) |
-| `tests/` | 67 tests on the model, monitor, fetching, archive, quotes, directory, document classification and the disclosure map |
+| `tests/` | 78 tests on the model, monitor, fetching, archive, quotes, directory, documents, disclosure map, lenders and watch |
 | `docs/decisions.md` | Design decisions D1–D13 with reasoning |
 
 ## 4. Run it

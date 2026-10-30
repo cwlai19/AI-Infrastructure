@@ -456,3 +456,10 @@ sectors:
     groups: [Nscale, Nebius, Fluidstack, Northern Data, atNorth, Green Mountain, Bulk Infrastructure, Start Campus,
              Kao Data, Ark Data Centres, Pure DC, Yondr, Verda, Evroc, Data4, Global Switch, Virtus, NorthC, Digital Realty, Equinix]
     note: "NACE Rev. 2.1 (2025) moved data processing and hosting from 63.11 to 63.10. Many data-centre property SPVs are coded as real estate (68.20), so add keywords and known groups."
+    # Names searched in BDC schedules of investments (python -m tracker lenders data_centres). Borrower names as lenders
+    # list them; short generic words are avoided because they match unrelated companies.
+    lender_terms: [Nscale, Fluidstack, Nebius, Northern Data, atNorth, Green Mountain, Bulk Infrastructure, Start Campus,
+                   Kao Data, Pure DC, Yondr, Verda, Evroc, Data4, Global Switch, Virtus Data, NorthC, CoreWeave, Crusoe,
+                   Lambda Labs, Applied Digital, TeraWulf, Cipher Mining, IREN, Core Scientific, Vantage Data, Aligned Data,
+                   EdgeConneX, DataBank, Flexential, Cologix, Switch Ltd, QTS, CyrusOne, Stack Infrastructure, Equinix,
+                   Digital Realty, "data center", "data centre", "datacenter", "GPU"]
