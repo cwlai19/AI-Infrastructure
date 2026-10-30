@@ -66,6 +66,12 @@ class Watch(unittest.TestCase):
         self.assertTrue(watch.financing_name("NSCALE WARD COUNTY BORROWER SPV, LLC"))
         self.assertFalse(watch.financing_name("NSCALE LIMITED"))
 
+    def test_whole_name_required(self):
+        self.assertTrue(watch.has_name("GREEN MOUNTAIN DC HOLDING AS", "Green Mountain DC"))
+        self.assertFalse(watch.has_name("ACCRESCO AS", "Green Mountain"))
+        self.assertFalse(watch.has_name("KAO MEN STUDIO", "Kao Data"))
+        self.assertTrue(watch.has_name("NSCALE GPU SAUDA AS", "Nscale"))
+
     def test_financing_waves(self):
         S = watch.Signal
         sig = [S("g", "charge_registered", "2026-08-10", "A", "1", "MR01: charge 1 created 2026-08-06", "", ""),

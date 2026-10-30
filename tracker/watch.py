@@ -55,6 +55,12 @@ class Signal:
     source: str
 
 
+def has_name(entity_name, name):
+    """The whole search name appears in the entity's name. Registers' name searches are fuzzy (Brønnøysund matches
+    any word: 'Green Mountain' returned 106 unrelated companies), so every hit is checked again here."""
+    return re.search(r"(?<![a-z0-9])" + re.escape(name.lower()) + r"(?![a-z0-9])", (entity_name or "").lower()) is not None
+
+
 def financing_name(name):
     return bool(FINANCING_NAME.search(name or ""))
 
@@ -75,6 +81,7 @@ def uk_signals(group, name, since):
         start += len(items)
         if not items or start >= int(page.get("hits") or 0):
             break
+    companies = [c for c in companies if has_name(c.get("company_name"), name)]
     postcodes = collections.Counter((c.get("registered_office_address") or {}).get("postal_code") for c in companies)
     home, home_n = (postcodes.most_common(1) or [(None, 0)])[0]
     out = []
@@ -111,6 +118,8 @@ def no_signals(group, name, since):
     data = net.get_json(f"https://data.brreg.no/enhetsregisteret/api/enheter?{q}")
     out = []
     for e in data.get("_embedded", {}).get("enheter", []):
+        if not has_name(e.get("navn"), name):
+            continue
         flag = "financing-style name" if financing_name(e.get("navn")) else "name match only: confirm it belongs to the group"
         out.append(Signal(group, "spv_incorporated", e.get("registreringsdatoEnhetsregisteret", ""), e.get("navn", ""),
                           e.get("organisasjonsnummer", ""), flag,
@@ -124,7 +133,7 @@ def lei_signals(group, name, since):
     out = []
     for r in data.get("data", []):
         e, reg = r["attributes"]["entity"], r["attributes"]["registration"]
-        if e.get("category") == "FUND" or not re.search(re.escape(name), e["legalName"]["name"], re.I):
+        if e.get("category") == "FUND" or not has_name(e["legalName"]["name"], name):
             continue    # ETFs on the group's shares, and full-text hits that do not carry the name
         parent = (net.get_json(f"https://api.gleif.org/api/v1/lei-records/{r['id']}/direct-parent").get("data") or {})
         pname = parent.get("attributes", {}).get("entity", {}).get("legalName", {}).get("name")
