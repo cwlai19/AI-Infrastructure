@@ -52,6 +52,20 @@ class Parsing(unittest.TestCase):
                                                       "short-term 2,190m), equity 4,000m, assets 9,800m")
 
 
+class CompaniesHouseText(unittest.TestCase):
+    def test_filing_titles_are_plain_english(self):
+        f = {"type": "MR04", "description": "mortgage-satisfy-charge-full", "description_values": {"charge_number": "157494080003"}}
+        self.assertEqual(documents.ch_title(f), "MR04: charge 157494080003 fully satisfied")
+        f = {"type": "XX01", "description": "some-new-form", "description_values": {"date": "2026-01-01"}}
+        self.assertEqual(documents.ch_title(f), "XX01: some new form (2026-01-01)")
+
+    def test_charge_title_lists_terms(self):
+        c = {"charge_code": "157494080008", "status": "outstanding",
+             "particulars": {"contains_fixed_charge": True, "contains_negative_pledge": True, "description": "Shares in X Ltd"}}
+        self.assertEqual(documents.charge_title(c),
+                         "Charge 157494080008 (outstanding), fixed charge, negative pledge: Shares in X Ltd")
+
+
 class Dossier(unittest.TestCase):
     def test_failing_registry_is_noted_and_guidance_still_printed(self):
         with mock.patch.dict(documents.PULLS, {"uk": mock.Mock(side_effect=RuntimeError("No Companies House key"))}), \

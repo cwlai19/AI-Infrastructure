@@ -62,7 +62,7 @@ documents:
     jurisdiction: uk
     source: uk_ch
     name: Charge registered (MR01, MR02)
-    needs: [security, debt_docs, lenders]
+    needs: [security, debt_docs]
     match: {ch: [MR01, MR02]}
     tip: "Names the chargee (usually the security agent), the assets, any negative pledge; the PDF often attaches the whole debenture or share charge"
   - id: uk_charge_satisfied

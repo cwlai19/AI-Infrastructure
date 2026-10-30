@@ -1,0 +1,85 @@
+=== Sector: Data centres, neoclouds and GPU cloud
+note: NACE Rev. 2.1 (2025) moved data processing and hosting from 63.11 to 63.10. Many data-centre property SPVs are coded as real estate (68.20), so add keywords and known groups.
+
+## UK: 126 active companies by known group, name keyword or SIC code; 32 have outstanding charges
+  Chargees (security agents and lenders):
+  - Glas Americas Llc as Collateral Agent: security over 14 companies (NSCALE DC HOLDINGS FINLAND LIMITED, NSCALE DC HOLDINGS II LIMITED, NSCALE GLOBAL DC HOLDINGS LIMITED, NSCALE GLOBAL HOLDINGS LIMITED…)
+  - Glas Trust Corporation Limited: security over 3 companies (KAO DATA LIMITED, NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED, NSCALE SERVICES UK LTD)
+  - Glas Trust Corporation Limited as Collateral Agent: security over 2 companies (NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED, NSCALE SERVICES UK LTD)
+  - Macquarie Bank Limited (London Branch), as Trustee for Each of the Secured Parties: security over 2 companies (NSCALE SERVICES INTERMEDIATE HOLDINGS III LIMITED, NSCALE SERVICES UK III LIMITED)
+  - Macquarie Bank Limited (London Branch): security over 2 companies (NSCALE DRIFT II HOLDINGS LTD, NSCALE SERVICES UK III LIMITED)
+  - Lloyds Bank PLC: security over 2 companies (GREEN MOUNTAIN CAPITAL LTD, GREEN MOUNTAIN ESTATES LTD)
+  - Ing Bank N.V., London Branch, as Assignee: security over 2 companies (GREEN MOUNTAIN GLOBAL FINANCE LIMITED, GREEN MOUNTAIN GLOBAL LIMITED)
+  - Hsbc UK Bank PLC: security over 2 companies (GREEN MOUNTAIN DC UK LIMITED, GREEN MOUNTAIN PROPCO UK LIMITED)
+  - Glas Trust Corporation Limited as Security Agent or Pledgee: security over 1 company (NSCALE SERVICES UK LTD)
+  - Glas Trust Corporation Limited as Pledgee: security over 1 company (NSCALE SERVICES UK LTD)
+  - National Westminster Bank PLC: security over 1 company (DATA INSTALLATION & SUPPLIES (NORTHERN) LTD)
+  - Mount Street Mortgage Servicing Limited: security over 1 company (GREEN MOUNTAIN DC UK LIMITED)
+  - Fleet Mortgages Limited: security over 1 company (GREEN MOUNTAIN ESTATES LTD)
+  - Cbre Loan Services Limited (And Its Successors in Title and Permitted Transferees): security over 1 company (ARK DATA CENTRES LIMITED)
+  - Aldermore Bank PLC: security over 1 company (VERDA APARTMENTS LIMITED)
+  - Belmont Green Finance Limited Trading as Vida Homeloans: security over 1 company (VERDA PROPERTIES LIMITED)
+  - Hsbc Innovation Banking: security over 1 company (EVROC LIMITED)
+  - Rbc Europe Limited, 100 Bishopsgate, London, United Kingdom, EC2N 4AA as Security Agent: security over 1 company (DATA4 SERVICES UK LTD)
+  Borrowers with the most outstanding charges:
+  - VERDA APARTMENTS LIMITED (17040796): 26 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/17040796/charges
+  - GREEN MOUNTAIN ESTATES LTD (08909924): 11 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/08909924/charges
+  - NSCALE SERVICES UK LTD (16445102): 7 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16445102/charges
+  - NSCALE GLOBAL HOLDINGS LIMITED (15749408): 4 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/15749408/charges
+  - NSCALE SERVICES HOLDINGS LIMITED (16723313): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16723313/charges
+  - NSCALE GPU HOLDINGS LIMITED (17255841): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/17255841/charges
+  - NSCALE SERVICES INTERMEDIATE HOLDINGS LIMITED (16793881): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16793881/charges
+  - NSCALE SERVICES UK III LIMITED (16890967): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16890967/charges
+  - NSCALE DRIFT II HOLDINGS LTD (16408148): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16408148/charges
+  - NSCALE DC HOLDINGS II LIMITED (16826005): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16826005/charges
+  - NSCALE OPERATIONS HOLDINGS LIMITED (16751831): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16751831/charges
+  - NSCALE MIDCO 2 LIMITED (17264857): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/17264857/charges
+  - GREEN MOUNTAIN CAPITAL LTD (14073752): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/14073752/charges
+  - GREEN MOUNTAIN DC UK LIMITED (06501672): 2 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/06501672/charges
+  - NSCALE OPERATIONS (AUST) LIMITED (16695398): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16695398/charges
+  - NSCALE INTERMEDIATE HOLDINGS APAC LIMITED (16849870): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16849870/charges
+  - NSCALE SERVICES INTERMEDIATE HOLDINGS III LIMITED (16890339): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16890339/charges
+  - NSCALE DC HOLDINGS FINLAND LIMITED (16937091): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16937091/charges
+  - NSCALE PLC (16925886): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16925886/charges
+  - NSCALE GLOBAL DC HOLDINGS LIMITED (16727516): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16727516/charges
+  - NSCALE HOLDINGS LIMITED (17206699): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/17206699/charges
+  - NSCALE MIDCO 1 LIMITED (17260936): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/17260936/charges
+  - NSCALE OPERATIONS (UK) LIMITED (16218318): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16218318/charges
+  - DATA INSTALLATION & SUPPLIES (NORTHERN) LTD (01835753): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/01835753/charges
+  - GREEN MOUNTAIN GLOBAL FINANCE LIMITED (16289829): 1 outstanding charge(s)
+      https://find-and-update.company-information.service.gov.uk/company/16289829/charges
+
+## Also check (sector-wide debt is mostly in paid databases)
+  - ESMA FIRDS (instrument reference data) [free]: Every bond admitted to EU trading venues with issuer LEI, maturity and coupon: find all listed bonds of a group by LEI
+  - EIB project list [free]: Signed EIB loans by borrower, amount and project
+  - Export credit agencies and national promotional banks [free]: Guarantees and loans for named projects: UKEF, Eksfin (NO), EKN and SEK (SE), Finnvera (FI), EIFO (DK), Bpifrance (FR), Euler Hermes for the German government, SACE (IT), CESCE (ES); KfW, CDP, ICO
+  - BDC schedules of investments (10-K/10-Q) [free]: Loan-by-loan holdings of private-credit BDCs (borrower, rate, maturity, cost, fair value). Many hold European borrowers: filter EUR/GBP positions
+  - LSEG LoanConnector (LPC) [subscription]: Syndicated and private loan deal records and news
+  - Octus (formerly Reorg) [subscription]: Restructuring and distressed intelligence, documents, legal analysis
+  - 9fin [subscription]: Leveraged finance and private credit news, covenant analysis, document library
+  - PitchBook | LCD [subscription]: Leveraged loan and private credit deals, defaults, fund data
+  - IJGlobal / Inframation [subscription]: Infrastructure and project finance deal databases (data-centre financings, lenders, tenors)

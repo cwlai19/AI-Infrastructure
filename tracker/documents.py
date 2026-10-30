@@ -195,6 +195,51 @@ def _ch_all(url, auth):
     return _ch_items(url, auth)
 
 
+# Plain-English titles for the Companies House filing descriptions that matter most; others fall back to the
+# description key with its values appended.
+CH_DESCRIPTIONS = {
+    "mortgage-create-with-deed-with-charge-number-charge-creation-date": "charge {charge_number} created {charge_creation_date}",
+    "mortgage-create-with-deed-with-charge-number": "charge {charge_number} created",
+    "mortgage-satisfy-charge-full": "charge {charge_number} fully satisfied",
+    "mortgage-satisfy-charge-part": "charge {charge_number} partly satisfied",
+    "mortgage-charge-part-release-with-charge-number": "charge {charge_number}: part of the property released",
+    "mortgage-charge-whole-release-with-charge-number": "charge {charge_number}: whole property released",
+    "accounts-with-accounts-type-full": "full accounts to {made_up_date}",
+    "accounts-with-accounts-type-group": "group accounts to {made_up_date}",
+    "accounts-with-accounts-type-small": "small company accounts to {made_up_date}",
+    "accounts-with-accounts-type-dormant": "dormant accounts to {made_up_date}",
+    "capital-allotment-shares": "shares allotted on {date}",
+    "notification-of-a-person-with-significant-control": "new person with significant control: {psc_name}",
+    "cessation-of-a-person-with-significant-control": "person with significant control ceased: {psc_name}",
+    "confirmation-statement-with-updates": "confirmation statement to {made_up_date} (with changes)",
+    "confirmation-statement-with-no-updates": "confirmation statement to {made_up_date} (no changes)",
+}
+
+
+def ch_title(f):
+    key, vals = f.get("description", ""), f.get("description_values") or {}
+    template = CH_DESCRIPTIONS.get(key)
+    if template:
+        try:
+            return f"{f.get('type')}: {template.format(**vals)}"
+        except (KeyError, IndexError):
+            pass
+    extra = ", ".join(f"{v}" for k, v in vals.items() if isinstance(v, str) and k != "description")
+    return f"{f.get('type')}: {key.replace('-', ' ')}" + (f" ({extra})" if extra else "")
+
+
+def charge_title(c):
+    """'Charge 1574…008 (outstanding), fixed charge, negative pledge: <property>'."""
+    parts = c.get("particulars") or {}
+    terms = [label for k, label in (("contains_fixed_charge", "fixed charge"), ("contains_floating_charge", "floating charge"),
+                                    ("floating_charge_covers_all", "floating charge over all assets"),
+                                    ("contains_negative_pledge", "negative pledge"), ("chargor_acting_as_bare_trustee", "bare trustee"))
+             if parts.get(k)]
+    what = parts.get("description") or ""
+    head = f"Charge {c.get('charge_code') or c.get('charge_number', '')} ({c.get('status', '')})"
+    return head + (", " + ", ".join(terms) if terms else "") + (f": {what[:120]}" if what else "")
+
+
 def uk_company(dossier, number):
     from .monitor import _ch_key
     auth = {"Authorization": _ch_key()}
@@ -203,14 +248,16 @@ def uk_company(dossier, number):
     for f in _ch_all(f"{CH_API}{number}/filing-history", auth):
         docs = classify(ch=f.get("type"))
         url = f"{CH_SITE}{number}/filing-history/{f.get('transaction_id')}/document?format=pdf&download=0"
-        _add(dossier, docs, f"{f.get('type')}: {f.get('description', '').replace('-', ' ')}", f.get("date", ""), url)
+        _add(dossier, docs, ch_title(f), f.get("date", ""), url)
     for c in _ch_all(f"{CH_API}{number}/charges", auth):
         holders = ", ".join(p.get("name", "") for p in c.get("persons_entitled", [])) or "chargee not stated"
-        cid = (c.get("links", {}).get("self", "") or "").rstrip("/").rsplit("/", 1)[-1]
-        what = (c.get("classification") or {}).get("description", "")
-        title = f"Charge {c.get('charge_code') or cid} ({c.get('status', '')}) in favour of {holders}; {what}".strip("; ")
-        for need in ("security", "lenders"):
-            dossier.docs.append(Doc(need, title, c.get("created_on", ""), f"{CH_SITE}{number}/charges/{cid}", "Registered charge"))
+        filing = next((t["links"]["filing"] for t in c.get("transactions", []) if t.get("links", {}).get("filing")), "")
+        instrument = f"https://find-and-update.company-information.service.gov.uk{filing}/document?format=pdf&download=0" if filing else \
+            f"{CH_SITE}{number}/charges"
+        dossier.docs.append(Doc("security", f"{charge_title(c)}; in favour of {holders}", c.get("created_on", ""), instrument,
+                                "Registered charge"))
+        dossier.docs.append(Doc("lenders", f"{holders} (charge {c.get('charge_code', '')}, {c.get('status', '')})",
+                                c.get("created_on", ""), instrument, "Registered charge"))
     for p in _ch_all(f"{CH_API}{number}/persons-with-significant-control", auth):
         if "corporate" in p.get("kind", "") or "legal-person" in p.get("kind", ""):   # companies only: no personal data
             dossier.docs.append(Doc("structure", f"Parent (PSC): {p.get('name')}; {', '.join(p.get('natures_of_control', []))}",
@@ -476,23 +523,28 @@ def sector_no(preset, max_companies=60, min_employees=10):
 
 
 def sector_uk(preset, max_companies=100):
-    """UK companies with the sector's SIC codes and their registered charges: who lends to the sector, against what."""
+    """UK companies in the sector and their outstanding charges: who lends to the sector, against what.
+    Known groups and name keywords come first, then SIC codes (which are broad and miss most SPVs)."""
     from .monitor import _ch_items, _ch_key
     auth = {"Authorization": _ch_key()}
-    companies = []
-    for sic in preset.get("uk_sic", []):
-        q = urllib.parse.urlencode({"sic_codes": sic, "company_status": "active", "size": max_companies})
-        companies += net.get_json(f"https://api.company-information.service.gov.uk/advanced-search/companies?{q}", auth).get("items", [])
+    url = "https://api.company-information.service.gov.uk/advanced-search/companies?"
+    companies = {}   # number -> (name, how matched, SIC codes)
+    queries = [({"company_name_includes": n}, f"name '{n}'") for n in preset.get("groups", []) + preset.get("keywords", [])]
+    queries += [({"sic_codes": sic}, f"SIC {sic}") for sic in preset.get("uk_sic", [])]
+    for q, how in queries:
+        for c in net.get_json(url + urllib.parse.urlencode({**q, "company_status": "active", "size": 50}), auth).get("items", []):
+            companies.setdefault(c.get("company_number"), (c.get("company_name"), how, c.get("sic_codes") or []))
+        if len(companies) >= max_companies:
+            break
     lenders, borrowers = {}, []
-    for c in companies[:max_companies]:
-        num = c.get("company_number")
+    for num, (name, how, sics) in list(companies.items())[:max_companies]:
         charges = [x for x in _ch_items(f"{CH_API}{num}/charges", auth) if x.get("status") == "outstanding"]
         if not charges:
             continue
-        borrowers.append((c.get("company_name"), num, len(charges)))
+        borrowers.append((name, num, len(charges), how, sics))
         for x in charges:
             for p in x.get("persons_entitled", []):
-                lenders.setdefault(p.get("name", "?"), set()).add(c.get("company_name"))
+                lenders.setdefault(p.get("name", "?"), set()).add(name)
     return lenders, borrowers, len(companies)
 
 
@@ -531,10 +583,16 @@ def format_sector(preset, out, failures, show=25):
                          f"long-term {r['long_term'] / 1e6:,.0f}m")
     if "uk" in out:
         lenders, borrowers, n = out["uk"]
-        lines.append(f"\n## UK: {n} active companies with the sector's SIC codes; {len(borrowers)} have outstanding charges")
+        lines.append(f"\n## UK: {n} active companies by known group, name keyword or SIC code; {len(borrowers)} have outstanding charges")
+        lines.append("  Chargees (security agents and lenders):")
         for name, holders in sorted(lenders.items(), key=lambda kv: len(kv[1]), reverse=True)[:show]:
             lines.append(f"  - {name}: security over {len(holders)} compan{'y' if len(holders) == 1 else 'ies'} "
                          f"({', '.join(sorted(holders)[:4])}{'…' if len(holders) > 4 else ''})")
+        lines.append("  Borrowers with the most outstanding charges:")
+        lines.append("  (matched by name or SIC; check the SIC codes: a name match can be an unrelated company)")
+        for name, num, k, how, sics in sorted(borrowers, key=lambda b: b[2], reverse=True)[:show]:
+            lines.append(f"  - {name} ({num}): {k} outstanding charge(s); matched by {how}; SIC {', '.join(sics) or 'none'}"
+                         f"\n      {CH_SITE}{num}/charges")
     lines.append("\n## Also check (sector-wide debt is mostly in paid databases)")
     for r in jurisdictions.directory()["resources"]:
         if r["id"] in ("us_bdc", "eu_firds", "eu_eib", "eu_eca", "gl_9fin", "gl_loanconnector", "gl_pitchbook_lcd", "gl_ijglobal", "gl_octus"):
