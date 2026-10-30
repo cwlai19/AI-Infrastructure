@@ -17,11 +17,15 @@ class Matching(unittest.TestCase):
         self.assertEqual(lenders.borrower_label("Technology | CoreWeave Inc. | Unsecured Bond", "Technology", ["CoreWeave"]),
                          "CoreWeave Inc.")
         self.assertEqual(lenders.borrower_label("Something else", "Parsed Co", ["Nscale"]), "Parsed Co")
+        long = ("CoreWeave Compute Acquisition Co. IV, LLC Industry Technology Security 1st Lien, Secured Loan Interest Rate "
+                "3M SOFR + 6.00% (9.68%) Initial Acquisition Date 5/29/2024 Maturity 5/16/2030")
+        self.assertEqual(lenders.borrower_label(long, "", ["CoreWeave"]), "CoreWeave Compute Acquisition Co. IV, LLC")
 
     def test_marks_and_unit_flag(self):
         self.assertEqual(lenders._mark(900_000, None, 831_000), "108.3 (of cost)")
         self.assertEqual(lenders._mark(98.7, 100, 100), "98.7 (of principal)")
         self.assertIn("check units", lenders._mark(506_000, 479_468_000, 506_000))
+        self.assertIn("partly undrawn", lenders._mark(4_500_000, 7_000_000, 4_000_000, "First lien delayed draw term loan"))
         self.assertEqual(lenders._kind("First lien senior secured delayed draw term loan"), "debt")
         self.assertEqual(lenders._kind("Series B Preferred Shares"), "equity")
 

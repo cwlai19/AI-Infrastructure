@@ -90,11 +90,14 @@ def _num(v):
         return None
 
 
-def _mark(fv, principal, cost):
-    """Fair value per 100 of principal (debt) or of cost. Outside 50-150 usually means the filing reports principal
-    in other units or as the whole facility, so it is flagged rather than trusted."""
+def _mark(fv, principal, cost, instrument=""):
+    """Fair value per 100 of principal (debt) or of cost. A delayed-draw loan whose cost is well below principal is
+    partly undrawn (principal includes the commitment), so it is marked against cost. Otherwise a mark outside 50-150
+    usually means the filing reports principal in other units or as the whole facility: flagged, not trusted."""
     if fv is None:
         return ""
+    if principal and cost and cost < 0.9 * principal and re.search(r"delayed|ddtl|draw", instrument or "", re.I):
+        return f"{fv / cost * 100:.1f} (of cost; delayed draw, partly undrawn: principal includes the commitment)"
     base, label = (principal, "of principal") if principal else (cost, "of cost") if cost else (None, "")
     if not base:
         return ""
@@ -112,12 +115,25 @@ def _kind(text):
     return "other"
 
 
+FIELD_WORDS = re.compile(r"\s(?:Industry|Investment|Instrument|Interest|Security|Type of|Reference|Maturity|Initial|"
+                         r"Delayed|First Lien|Second Lien|Senior|Term Loan|Revolver|Equity|Ref|Spread)\b", re.I)
+
+
 def borrower_label(identifier, company_name, terms):
     """The borrower as the filing names it: the identifier segment that contains the matched term, because the
-    parsed company name is sometimes a heading ('Technology', 'First Lien Senior Secured')."""
+    parsed company name is sometimes a heading ('Technology', 'First Lien Senior Secured'). Some BDCs put the whole
+    description in one string; then the label runs from the matched name to the first field word ('Industry',
+    'Investment', 'Interest'...)."""
     for part in re.split(r"\s*\|\s*|\s{2,}", identifier or ""):
-        if matches(part, terms):
-            return part.strip(" ,")
+        if not matches(part, terms):
+            continue
+        part = part.strip(" ,")
+        if len(part) <= 80:
+            return part
+        m = min((re.search(_term_re(t), part, re.I) for t in terms if re.search(_term_re(t), part, re.I)), key=lambda m: m.start())
+        tail = part[m.start():]
+        stop = FIELD_WORDS.search(tail, len(m.group(0)))
+        return tail[:stop.start()].strip(" ,-") if stop else tail[:80].strip()
     return (company_name or identifier or "").strip()
 
 
@@ -179,7 +195,7 @@ def confirm(filing, terms):
                             _kind(inv.investment_type),
                             "" if inv.interest_rate is None else f"{inv.interest_rate:g}",
                             "" if inv.spread is None else f"{inv.spread:g}", principal, cost, fv,
-                            _mark(fv, principal, cost), "filing XBRL", filing["url"]))
+                            _mark(fv, principal, cost, f"{inv.investment_type} {inv.identifier}"), "filing XBRL", filing["url"]))
     return out, recon
 
 
@@ -193,7 +209,7 @@ def unconfirmed(filing):
                             borrower_label(r["identifier"], parts[0], r["term"].split(", ")), instrument,
                             _kind(instrument), "" if _num(r["interest_rate"]) is None else f"{_num(r['interest_rate']):g}",
                             "" if _num(r["spread"]) is None else f"{_num(r['spread']):g}", r["principal"], r["cost"],
-                            r["fair_value"], _mark(r["fair_value"], r["principal"], r["cost"]), "SEC data set", filing["url"]))
+                            r["fair_value"], _mark(r["fair_value"], r["principal"], r["cost"], r["identifier"]), "SEC data set", filing["url"]))
     return out
 
 
